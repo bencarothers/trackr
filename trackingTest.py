@@ -4,11 +4,12 @@ import cv2
 formVideo = cv2.VideoCapture('videos/dum.mp4')
 pathArray = []
 ret,frame = formVideo.read()
-#Not happy about using this counter
-counter = 0
+previousXValue = 100
+previousYValue = 440 
 
-#set values for the location of what should be tracked -- look into hoff
-r,h,c,w = 440,20,100,40
+#These are hardcoded at the moment
+#Ultimately I think I should be using Hoff here
+r,h,c,w = 440,20,100,20
 track_window = (c,r,w,h)
 
 # set up the ROI for tracking
@@ -33,27 +34,17 @@ while(1):
 
         x,y,w,h = track_window
         cv2.rectangle(frame, (x,y), (x+w,y+h), 255,2)
-        if counter == 0:
-            print "here"
-            line = cv2.line(frame,(x,y),(x,y),(0,255,0),2)
-            pathArray.append(str(line))
-        else:
-            line = cv2.line(frame,(previousXValue,previousYValue),(x,y),(0,255,0),2)
-            pathArray.append("cv2.line(frame,(%d,%d),(%d,%d),(0,255,0),2)"% (previousXValue, previousYValue, x, y))
-            for line in pathArray:
-              exec line       # This implementation is just terrible, but I wanted to get something working
-                              # There has to be a better way than this
-        counter = 1
+        pathArray.append((previousXValue, previousYValue, x, y))
+        for line in pathArray:
+            oldX,oldY,nextX,nextY = line
+            cv2.line(frame,(oldX,oldY),(nextX,nextY),(0,255,0),4)
         previousXValue = x
         previousYValue = y
-        cv2.imshow('img1',frame)
 
+        cv2.imshow('path',frame)
         k = cv2.waitKey(60) & 0xff
         if k == 27:
             break
-        else:
-            cv2.imwrite(chr(k)+".jpg",frame)
-
     else:
         break
 
