@@ -15,14 +15,15 @@ while(1):
     if ret == True:
 
         output = frame.copy()
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        output = cv2.medianBlur(output,5)
+        gray = cv2.cvtColor(output, cv2.COLOR_BGR2GRAY)
         circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 1.2, 700, minRadius = 40)
         circles = np.round(circles[0, :]).astype("int")
         lastr = 0
         for (x, y, r) in circles:
             nextX = x
             nextY = y
-
         #cv2.circle(output, (x, y), r, (0, 255, 0), 4)
         line = (x, y, x, y) if flag == 0 else (previousXValue, previousYValue, x, y) 
         pathArray.append(line)
