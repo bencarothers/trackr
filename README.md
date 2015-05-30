@@ -10,7 +10,7 @@
 - **trackTest.py**: Tracks a marked location using a hard coded bounding box and
   meanshift
 
+**hough** a merge of hough tracking and meanshift
 
-- **TODO**: Look to the TODO file and merge the trackTest and trackCircle
-  implementation 
+- **TODO**: give the user the ability to confirm the circle and fix the plot 
 
