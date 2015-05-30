@@ -1,0 +1,9 @@
+Use hough circle to detect the circles in the first frame
+
+give the user the ability to confirm if the circle is right area
+
+translate the circle into the search region
+
+use meanshift/camshift to follow the circle
+
+draw the line(find a way better way to do this)
