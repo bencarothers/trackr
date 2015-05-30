@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-formVideo = cv2.VideoCapture('videos/dum.mp4')
+formVideo = cv2.VideoCapture('videos/1rep.mp4')
 pathArray = []
 ret,frame = formVideo.read()
 previousXValue = 100
