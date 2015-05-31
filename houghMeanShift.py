@@ -2,20 +2,22 @@ import matplotlib.pyplot as plt
 import numpy
 import cv2
 
-formVideo = cv2.VideoCapture('../videos/1rep.mp4')
+formVideo = cv2.VideoCapture('videos/1rep.mp4')
 ret,frame = formVideo.read()
 height, width, depth = frame.shape
 
 pathArray = []
 xs = []
 ys = []
+xSub = 0
+ySub = 0
 
-#setting up the first frame to find the initial circle to track
 output = frame.copy()
 output = cv2.medianBlur(output,5)
 gray = cv2.cvtColor(output, cv2.COLOR_BGR2GRAY)
 circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 1.2, 700, minRadius = 40)
 circles = numpy.round(circles[0, :]).astype("int")
+lastr = 0
 
 for (x, y, r) in circles:
     X = x
@@ -24,11 +26,13 @@ for (x, y, r) in circles:
 
 previousXValue = x 
 previousYValue = y 
+xSub = x
+ySub = y
 
-r,h,c,w = Y,1,X,1
+r,h,c,w = Y,10,X,10
 track_window = (c,r,w,h)
 
-# setting up the frame for meanshift
+# set up the ROI for tracking
 roi = frame[r:r+h, c:c+w]
 hsv_roi =  cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 mask = cv2.inRange(hsv_roi, numpy.array((0., 60.,32.)), numpy.array((180.,255.,255.)))
@@ -45,20 +49,18 @@ while(1):
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         dst = cv2.calcBackProject([hsv],[0],roi_hist,[0,180],1)
         ret, track_window = cv2.meanShift(dst, track_window, term_crit)
-        x,y,w,h = track_window
 
+        x,y,w,h = track_window
         pathArray.append((previousXValue, previousYValue, x, y))
-        xs.append(x)
-        ys.append(y)
+        xs.append(x - xSub)
+        ys.append(-1*(y - ySub))
         for line in pathArray:
             oldX,oldY,nextX,nextY = line
-            cv2.line(frame,(oldX+h,oldY+h),(nextX+h,nextY+h),(0,255,0),4)
+            cv2.line(frame,(oldX+h,oldY+h),(nextX+h,nextY+h),(0,255,0),5)
 
         previousXValue = x
         previousYValue = y
-
         cv2.imshow('path',frame)
-
         k = cv2.waitKey(60) & 0xff
         if k == 27:
             break
@@ -67,8 +69,9 @@ while(1):
         break
 
 plt.plot(xs, ys)
-plt.axis([0,width,0,height])
+plt.axis([-width,width,0,max(ys)+30])
 plt.title('Bar Path')
+plt.axvline(0,linestyle='solid')
 plt.show()
 
 cv2.destroyAllWindows()
