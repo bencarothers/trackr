@@ -2,34 +2,31 @@ import matplotlib.pyplot as plt
 import numpy
 import cv2
 
+#Open the video, read the first frame, and get the shape of the window
 formVideo = cv2.VideoCapture('videos/1rep.mp4')
 ret,frame = formVideo.read()
 height, width, depth = frame.shape
 
+# Globals to hold all the points for graphing as well as drawing the path
 pathArray = []
 xs = []
 ys = []
-xSub = 0
-ySub = 0
 
+#Find the initial point to track using houghCircles
 output = frame.copy()
 output = cv2.medianBlur(output,5)
 gray = cv2.cvtColor(output, cv2.COLOR_BGR2GRAY)
 circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 1.2, 700, minRadius = 40)
 circles = numpy.round(circles[0, :]).astype("int")
-lastr = 0
-
-for (x, y, r) in circles:
-    X = x
-    Y = y
-    R = r
+x,y,r = circles[0].tolist()
 
 previousXValue = x 
 previousYValue = y 
 xSub = x
 ySub = y
 
-r,h,c,w = Y,10,X,10
+# a 10 x 10 bounding box around the center of the circle
+r,h,c,w = y+5,10,x-5,10
 track_window = (c,r,w,h)
 
 # set up the ROI for tracking
@@ -45,18 +42,21 @@ while(1):
 
     ret ,frame = formVideo.read()
     if ret == True:
-
+        # alter the frame to allow for accurate meanshift
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         dst = cv2.calcBackProject([hsv],[0],roi_hist,[0,180],1)
         ret, track_window = cv2.meanShift(dst, track_window, term_crit)
 
         x,y,w,h = track_window
+
+        #append for drawing and graphing
         pathArray.append((previousXValue, previousYValue, x, y))
         xs.append(x - xSub)
         ys.append(-1*(y - ySub))
+        # draw
         for line in pathArray:
             oldX,oldY,nextX,nextY = line
-            cv2.line(frame,(oldX+h,oldY+h),(nextX+h,nextY+h),(0,255,0),5)
+            cv2.line(frame,(oldX+h,oldY+h),(nextX+h,nextY+h),(0,255,0),3)
 
         previousXValue = x
         previousYValue = y
