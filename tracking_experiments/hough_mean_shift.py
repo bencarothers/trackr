@@ -3,7 +3,7 @@ import numpy
 import cv2
 
 #Open the video, read the first frame, and get the shape of the window
-formVideo = cv2.VideoCapture('videos/1rep.mp4')
+formVideo = cv2.VideoCapture('videos/deadlift.mp4')
 ret,frame = formVideo.read()
 height, width, depth = frame.shape
 
@@ -20,8 +20,8 @@ circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 1.2, 700, minRadius =
 circles = numpy.round(circles[0, :]).astype("int")
 x,y,r = circles[0].tolist()
 
-previousXValue = x 
-previousYValue = y 
+previousXValue = x
+previousYValue = y
 xSub = x
 ySub = y
 

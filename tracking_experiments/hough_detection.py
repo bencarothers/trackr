@@ -1,7 +1,7 @@
 import numpy
 import cv2
 
-input = cv2.imread("videos/bensPath.jpg")
+input = cv2.imread("videos/deadlift.jpg")
 output = image.copy()
 gray = cv2.cvtColor(input, cv2.COLOR_BGR2GRAY)
 
@@ -16,5 +16,5 @@ if circles is not None:
         # draw a circle for each found
         cv2.circle(output, (x, y), r, (0, 255, 0), 4)
 
-cv2.imwrite("images/plateFound.png",output) 
+cv2.imwrite("images/plate_found.png",output)
 

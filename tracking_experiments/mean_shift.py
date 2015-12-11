@@ -1,7 +1,7 @@
 import numpy
 import cv2
 
-formVideo = cv2.VideoCapture('videos/1rep.mp4')
+formVideo = cv2.VideoCapture('videos/deadlift.mp4')
 ret,frame = formVideo.read()
 pathArray = []
 
@@ -9,7 +9,7 @@ r,h,c,w = 440,20,100,20
 track_window = (c,r,w,h)
 
 previousXValue = 100
-previousYValue = 440 
+previousYValue = 440
 
 roi = frame[r:r+h, c:c+w]
 hsv_roi =  cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
