@@ -2,7 +2,6 @@ require.config({
   paths: {
     react: '../libraries/react/react',
     jquery: '../libraries/jquery/dist/jquery.min',
-    lodash: '../libraries/lodash/dist/lodash.min',
     bootstrap: '../libraries/bootstrap/dist/js/bootstrap.min'
   },
 
@@ -15,10 +14,6 @@ require.config({
       exports: '$'
     },
 
-    lodash: {
-      exports: '_'
-    },
-
     bootstrap: {
       deps: ['jquery']
     }
@@ -27,11 +22,12 @@ require.config({
 
 require([
   'react',
-  'components/Demo',
+  'components/App',
   'jquery',
-  'lodash',
   'bootstrap'
   ],
-function(React, Demo) {
-  React.renderComponent(Demo(), document.getElementById('app'));
+
+
+function(React, App) {
+  React.render(<App/>, document.getElementById('app'));
 });
