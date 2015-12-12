@@ -21,8 +21,8 @@ setup(name='Trackr',
             'Werkzeug==0.9.6',
             'itsdangerous==0.24',
             'requests==2.4.1',
-            'wsgiref==0.1.2'
-            #opencv=
-            #matplotlib=0
+            'wsgiref==0.1.2',
+            'cv2==1.0',
+            'matplotlib==1.5.0'
           ],
       )

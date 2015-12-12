@@ -28,6 +28,7 @@ server/assets/libraries
 #Python
 *.py[co]
 *.DS_*
+
 # Packages
 *.egg
 *.egg-info
@@ -38,6 +39,8 @@ parts
 bin
 var
 sdist
+server/static/js
+server/static/libraries
 develop-eggs
 .installed.cfg
 

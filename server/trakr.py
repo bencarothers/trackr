@@ -16,12 +16,12 @@ def index():
 # We could also try eve
 # Delete if we decide against it
 
-# @app.route('/api/<path:path>', methods=['GET'])
-# def api(path):
-#     clientToken = ''
-#     clientSecret = ''
-#     baseUrl = 'https://suggestqueries.google.com'
-#     accessToken = ''
+@app.route('/api/<path:path>', methods=['GET'])
+def api(path):
+    clientToken = ''
+    clientSecret = ''
+    baseUrl = 'https://suggestqueries.google.com'
+    accessToken = ''
 
 #      Authentication
 
@@ -31,12 +31,12 @@ def index():
 #          access_token = accessToken
 #      )
 
-#     r = requests.get(urljoin(baseUrl, path), params=request.args)
+    r = requests.get(urljoin(baseUrl, path), params=request.args)
 
-#     if r.status_code != requests.codes.ok:
-#         return None
+    if r.status_code != requests.codes.ok:
+        return None
 
-#     return Response(r.content,  mimetype='application/json')
+    return Response(r.content,  mimetype='application/json')
 
 if __name__ == "__main__":
     app.run(debug=True)
