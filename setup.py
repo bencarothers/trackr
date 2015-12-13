@@ -5,13 +5,14 @@ try:
 except ImportError:
     from distutils.core import setup
 
-setup(name='Trackr',
+setup(name='trackr',
       version='0.0.1',
       long_description=open('README.md').read(),
-      authors=['Ben Carothers','Shane Caldwell'],
+      authors=['Ben Carothers', 'Shane Caldwell'],
       author_email='benjamin.carothers13@ncf.edu',
       url='https://github.com/bencarothers/trackr',
-      packages=['server'],
+      packages=['server', 'server.tests'],
+      test_suite="server.tests",
       install_requires=[
             'coverage>=3.3',
             'nose>=1.0',

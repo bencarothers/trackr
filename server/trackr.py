@@ -1,27 +1,28 @@
-import requests
-import os
-import json
-
-from flask import Flask, Response, request, session, g, redirect, url_for, abort, render_template, flash
-from urlparse import urljoin
+# import requests
+# import os
+# import json
+import flask
+from flask import Flask
+# from urlparse import urljoin
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return flask.render_template('index.html')
 
 
 # Could be used if we want to use a restful api
 # We could also try eve
 # Delete if we decide against it
 
-@app.route('/api/<path:path>', methods=['GET'])
-def api(path):
-    clientToken = ''
-    clientSecret = ''
-    baseUrl = 'https://suggestqueries.google.com'
-    accessToken = ''
+# @app.route('/api/<path:path>', methods=['GET'])
+# def api(path):
+#     clientToken = ''
+#     clientSecret = ''
+#     baseUrl = 'https://suggestqueries.google.com'
+#     accessToken = ''
 
 #      Authentication
 
@@ -31,12 +32,12 @@ def api(path):
 #          access_token = accessToken
 #      )
 
-    r = requests.get(urljoin(baseUrl, path), params=request.args)
+#     r = flask.requests.get(urljoin(baseUrl, path), params=request.args)
 
-    if r.status_code != requests.codes.ok:
-        return None
+#     if r.status_code != requests.codes.ok:
+#         return None
 
-    return Response(r.content,  mimetype='application/json')
+#     return flask.Response(r.content,  mimetype='application/json')
 
 if __name__ == "__main__":
     app.run(debug=True)
