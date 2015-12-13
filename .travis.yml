@@ -4,8 +4,7 @@ python:
 
 install:
     - pip install coveralls
-
-script: echo "test"
+    - python setup.py install
 
 after_success:
       coveralls
