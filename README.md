@@ -13,17 +13,17 @@
     - Python version is ```2.7.9```
     - Once activated run ```python setup.py install```
     - This will take care of all of the Python dependencies
-* With Bower installed run ```bower install from the root directory
+* With Bower installed run ```bower install``` from the root directory of the project
     - Front-end dependencies will be installed in ```static/libraries```
-* Once you have the babel-cli React tools run ```jsx /server/static/jsx /server/static/js```
+* Once you have the babel-cli React tools run ```jsx server/static/jsx server/static/js```
     - This converts your files written in React JSX to browser readable JS
 
 ### Running the site
 ```python server/trackr.py```
 
 ### Components
-* RequireJs
-    - Used to deal with dependencies required throughout all of the jS files
+* RequireJS
+    - Used to deal with dependencies required throughout all of the JS files
 * React 
     - Javascript methodology of componentizing JS and HTML into a single file
 * Jquery
