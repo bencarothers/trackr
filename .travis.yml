@@ -5,7 +5,7 @@ python:
 install:
     - pip install coveralls
 
-script: 
+script: echo "test"
 
 after_success:
       coveralls
