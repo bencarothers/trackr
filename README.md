@@ -29,7 +29,7 @@
 * Jquery
     - DOM manipulation
 * Bootstrap
-    _ Stylistic and box model standardization 
+    - Stylistic and box model standardization 
 * Flask
     - Nice lil extensible WSGI server
 
