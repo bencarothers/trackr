@@ -2,6 +2,7 @@
 *.diff
 *.err
 *.orig
+*.rope
 *.log
 *.rej
 *.swo
@@ -19,13 +20,13 @@
 .tmproj
 tags
 
-# Bower stuff.
+# Bower stuff
 server/assets/libraries
 
-# DotEnv
+# Pyenv 
 .env
 
-#Python
+# Python
 *.py[co]
 *.DS_*
 
@@ -51,6 +52,5 @@ pip-log.txt
 .coverage
 .tox
 
-*.rope
 
 
