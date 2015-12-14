@@ -1,21 +1,10 @@
-
 import React from 'react';
-import RaisedButton from 'material-ui/lib/raised-button';
-import Dialog from 'material-ui/lib/dialog';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme';
 import Colors from 'material-ui/lib/styles/colors';
-
-const containerStyle = {
-  textAlign: 'center',
-  paddingTop: 200,
-};
-
-const standardActions = [
-  {
-    text: 'Okay',
-  },
-];
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import Nav from './nav'
+import Lift from './liftcard'
 
 const Main = React.createClass({
 
@@ -43,32 +32,12 @@ const Main = React.createClass({
     this.setState({muiTheme: newMuiTheme});
   },
 
-  _handleRequestClose() {
-    this.setState({
-      open: false,
-    });
-  },
-
-  _handleTouchTap() {
-    this.setState({
-      open: true,
-    });
-  },
-
   render() {
     return (
-      <div style={containerStyle}>
-        <Dialog
-          open={this.state.open}
-          title="Super Secret Password"
-          actions={standardActions}
-          onRequestClose={this._handleRequestClose}
-        >
-          1-2-3-4-5
-        </Dialog>
-        <h1>Trackr</h1>
-        <h2>We're Learning So Many New Tools</h2>
-        <RaisedButton label="The Process Might Be Painful" primary={true} onTouchTap={this._handleTouchTap} />
+      <div>
+        <Nav/>
+        <Lift/>
+        <Lift/>
       </div>
     );
   },
