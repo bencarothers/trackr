@@ -21,7 +21,12 @@
 tags
 
 # Bower stuff
-server/assets/libraries
+server/static/lib
+
+# npm
+node_modules
+./server/static/node_modules
+
 
 # Pyenv 
 .env
