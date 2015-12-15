@@ -7,8 +7,10 @@
 
 ### Required Tools
 
-* Bower (Gathering JS dependencies)
-* React-tools (Converting JSX => JS)
+* Bower for gathering front-end packages 
+* Npm for gathering node packages
+* Pip for Python Packages
+* Webpack for converting JSX
 
 ### Installation
 
@@ -18,15 +20,14 @@
     - This will take care of all of the Python dependencies
 * With Bower installed run ```bower install``` from the root directory of the project
     - Front-end dependencies will be installed in ```static/libraries```
-* Once you have the babel-cli React tools run ```jsx server/static/jsx server/static/js```
-    - This converts your files written in React JSX to browser readable JS
+* Run ```npm install``` Node packages will be installed in the project root
+    - Optionally link ```ln -s node_modules ./server/static/```
+* In the project root run ```webpack --config webpack.js``` to convert the js
 
 ### Running the site
 ```python server/trackr.py```
 
 ### Components
-* RequireJS
-    - Used to deal with dependencies required throughout all of the JS files
 * React 
     - Javascript methodology of componentizing JS and HTML into a single file
 * Jquery

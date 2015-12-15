@@ -24,6 +24,8 @@ setup(name='trackr',
             'requests==2.4.1',
             'wsgiref==0.1.2',
             'cv2==1.0',
+            'mongoengine==0.10.5',
+            'flask-mongoengine==0.7.4',
             'matplotlib==1.5.0'
           ],
       )
