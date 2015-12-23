@@ -27,6 +27,7 @@ setup(name='trackr',
             'cv2==1.0',
             'mongoengine==0.10.5',
             'flask-mongoengine==0.7.4',
-            'matplotlib==1.5.0'
+            'Flask-SuperAdmin==1.7.1',
+            # 'matplotlib==1.5.0'
           ],
       )
