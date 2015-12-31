@@ -6,6 +6,12 @@
   </head>
   <body>
     <div id='app'></div>
+    <p>Click <a href="/login">here</a> to login!</p>
+    <p>If you're logged in already, click  <a href="/login">here</a> to logout.</p>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
+
   </body>
     <script src="../static/js/main.js" defer></script>
 </html>

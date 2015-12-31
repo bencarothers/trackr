@@ -1,8 +1,8 @@
 import flask
-from flask import redirect, url_for, request
+from flask import redirect, url_for, request, session
 import requests
 from flask import Flask
-from functools import wraps 
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -10,11 +10,23 @@ app.secret_key = "oath"
 
 task = {"do you": "work"}
 
+#Decorator for logging in
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flask.flash('You need to login first.')
+            return redirect(url_for('login'))
+    return wrap
+
 @app.route("/")
 def index():
 	return flask.render_template('index.html')
 
 @app.route("/secret")
+@login_required
 def secret():
 	return flask.render_template('secret.html')
 
@@ -31,10 +43,11 @@ def login():
 	return flask.render_template('login.html', error = error)
 
 @app.route('/logout')
+@login_required
 def logout():
 	session.pop('logged_in', None)
 	flask.flash("You were just logged in!")
-	return redirect(url_for('welcome'))
+	return redirect(url_for('index'))
 
 @app.route("/api_test")
 def create_task():
