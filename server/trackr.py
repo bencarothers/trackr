@@ -5,12 +5,10 @@ from flask import Flask
 from functools import wraps 
 
 app = Flask(__name__)
-task = {"do you": "work"}
 
-def check_auth(username, password):
-	'''This function is called to see if username/password
-	combination is valid'''
-	return username == 'shane' and password == 'best'
+app.secret_key = "oath"
+
+task = {"do you": "work"}
 
 @app.route("/")
 def index():
@@ -27,10 +25,16 @@ def login():
 		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
 			error = "Invalid credentials. Please try again"
 		else:
+			session['logged_in'] = True 
+			flask.flash('You were just logged in!')
 			return redirect(url_for('secret'))
 	return flask.render_template('login.html', error = error)
 
-
+@app.route('/logout')
+def logout():
+	session.pop('logged_in', None)
+	flask.flash("You were just logged in!")
+	return redirect(url_for('welcome'))
 
 @app.route("/api_test")
 def create_task():
