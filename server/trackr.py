@@ -4,8 +4,7 @@ import requests
 from flask import Flask
 from functools import wraps
 from flask.ext.mongoengine import MongoEngine
-from models.models import * 
-
+from util import models
 app = Flask(__name__)
 
 app.config["MONGODB_SETTINGS"] = {'DB' : 'trackr_users'}
