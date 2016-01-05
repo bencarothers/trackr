@@ -3,12 +3,22 @@ from flask import redirect, url_for, request, session
 import requests
 from flask import Flask
 from functools import wraps
+from flask.ext.mongoengine import MongoEngine
+from models.models import * 
 
 app = Flask(__name__)
 
-app.secret_key = "oath"
+app.config["MONGODB_SETTINGS"] = {'DB' : 'trackr_users'}
+app.config["SECRET_KEY"] = "master_guardian"
 
-task = {"do you": "work"}
+db = MongoEngine(app)
+
+user = models.User(
+	username = "SJCaldwell",
+	password = "sekret",
+	email = "cmon@lol.com")
+user.save()
+
 
 #Decorator for logging in
 def login_required(f):
@@ -42,11 +52,30 @@ def login():
 			return redirect(url_for('secret'))
 	return flask.render_template('login.html', error = error)
 
+@app.route('/register', methods = ['GET', 'POST'])
+def register():
+	error = None
+	if request.method == 'POST':
+		if request.form['username'] == '' or request.form['password'] == '':
+			error = "Please fill out the whole form"
+		else:
+			print '\nmaking user object...'
+			user = User(
+				username = request.form['username'],
+				password = request.form['password'],
+				email = request.form['email']
+			)
+			print 'user object is made... now trying to save it'
+			db.save(user)
+			flask.flash('You were just registered! Use these credentials to login!')
+			return redirect(url('login'))
+	return flask.render_template('register.html', error = error)
+
 @app.route('/logout')
 @login_required
 def logout():
 	session.pop('logged_in', None)
-	flask.flash("You were just logged in!")
+	flask.flash("You were just logged out!")
 	return redirect(url_for('index'))
 
 @app.route("/api_test")
