@@ -1,10 +1,11 @@
 import React from 'react';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
-import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme';
+import DarkRawTheme from 'material-ui/lib/styles/raw-themes/dark-raw-theme';
 import Colors from 'material-ui/lib/styles/colors';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import Nav from './nav'
-import Lift from './liftcard'
+import Nav from './left_nav'
+import Add from './add_video'
+import Lift from './lift_card'
 
 const Main = React.createClass({
 
@@ -14,7 +15,7 @@ const Main = React.createClass({
 
   getInitialState() {
     return {
-      muiTheme: ThemeManager.getMuiTheme(LightRawTheme),
+      muiTheme: ThemeManager.getMuiTheme(DarkRawTheme),
     };
   },
 
@@ -36,8 +37,7 @@ const Main = React.createClass({
     return (
       <div>
         <Nav/>
-        <Lift/>
-        <Lift/>
+        <Add/>
       </div>
     );
   },
