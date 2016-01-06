@@ -5,6 +5,7 @@ from flask import Flask
 from functools import wraps
 from flask import Blueprint
 from server.models import User
+from authenticator import Authenticator
 
 trackr_api = Blueprint('trackr_api', __name__)
 
@@ -47,14 +48,22 @@ def register():
 		if request.form['username'] == '' or request.form['password'] == '' or request.form['email'] == '':
 			error = "Please fill out the whole form"
 		else:
-			user = User(
+			authenticator = Authenticator(
 				username = request.form['username'],
 				password = request.form['password'],
 				email = request.form['email']
 			)
-			user.save()
-			flask.flash('You were just registered! Use these credentials to login!')
-			return redirect(url_for('.login'))
+			if authenticator.validForm():
+				user = User(
+					username = validator.username,
+					password = validator.password,
+					email = validator.email
+					)
+				user.save()
+				flask.flash('You were just registered! Use these credentials to login!')
+				return redirect(url_for('.login'))
+			else:
+				error = authenticator.error
 	return flask.render_template('register.html', error = error)
 
 @trackr_api.route('/logout')
