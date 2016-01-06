@@ -44,7 +44,7 @@ def login():
 def register():
 	error = None
 	if request.method == 'POST':
-		if request.form['username'] == '' or request.form['password'] == '':
+		if request.form['username'] == '' or request.form['password'] == '' or request.form['email'] == '':
 			error = "Please fill out the whole form"
 		else:
 			user = User(
