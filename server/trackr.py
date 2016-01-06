@@ -56,7 +56,7 @@ def register():
 			print 'user object is made... now trying to save it'
 			user.save()
 			flask.flash('You were just registered! Use these credentials to login!')
-			return redirect(url('login'))
+			return redirect(url_for('login'))
 	return flask.render_template('register.html', error = error)
 
 @trackr_api.route('/logout')
