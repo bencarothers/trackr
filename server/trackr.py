@@ -33,12 +33,23 @@ def secret():
 def login():
 	error = None
 	if request.method == 'POST':
-		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-			error = "Invalid credentials. Please try again"
+		if request.form['username'] == '' or request.form['password'] == '':
+			error = "Please fill out the whole form"
 		else:
-			session['logged_in'] = True 
-			flask.flash('You were just logged in!')
-			return redirect(url_for('.secret'))
+			#try login
+			print 'logging in is trying i think\n'
+			authenticator = Authenticator(
+				username = request.form['username'],
+				password = request.form['password']
+				)
+			if authenticator.validLogin():
+				session['logged_in'] = True 
+				flask.flash('You were just logged in!')
+				return redirect(url_for('.secret'))
+			else:
+				error = authenticator.error
+				print 'trying to return login page ith error.'
+				return flask.render_template('login.html', error = error)
 	return flask.render_template('login.html', error = error)
 
 @trackr_api.route('/register', methods = ['GET', 'POST'])

@@ -2,11 +2,11 @@ from server.models import User
 
 class Authenticator:
 
-	def __init__(self, username, password, email):
+	def __init__(self, username, password, email = None):
 		self.username = username
 		self.password = password
 		self.email = email
-		self.error = ""
+		self.error = None
 
 	def checkUnique(self, entry, field):
 		exists = User.objects.filter(**{field : entry})
@@ -26,9 +26,19 @@ class Authenticator:
 			self.error = "It appears you already registered before!"
 			return False
 		if self.checkUnique(self.username, "username"):
-			self.error = "This username is taken. Please try again"
+			self.error = "This username is taken. Please try a new one"
 			return False
 		if self.checkUnique(self.email, "email"):
-			self.error = "This email was already registed with.\nPlease login with the account you have!"
+			self.error = "This email was already registed with. Please login with the account you have!"
 			return False
-		return True 
+		return True
+
+		#cursor = db.restaurants.find({"cuisine": "Italian", "address.zipcode": "10075"})
+	def validLogin(self):
+		real_user = User.objects.filter(**{"username" : self.username, "password" : self.password})
+		if real_user:
+			return True
+		else:
+			self.error = "Incorrect password. Try again!"
+			return False
+
