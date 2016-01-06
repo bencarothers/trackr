@@ -16,7 +16,7 @@ def login_required(f):
             return f(*args, **kwargs)
         else:
             flask.flash('You need to login first.')
-            return redirect(url_for('login'))
+            return redirect(url_for('.login'))
     return wrap
 
 @trackr_api.route("/")
@@ -37,7 +37,7 @@ def login():
 		else:
 			session['logged_in'] = True 
 			flask.flash('You were just logged in!')
-			return redirect(url_for('secret'))
+			return redirect(url_for('.secret'))
 	return flask.render_template('login.html', error = error)
 
 @trackr_api.route('/register', methods = ['GET', 'POST'])
@@ -47,16 +47,14 @@ def register():
 		if request.form['username'] == '' or request.form['password'] == '':
 			error = "Please fill out the whole form"
 		else:
-			print '\nmaking user object...'
 			user = User(
 				username = request.form['username'],
 				password = request.form['password'],
 				email = request.form['email']
 			)
-			print 'user object is made... now trying to save it'
 			user.save()
 			flask.flash('You were just registered! Use these credentials to login!')
-			return redirect(url_for('login'))
+			return redirect(url_for('.login'))
 	return flask.render_template('register.html', error = error)
 
 @trackr_api.route('/logout')
@@ -64,7 +62,7 @@ def register():
 def logout():
 	session.pop('logged_in', None)
 	flask.flash("You were just logged out!")
-	return redirect(url_for('index'))
+	return redirect(url_for('.index'))
 
 @trackr_api.route("/api_test")
 def create_task():
