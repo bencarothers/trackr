@@ -56,11 +56,10 @@ const gridListStyle = {width: '100%', height: '90%', overflowY: 'auto', marginBo
 
 const GridListExampleSimple = () => (
   <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-    {/* Basic grid list with mostly default options */}
     <GridList
       cellHeight={400}
       style={gridListStyle}
-      >
+    >
       {tileElements}
     </GridList>
   </div>
