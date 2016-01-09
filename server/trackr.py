@@ -107,6 +107,8 @@ def oauth_callback(provider):
     nickname = username
     if nickname is None or nickname == "":
     	nickname = email.split('@')[0]
+    return redirect(url_for('.index'))
+
 
 @trackr_api.route("/api_test")
 def create_task():
