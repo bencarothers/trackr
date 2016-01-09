@@ -21,6 +21,12 @@ class Authenticator:
 		else:
 			return False
 
+	def existingUsername(self, username):
+		if not self.checkUnique(username, "username"):
+			return True
+		else:
+			return False
+
 	def validForm(self):
 		if self.existingUser(self.username, self.email):
 			self.error = "It appears you already registered before!"
@@ -33,12 +39,15 @@ class Authenticator:
 			return False
 		return True
 
-		#cursor = db.restaurants.find({"cuisine": "Italian", "address.zipcode": "10075"})
 	def validLogin(self):
 		real_user = User.objects.filter(**{"username" : self.username, "password" : self.password})
 		if real_user:
 			return True
 		else:
-			self.error = "Incorrect password. Try again!"
-			return False
+			if self.existingUsername(self.username):
+				self.error = "Incorrect password. Try again!"
+				return False
+			else:
+				self.error = "Account name unrecognized. Try again!"
+				return False
 

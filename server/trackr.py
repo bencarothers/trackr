@@ -91,3 +91,6 @@ def create_task():
         return
     return r._content
 
+@trackr_api.route("/fuck")
+def fuck():
+	return redirect(url_for('index'))
