@@ -17,4 +17,8 @@ class DevelopmentConfig(Config):
 	'id' : GOOGLE_LOGIN_CLIENT_ID,
 	'secret' : GOOGLE_LOGIN_CLIENT_SECRET
 	}
+	
+	MONGODB_SETTINGS = {'DB' : 'trackr_users'}
+	SECRET_KEY = "master_guardian"
+
 }
