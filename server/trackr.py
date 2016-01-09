@@ -8,7 +8,7 @@ from server.models import User
 from authenticator import Authenticator
 
 from flask.ext.login import login_user, logout_user, current_user, login_required
-
+from Oauth import OAuthSignIn
 
 trackr_api = Blueprint('trackr_api', __name__)
 
@@ -102,7 +102,7 @@ def oauth_callback(provider):
     username, email = oauth.callback()
     if email is None:
         # I need a valid email address for my user identification
-        flash('Authentication failed.')
+        flask.flash('Authentication failed.')
         return redirect(url_for('.index'))
     nickname = username
     if nickname is None or nickname == "":
