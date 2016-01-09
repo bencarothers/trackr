@@ -8,8 +8,6 @@ def register_blueprints(app):
 app = Flask(__name__)
 app.config.from_object('server.config:DevelopmentConfig')
 #Set settings for mongoDB
-app.config["MONGODB_SETTINGS"] = {'DB' : 'trackr_users'}
-app.config["SECRET_KEY"] = "master_guardian"
 db = MongoEngine(app)
 
 #Register with any blueprints

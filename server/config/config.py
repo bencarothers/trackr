@@ -11,14 +11,13 @@ class DevelopmentConfig(Config):
 
 	GOOGLE_LOGIN_CLIENT_ID = "541027712243-n65afuob9r897r4nul26h8jm0rh9c1nc.apps.googleusercontent.com"
 	GOOGLE_LOGIN_CLIENT_SECRET = "Xi1lFHp29YGTitiqD7kKWRIn"
-
 	OAUTH_CREDENTIALS = {
 	'google' : {
 	'id' : GOOGLE_LOGIN_CLIENT_ID,
 	'secret' : GOOGLE_LOGIN_CLIENT_SECRET
+			}
 	}
 	
 	MONGODB_SETTINGS = {'DB' : 'trackr_users'}
 	SECRET_KEY = "master_guardian"
 
-}
