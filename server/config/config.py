@@ -20,4 +20,3 @@ class DevelopmentConfig(Config):
 	
 	MONGODB_SETTINGS = {'DB' : 'trackr_users'}
 	SECRET_KEY = "master_guardian"
-

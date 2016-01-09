@@ -7,6 +7,9 @@ from flask import Blueprint
 from server.models import User
 from authenticator import Authenticator
 
+from flask.ext.login import login_user, logout_user, current_user, login_required
+
+
 trackr_api = Blueprint('trackr_api', __name__)
 
 #Decorator for logging in
@@ -36,8 +39,6 @@ def login():
 		if request.form['username'] == '' or request.form['password'] == '':
 			error = "Please fill out the whole form"
 		else:
-			#try login
-			print 'logging in is trying i think\n'
 			authenticator = Authenticator(
 				username = request.form['username'],
 				password = request.form['password']
@@ -84,13 +85,32 @@ def logout():
 	flask.flash("You were just logged out!")
 	return redirect(url_for('.index'))
 
+@trackr_api.route("/google_login", methods = ['GET','POST'])
+def google_login():
+	return flask.render_template('google_login.html',
+								title = "Sign In")
+
+@trackr_api.route('/authorize/<provider>')
+def oauth_authorize(provider):
+    # Flask-Login function
+    oauth = OAuthSignIn.get_provider(provider)
+    return oauth.authorize()
+
+@trackr_api.route('/callback/<provider>')
+def oauth_callback(provider):
+    oauth = OAuthSignIn.get_provider(provider)
+    username, email = oauth.callback()
+    if email is None:
+        # I need a valid email address for my user identification
+        flash('Authentication failed.')
+        return redirect(url_for('.index'))
+    nickname = username
+    if nickname is None or nickname == "":
+    	nickname = email.split('@')[0]
+
 @trackr_api.route("/api_test")
 def create_task():
     r = requests.get("http://127.0.0.1:8000/User")
     if r.status_code != 200:
         return
     return r._content
-
-@trackr_api.route("/fuck")
-def fuck():
-	return redirect(url_for('index'))
