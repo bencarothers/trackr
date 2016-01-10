@@ -15,10 +15,14 @@
           request.form.password }}">
         <input class="btn btn-default" type="submit" value="Login">
       </form>
-      <a href = "/google_login">Click here to go to google login</a>
+        <div id="sign-in">
+        <p>
+        <a href={{ url_for('.oauth_authorize', provider='google') }}><img src="static/img/sign-in-with-google.png"/></a>
+        </p>
+  </div>
       <br>
+      <a href = "/register">Click here to register with Trackr.</a>
       <br>
-      <a href = "/register">I want a seperate Trackr Account.</a>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
       {% endif %}
