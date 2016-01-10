@@ -34,13 +34,12 @@ class User(db.Document):
     def __unicode__(self):
         return self.username
 
-
 class getUser(restful.Resource):
 
     def get(self, user_id=None, user_email=None):
-        users = User.objects.all()
-        if users:
-            return jsonify({"status": "ok", "data": users[0]})
+        user = User.objects.filter(**{"user_id" : user_id}).first()
+        if user:
+            return jsonify({"status": "ok", "data": user})
         else:
             return {"response": "no user found for {}".format(user_id)}
 
@@ -60,12 +59,25 @@ class postUser(restful.Resource):
             if id:
                 User(user_id=id,user_email=email).save()
             else:
-                return {"response": "registration number missing"}
+                return jsonify({"response": "registration number missing"})
+
+class deleteUser(restful.Resource):
+    def delete(self, user_id = None):
+        if user_id is None:
+            return jsonify({"response" : "ERROR"})
+        else:
+            user = User.objects.filter(**{"user_id" : user_id}).first()
+            if user is None:
+                return jsonify({"response" : "no user with this id"})
+            else:
+                Users.delete(user)
+
 
 api = restful.Api(app)
 api.representations = DEFAULT_REPRESENTATIONS
 api.add_resource(getUser, '/User')
 api.add_resource(postUser, '/Add')
+api.add_resource(deleteUser, '/delete')
 
 if __name__ == "__main__":
     admin = Admin(app, 'Simple Models')

@@ -88,11 +88,6 @@ def logout():
     flask.flash("You were just logged out!")
     return redirect(url_for('.index'))
 
-@trackr_api.route("/google_login", methods = ['GET','POST'])
-def google_login():
-    return flask.render_template('google_login.html',
-                                title = "Sign In")
-
 @trackr_api.route('/authorize/<provider>')
 def oauth_authorize(provider):
     # Flask-Login function
