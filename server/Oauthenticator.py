@@ -1,5 +1,3 @@
-from server.models import User
-
 class OAuthenticator:
 	#Is this from Google, facebook, or Twitter?
 	def __init__(self, username, email, provider):
@@ -8,7 +6,10 @@ class OAuthenticator:
 		self.provider = provider
 
 	def checkUnique(self, entry, field):
-		exists = User.objects.filter(**{field : entry})
+		"""
+		TODO: EDIT THIS COMMENTED OUT LINE TO QUERY TRACKR API AS OPOSSED TO HAVING A DIRECT TIE TO THE DATABASE
+		"""
+#		exists = User.objects.filter(**{field : entry})
 		if exists:
 			return False
 		else:

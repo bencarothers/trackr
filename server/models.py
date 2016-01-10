@@ -5,7 +5,7 @@ class User(db.Document):
     username = db.StringField(max_length = 40, required = True)
     password = db.StringField(max_length = 40, required = False)
     email = db.StringField(max_length = 40, required = True)
-    provider = db.StringField(max_length = 20, required = False)
+    provider = db.StringField(max_length = 20, required = True)
 
     meta = {
         'allow_inheritance': True,

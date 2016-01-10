@@ -1,5 +1,3 @@
-from server.models import User
-
 class Authenticator:
 
 	def __init__(self, username, password = None, email = None):
@@ -9,7 +7,10 @@ class Authenticator:
 		self.error = None
 
 	def checkUnique(self, entry, field):
-		exists = User.objects.filter(**{field : entry})
+		"""
+		TODO: EDIT THIS COMMENTED LINE TO QUERY TRACKR API AS OPOSSED TO HAVING A DIRECT TIE TO THE DATABASE
+		"""
+		#exists = User.objects.filter(**{field : entry})
 		if exists:
 			return False
 		else:
@@ -40,7 +41,10 @@ class Authenticator:
 		return True
 
 	def validLogin(self):
-		real_user = User.objects.filter(**{"username" : self.username, "password" : self.password})
+		"""
+		TODO: EDIT THIS COMMENTED LINE TO QUERY TRACKR API AS OPOSSED TO HAVING A DIRECT TIE TO THE DATABASE
+		"""
+		#real_user = User.objects.filter(**{"username" : self.username, "password" : self.password})
 		if real_user:
 			return True
 		else:
