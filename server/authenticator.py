@@ -2,7 +2,7 @@ from server.models import User
 
 class Authenticator:
 
-	def __init__(self, username, password, email = None):
+	def __init__(self, username, password = None, email = None):
 		self.username = username
 		self.password = password
 		self.email = email
