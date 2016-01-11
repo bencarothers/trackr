@@ -2,8 +2,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Main from './components/main'; //
+import Main from './components/main'; 
+import Registration from './components/Registration';
 
-injectTapEventPlugin();
-
-ReactDOM.render(<Main />, document.getElementById('app'));
+window.onload = function() {
+  React.render(
+    <Registration />,
+    document.getElementById('registration-form')
+  )
+}

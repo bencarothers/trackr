@@ -1,3 +1,8 @@
+var React         = require('react')
+var AccountFields = require('./AccountFields')
+var Confirmation  = require('./Confirmation')
+var Success       = require('./Success')
+
 
 var fieldValues = {
   username     : null,
@@ -5,35 +10,17 @@ var fieldValues = {
   password : null
 }
 
-var React         = require('react')
-var AccountFields = require('./AccountFields')
-var Confirmation  = require('./Cofnrimation')
-var Success       = require('./Success')
-
 var Registration = React.createClass({
 	getInitialState: function(){
 		return{
 			step: 1
 		}
-	}
-  },
+	},
 
-  render: function(){
-  	switch(this.state.step){
-  		case 1:
-  		    return<AccountFields/>
-  		case 2:
-  		    return<Success/>
-  		}
-
-  	}
-  }
-  module.exports = Registration
-
-saveValues: function(fields){
+saveValues: function(field_value){
   return function(){
-    fieldValues = object.assign({}, fieldValues, fields)
-  }()
+    fieldValues = assign({}, fieldValues, field_value)
+  }.bind(this)()
 },
 
 nextStep: function(){
@@ -48,7 +35,7 @@ previousStep: function(){
   })
 },
 
-render: function(){
+showStep: function(){
   switch(this.state.step){
     case 1:
       return <AccountFields fieldValues={fieldValues}
@@ -61,4 +48,21 @@ render: function(){
     case 3:
       return <Success fieldValues={fieldValues}/>                    
   }
+},
+
+render: function(){
+  var style = {
+    width : (this.state.step / 3 * 100) + '%'
+  }
+
+  return(
+    <main>
+      <span className = "progress-step">Step {this.state.step}</span>
+      <progress className="progress" style={style}></progress>
+      {this.showStep()}
+    </main>
+    )
 }
+})
+
+module.exports = Registration

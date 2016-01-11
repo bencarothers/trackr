@@ -4,8 +4,6 @@ import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme'
 import Colors from 'material-ui/lib/styles/colors';
 import MenuItem from 'material-ui/lib/menus/menu-item'
 
-var React = require('react')
-
 var AccountFields = React.createClass({
 	render: function(){
 		return(
