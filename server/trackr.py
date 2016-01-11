@@ -1,3 +1,4 @@
+import flask
 from flask import Flask
 import requests
 from flask import current_app
@@ -21,8 +22,9 @@ def user_loader(user_id):
     """
     print "user id is: " + str(user_id) + "\n"
     #Make request to server to get user
-    user = User.objects.filter(**{"username" : user_id}).first()
+    #user = User.objects.filter(**{"username" : user_id}).first()
     #confirm I got a user object
+    user = 'lol'
     return user
     
 @app.route("/")
@@ -48,7 +50,6 @@ def secret():
 ###AUTHENTICATION: DO WE WANT THIS ALL IN A SEPERATE FILE?
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
-    from __init__ import login_manager, user_loader
     error = None
     if request.method == 'POST':
         if request.form['username'] == '' or request.form['password'] == '':
