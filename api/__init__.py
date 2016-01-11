@@ -49,16 +49,21 @@ class postUser(restful.Resource):
 
     def post(self):
         data = request.get_json()
+        print 'get'
         if not data:
             data = {"response": "ERROR"}
-            return Flask.jsonify(data)
+            return jsonify(data)
         else:
             id = data.get('user_id')
             print id
-            print data
             email = data.get('email')
+            print email
+            password = data.get('password')
+            print password
+            provider = data.get('provider')
+            print provider
             if id:
-                User(user_id=id,user_email=email).save()
+                User(user_id=id, password = password,user_email=email, provider = provider).save()
             else:
                 return jsonify({"response": "registration number missing"})
 

@@ -9,6 +9,8 @@ from Oauthenticator import OAuthenticator
 from functools import wraps
 from flask.ext.login import login_user, logout_user, current_user, LoginManager
 from Oauth import OAuthSignIn
+from flask import jsonify
+
 
 app = Flask(__name__)
 app.config.from_object('config:DevelopmentConfig')
@@ -144,12 +146,21 @@ def oauth_callback(provider):
         return redirect(url_for('.secret'))
 
 
-@app.route("/api_test")
-def create_task():
-    r = requests.get("http://127.0.0.1:8000/User")
+@app.route("/api_post")
+def post_user():
+    payload = {'user_id': 'SJCaldwell', 'password': 'alice', 'email': 'shane.caldwell12@ncf.edu', 'provider': 'Trackr'}
+    r = requests.post("http://127.0.0.1:8000/Add", json= payload)
     if r.status_code != 200:
-        return
+        return "Wrong format"
     return r._content
+
+@app.route("/api_get")
+def get_user():
+    r = requests.get("http://127.0.0.1:8000/Get", json = payload)
+
+@app.route("/api_delete")
+def delete_user():
+    r = requests.get("http:127.0.0.1:8000/Delete")
 
 if __name__ == "__main__":
     app.run(debug = True)
