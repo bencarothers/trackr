@@ -1,8 +1,7 @@
 import React from 'react';
 import assign from 'object-assign';
-import AccountFields from './AccountFields';
-import Confirmation  from './Confirmation';
-import Success from './Success';
+import LoginFields from './LoginFields';
+import LoginSuccess from './LoginSuccess';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
 import CardTitle from 'material-ui/lib/card/card-title';
@@ -12,10 +11,10 @@ import CardMedia from 'material-ui/lib/card/card-media';
 
 var fieldValues = {
   username     : null,
-  email    : null
+  password    : null
 }
 
-var Registration = React.createClass({
+var Login = React.createClass({
 	getInitialState: function(){
 		return{
 			step: 1
@@ -40,16 +39,15 @@ previousStep: function(){
   })
 },
 
-submitRegistration: function(){
+submitLogin: function(){
   this.nextStep()
-  this.registerUser()
+  this.loginUser()
 },
 
-registerUser: function(){
+loginUser: function(){
   var user_id = fieldValues.username 
-  var email = fieldValues.email
   var password = fieldValues.password
-  var Url = "http://localhost:5000/api_post/" + user_id + "/" + password + "/" + email;
+  var Url = "http://localhost:5000/api_get/" + user_id + "/" + password;
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open( "GET", Url, true );
   xmlHttp.send( null );
@@ -58,15 +56,11 @@ registerUser: function(){
 showStep: function(){
   switch(this.state.step){
     case 1:
-      return <AccountFields fieldValues={fieldValues}
-                          nextStep={this.nextStep}
-                          saveValues ={this.saveValues} />
+      return <LoginFields fieldValues={fieldValues}
+                          saveValues ={this.saveValues}
+                          submitLogin={this.submitLogin} />
     case 2:
-      return <Confirmation fieldValues={fieldValues}
-                           previousStep={this.previousStep}
-                           submitRegistration={this.submitRegistration}/>
-    case 3:
-      return <Success fieldValues={fieldValues} />                    
+      return <LoginSuccess fieldValues={fieldValues}/>
   }
 },
 
@@ -88,4 +82,4 @@ render(){
   }
 });
 
-export default Registration;
+export default Login;
