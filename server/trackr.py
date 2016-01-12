@@ -13,7 +13,7 @@ from flask import jsonify
 
 
 app = Flask(__name__)
-app.config.from_object('config:DevelopmentConfig')
+app.config.from_object('config.config:DevelopmentConfig')
 login_manager = LoginManager()
 login_manager.init_app(app)
 
