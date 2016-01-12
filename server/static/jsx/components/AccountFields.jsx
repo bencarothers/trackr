@@ -22,7 +22,7 @@ var AccountFields = React.createClass({
 			<button className = "btn -primary pull-right" onClick={this.nextStep}>Save &amp; Continue</button>
 			  </li>
 			  </ul>
-			  <a href='/oauth_authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
+			  <a href='/authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
 			</div>
 			)
 	},

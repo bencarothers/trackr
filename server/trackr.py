@@ -107,14 +107,11 @@ def logout():
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
-    # Flask-Login function
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize()
 
 @app.route('/callback/<provider>')
 def oauth_callback(provider):
-    from __init__ import login_manager, user_loader
-
     oauth = OAuthSignIn.get_provider(provider)
     username, email = oauth.callback()
     if email is None:
