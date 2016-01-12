@@ -4,6 +4,10 @@ import AccountFields from './AccountFields';
 import Confirmation  from './Confirmation';
 import Success from './Success';
 import Card from 'material-ui/lib/card/card';
+import CardText from 'material-ui/lib/card/card-text';
+import CardTitle from 'material-ui/lib/card/card-title';
+import CardMedia from 'material-ui/lib/card/card-media';
+
 
 
 var fieldValues = {
