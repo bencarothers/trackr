@@ -11,6 +11,7 @@ from flask.ext.login import login_user, logout_user, current_user, LoginManager
 from Oauth import OAuthSignIn
 from flask import jsonify
 from config.Config import DevelopmentConfig
+from hasher import hash_alg
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -124,20 +125,7 @@ def oauth_callback(provider):
     nickname = username
     if nickname is None or nickname == "":
         nickname = email.split('@')[0]
-    #Now we have the username and email. Let's load this one in the database.
-    oauthenticator = OAuthenticator(
-        username = nickname,
-        email = email,
-        provider = provider)
-    if not oauthenticator.existingUser():
-        user = User(
-            username = oauthenticator.username,
-            password = None,
-            email = oauthenticator.email,
-            provider = oauthenticator.provider
-            )
-        user.save()
-        login_user(user, remember = True)
+        url_for(post_user, username = nickname, password = password, email = email, provider = provider)
         return redirect(url_for('.secret'))
     else:
         #This is just a login
@@ -146,9 +134,10 @@ def oauth_callback(provider):
         flask.flash('Authentication succeeded. Welcome!')
         return redirect(url_for('.secret'))
 
-@app.route('/api_post/<username>/<password>/<email>')
-def post_user(username, password, email):
-    payload = {'user_id': username, 'password': password, 'email': email, 'provider': 'Trackr'}
+
+@app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'})
+def post_user(username, password, email, provider):
+    payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
     r = requests.post("http://127.0.0.1:8000/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"

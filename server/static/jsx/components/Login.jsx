@@ -12,8 +12,7 @@ import CardMedia from 'material-ui/lib/card/card-media';
 
 var fieldValues = {
   username     : null,
-  email    : null,
-  password : null
+  email    : null
 }
 
 var Registration = React.createClass({
@@ -50,7 +49,7 @@ registerUser: function(){
   var user_id = fieldValues.username 
   var email = fieldValues.email
   var password = fieldValues.password
-  var Url = "http://localhost:5000/api_post/" + user_id + "/" + password + "/" + email + "/";
+  var Url = "http://localhost:5000/api_post/" + user_id + "/" + password + "/" + email;
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open( "GET", Url, true );
   xmlHttp.send( null );
