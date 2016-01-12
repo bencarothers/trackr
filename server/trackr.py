@@ -10,10 +10,10 @@ from functools import wraps
 from flask.ext.login import login_user, logout_user, current_user, LoginManager
 from Oauth import OAuthSignIn
 from flask import jsonify
-
+from config.Config import DevelopmentConfig
 
 app = Flask(__name__)
-app.config.from_object('config.config:DevelopmentConfig')
+app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
