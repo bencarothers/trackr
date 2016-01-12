@@ -49,6 +49,10 @@ def login_required(func):
 def secret():
     return flask.render_template('secret.html')
 
+@app.route('/test')
+def test():
+    return flask.render_template('test.html')
+
 ###AUTHENTICATION: DO WE WANT THIS ALL IN A SEPERATE FILE?
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
@@ -142,10 +146,9 @@ def oauth_callback(provider):
         flask.flash('Authentication succeeded. Welcome!')
         return redirect(url_for('.secret'))
 
-
-@app.route("/api_post")
-def post_user():
-    payload = {'user_id': 'SJCaldwell', 'password': 'alice', 'email': 'shane.caldwell12@ncf.edu', 'provider': 'Trackr'}
+@app.route('/api_post/<username>/<password>/<email>')
+def post_user(username, password, email):
+    payload = {'user_id': username, 'password': password, 'email': email, 'provider': 'Trackr'}
     r = requests.post("http://127.0.0.1:8000/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
