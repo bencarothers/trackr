@@ -158,8 +158,8 @@ def post_user(username, password, email):
 def get_user():
     r = requests.get("http://127.0.0.1:8000/Get", json = payload)
 
-@app.route("/api_delete")
-def delete_user():
+@app.route("/api_delete/<username>")
+def delete_user(username):
     r = requests.get("http:127.0.0.1:8000/Delete")
 
 if __name__ == "__main__":

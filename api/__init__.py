@@ -33,7 +33,7 @@ class User(db.Document):
     provider = db.StringField(max_length = 40, required = True)
 
     def __unicode__(self):
-        return self.username
+        return self.user_id
 
 class getUser(restful.Resource):
 
@@ -76,7 +76,7 @@ class deleteUser(restful.Resource):
             if user is None:
                 return jsonify({"response" : "no user with this id"})
             else:
-                Users.delete(user)
+                User.objects.delete(user)
 
 
 api = restful.Api(app)
@@ -84,12 +84,11 @@ api.representations = DEFAULT_REPRESENTATIONS
 api.add_resource(getUser, '/User')
 api.add_resource(postUser, '/Add')
 api.add_resource(deleteUser, '/delete')
-
 if __name__ == "__main__":
     admin = Admin(app, 'Simple Models')
 
     class UserModel(model.ModelAdmin):
-        list_display = ('username', 'email')
+        list_display = ('user_id', 'password', 'user_email', 'provider')
 
     admin.register(User, UserModel)
     app.debug = True
