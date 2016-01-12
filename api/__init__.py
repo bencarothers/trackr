@@ -28,9 +28,9 @@ DEFAULT_REPRESENTATIONS = {'application/json': output_json}
 
 class User(db.Document):
     user_id = db.StringField(max_length = 40, unique=True, required = True)
-    password = db.StringField(max_length = 20, unique = True, required = True)
+    password = db.StringField(max_length = 20, required = True)
     user_email = db.StringField(max_length = 40, unique=True, required = True)
-    provider = db.StringField(max_length = 40, unique = True, required = True)
+    provider = db.StringField(max_length = 40, required = True)
 
     def __unicode__(self):
         return self.username

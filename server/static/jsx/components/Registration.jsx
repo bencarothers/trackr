@@ -45,14 +45,14 @@ submitRegistration: function(){
   this.nextStep()
   this.registerUser()
 },
-//http://localhost:5000/api_post/SJCaldwell/alice/shane.caldwell12%40ncf.edu
+
 registerUser: function(){
   var user_id = fieldValues.username 
   var email = fieldValues.email
   var password = fieldValues.password
-  var Url = "localhost:5000/api_post/" + user_id + "/" + password + "/" + email;
+  var Url = "http://localhost:5000/api_post/" + user_id + "/" + password + "/" + email;
   var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open( "POST", Url, true );
+  xmlHttp.open( "GET", Url, true );
   xmlHttp.send( null );
 },
 
