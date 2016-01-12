@@ -30,6 +30,6 @@ setup(name='trackr',
             'Flask-SuperAdmin==1.7.1',
             'matplotlib==1.5.0',
             'Flask-OAuth>=0.1.3',
-            'flask.ext.login==0.3.2'
+            'flask-login==0.3.2'
           ],
       )
