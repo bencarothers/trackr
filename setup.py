@@ -29,6 +29,7 @@ setup(name='trackr',
             'flask-mongoengine==0.7.4',
             'Flask-SuperAdmin==1.7.1',
             'matplotlib==1.5.0',
-            'Flask-OAuth>=0.1.3'
+            'Flask-OAuth>=0.1.3',
+            'flask.ext.login==0.3.2'
           ],
       )
