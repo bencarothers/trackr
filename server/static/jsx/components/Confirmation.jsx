@@ -1,7 +1,4 @@
-/**
- * @jsx React.DOM
- */
-var React = require('react')
+import React from 'react';
 
 var Confirmation = React.createClass({
   render: function() {
@@ -23,4 +20,4 @@ var Confirmation = React.createClass({
   }
 })
 
-module.exports = Confirmation
+export default Confirmation;

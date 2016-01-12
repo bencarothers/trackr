@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-var React = require('react')
+import React from 'react';
 
 var Success = React.createClass({
   render: function() {
@@ -14,4 +14,4 @@ var Success = React.createClass({
   }
 })
 
-module.exports = Success
+export default Success;

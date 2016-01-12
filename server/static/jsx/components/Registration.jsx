@@ -1,7 +1,8 @@
-var React         = require('react')
-var AccountFields = require('./AccountFields')
-var Confirmation  = require('./Confirmation')
-var Success       = require('./Success')
+import React from 'react';
+import AccountFields from './AccountFields';
+import Confirmation  from './Confirmation';
+import Success from './Success';
+import Card from 'material-ui/lib/card/card';
 
 
 var fieldValues = {
@@ -50,19 +51,22 @@ showStep: function(){
   }
 },
 
-render: function(){
-  var style = {
-    width : (this.state.step / 3 * 100) + '%'
-  }
-
+render(){
+    var cardStyle = {
+      display: 'block',
+      marginLeft: '270px',
+      width: '300px',
+      height: '300px',
+      paddng: '50px'
+             }
   return(
+    <Card style={cardStyle}>
     <main>
-      <span className = "progress-step">Step {this.state.step}</span>
-      <progress className="progress" style={style}></progress>
       {this.showStep()}
     </main>
-    )
-}
-})
+    </Card>
+    );
+  }
+});
 
-module.exports = Registration
+export default Registration;

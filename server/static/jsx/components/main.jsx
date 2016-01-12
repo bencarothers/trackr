@@ -5,6 +5,7 @@ import Colors from 'material-ui/lib/styles/colors';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Nav from './nav'
 import Lift from './liftcard'
+import Registration from './Registration'
 
 const Main = React.createClass({
 
@@ -36,7 +37,7 @@ const Main = React.createClass({
     return (
       <div>
         <Nav/>
-        <Lift/>
+        <Registration/>
         <Lift/>
       </div>
     );

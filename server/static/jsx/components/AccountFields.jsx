@@ -1,28 +1,32 @@
 import React from 'react';
-import ThemeManager from 'material-ui/lib/styles/theme-manager';
-import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme'
-import Colors from 'material-ui/lib/styles/colors';
-import MenuItem from 'material-ui/lib/menus/menu-item'
 
 var AccountFields = React.createClass({
 	render: function(){
 		return(
 			<div>
+			  <h2>Account Details</h2>
+			<ul className="form-fields">
+			  <li>
 			<label>Username</label>
 			<input type="text" ref = 'username' defaultValue = {this.props.fieldValues.name}/>
-
+              </li>
+              <li>
 			<label>Password</label>
-			<input type ="password" ref="password" defaultValue={this.proprs.fieldValues.password}/>
-
+			<input type ="password" ref="password" defaultValue={this.props.fieldValues.password}/>
+              </li>
+              <li>
 			<label>Email</label>
 			<input type="email" ref="email" defaultValue={this.props.fieldValues.email}/>
-
-			<button onClick = {this.submit}>Submit!</button>
+              </li>
+              <li className = "form-footer">
+			<button className = "btn -primary pull-right" onClick={this.nextStep}>Save &amp; Continue</button>
+			  </li>
+			  </ul>
 			</div>
 			)
 	},
 
-	submit: function(e){
+	nextStep: function(e){
 		e.preventDefault()
 
 		//Get values via this.refs
@@ -32,5 +36,8 @@ var AccountFields = React.createClass({
 			email   : this.refs.name.getDOMNode().value
 		}
 		this.props.saveValues(data)
+		this.props.nextStep()
 	}
 })
+
+export default AccountFields;
