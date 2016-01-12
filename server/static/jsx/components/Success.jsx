@@ -5,7 +5,9 @@ var Success = React.createClass({
     return (
       <div>
         <h2>Successfully Registered!</h2>
-        <p>Please check your email <b>{this.props.fieldValues.email}</b> for a confirmation email!</p>
+        <ul>
+        <li>Please check your email <b> {this.props.fieldValues.email}</b> for a confirmation email!</li>
+        </ul>
       </div>
     )
   }

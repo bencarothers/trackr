@@ -37,7 +37,7 @@ previousStep: function(){
   })
 },
 
-submitRegistraton: function(){
+submitRegistration: function(){
   this.nextStep()
 },
 
@@ -50,7 +50,7 @@ showStep: function(){
     case 2:
       return <Confirmation fieldValues={fieldValues}
                            previousStep={this.previousStep}
-                           submitRegistration={this.submitRegistration} />
+                           submitRegistration={this.submitRegistration}/>
     case 3:
       return <Success fieldValues={fieldValues} />                    
   }
