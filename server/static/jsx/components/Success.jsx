@@ -1,6 +1,3 @@
-/**
- * @jsx React.DOM
- */
 import React from 'react';
 
 var Success = React.createClass({
@@ -12,6 +9,6 @@ var Success = React.createClass({
       </div>
     )
   }
-})
+});
 
 export default Success;

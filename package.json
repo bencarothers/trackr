@@ -6,8 +6,8 @@
     "type": "git",
     "url": ""
   },
-   "scripts": {
-       "build": "webpack --config webpack.js --progress --colors"
+  "scripts": {
+    "build": "webpack --config webpack.js --progress --colors"
   },
   "private": true,
   "devDependencies": {
@@ -27,7 +27,8 @@
   "dependencies": {
     "material-ui": "^0.13.0",
     "react": "^0.14.0",
-    "react-dom":"^0.14.0",
-    "react-tap-event-plugin": "^0.2.1"
+    "react-dom": "^0.14.0",
+    "react-tap-event-plugin": "^0.2.1",
+    "object-assign": "~4.0.1"
   }
 }

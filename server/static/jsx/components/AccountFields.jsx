@@ -8,7 +8,7 @@ var AccountFields = React.createClass({
 			<ul className="form-fields">
 			  <li>
 			<label>Username</label>
-			<input type="text" ref = 'username' defaultValue = {this.props.fieldValues.name}/>
+			<input type="text" ref = 'username' defaultValue = {this.props.fieldValues.username}/>
               </li>
               <li>
 			<label>Password</label>
@@ -29,11 +29,10 @@ var AccountFields = React.createClass({
 	nextStep: function(e){
 		e.preventDefault()
 
-		//Get values via this.refs
 		var data = {
-			name	: this.refs.name.getDOMNode().value,
-			password: this.refs.name.getDOMNode().value,
-			email   : this.refs.name.getDOMNode().value
+			username: this.refs.username.value,
+			password: this.refs.password.value,
+			email   : this.refs.email.value
 		}
 		this.props.saveValues(data)
 		this.props.nextStep()

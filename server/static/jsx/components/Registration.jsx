@@ -1,4 +1,5 @@
 import React from 'react';
+import assign from 'object-assign';
 import AccountFields from './AccountFields';
 import Confirmation  from './Confirmation';
 import Success from './Success';
@@ -36,6 +37,10 @@ previousStep: function(){
   })
 },
 
+submitRegistraton: function(){
+  this.nextStep()
+},
+
 showStep: function(){
   switch(this.state.step){
     case 1:
@@ -45,9 +50,9 @@ showStep: function(){
     case 2:
       return <Confirmation fieldValues={fieldValues}
                            previousStep={this.previousStep}
-                           submitRegistration={this.submitRegistration}/>
+                           submitRegistration={this.submitRegistration} />
     case 3:
-      return <Success fieldValues={fieldValues}/>                    
+      return <Success fieldValues={fieldValues} />                    
   }
 },
 
