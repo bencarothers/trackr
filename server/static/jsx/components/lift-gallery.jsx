@@ -11,7 +11,7 @@ const LiftGallery = React.createClass({
     var tilesData = [
         {
           img: 'https://placeholdit.imgix.net/~text?txtsize=61&txt=650%C3%97643&w=350&h=340',
-          title: 'Water plant',
+          title: 'lift 1',
           author: 'BkrmadtyaKarki',
         },
     ];
@@ -24,14 +24,20 @@ const LiftGallery = React.createClass({
 
 
     var gridListStyle = {
-        width: '80%', 
-        height: '90%', 
-        overflowY: 'auto', 
+        width: '100%', 
+        height: '100%', 
+        margin: 24
+    };
+
+    var tileStyle = {
+        marginLeft: 24,
+        marginRight: 24,
         marginBottom: 24
     };
 
     var tileElements = tilesData.map(tile => <GridTile
       key={tile.img}
+      style={tileStyle}
       title={tile.title}
       subtitle={<span>by <b>{tile.author}</b></span>}
       actionIcon={<IconButton></IconButton>}
