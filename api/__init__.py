@@ -37,12 +37,19 @@ class User(db.Document):
 
 class getUser(restful.Resource):
 
-    def get(self, user_id=None, user_email=None):
-        user = User.objects.filter(**{"user_id" : user_id}).first()
+    def get(self, user_id=None, password=None):
+        data = request.get_json()
+        password = data.get('password')
+        user_id = data.get('user_id')
+        print password
+        user = User.objects.filter(**{"user_id" : user_id, "password" : password}).first()
+        print user
         if user:
-            return jsonify({"status": "ok", "data": user})
+            print 'PROPER LOG IN'
+            return jsonify({"status": "ok", "log in": user})
         else:
-            return {"response": "no user found for {}".format(user_id)}
+            print 'IMPROPER LOG IN'
+            return {"status": "fail"}
 
 
 class postUser(restful.Resource):

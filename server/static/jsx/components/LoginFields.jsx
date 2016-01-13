@@ -27,7 +27,22 @@ var LoginFields = React.createClass({
 			password: this.refs.password.value,
 		}
 		this.props.saveValues(data)
-		this.props.nextStep()
+  		var user_id = data.username 
+  		var password = data.password
+  		var Url = "http://localhost:5000/api_get/" + user_id + "/" + password;
+  		var xmlHttp = new XMLHttpRequest();
+  		xmlHttp.open( "GET", Url, false);
+  		xmlHttp.send( null );
+  		var response = xmlHttp.responseText;
+  		var result = JSON.parse(response)
+
+  		console.log(response)
+  		if (result.status == "ok"){
+  			this.props.successStep()
+  		}
+  		else{
+  			this.props.failureStep()
+  		}
 	}
 })
 

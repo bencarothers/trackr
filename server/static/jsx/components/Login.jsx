@@ -1,7 +1,8 @@
 import React from 'react';
 import assign from 'object-assign';
 import LoginFields from './LoginFields';
-import LoginResult from './LoginResult';
+import LoginSuccess from './LoginSuccess';
+import LoginFailure from './LoginFailure';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
 import CardTitle from 'material-ui/lib/card/card-title';
@@ -27,24 +28,32 @@ saveValues: function(field_value){
   }.bind(this)()
 },
 
-nextStep: function(){
+successStep: function(){
   this.setState({
-    step: this.state.step + 1
+    step: 3
+  })
+},
+
+failureStep: function(){
+  this.setState({
+    step: 2
   })
 },
 
 previousStep: function(){
   this.setState({
-    step: this.state.step - 1
+    step: 1
   })
 },
 
 submitLogin: function(){
+  //Logic here to determine which step to go to, (SUCCESS step or FAILURE step)
   this.nextStep()
   this.loginUser()
 },
 
 loginUser: function(){
+  console.log("Function ran in parent")
   var user_id = fieldValues.username 
   var password = fieldValues.password
   var Url = "http://localhost:5000/api_get/" + user_id + "/" + password;
@@ -59,9 +68,13 @@ showStep: function(){
       return <LoginFields fieldValues={fieldValues}
                           saveValues ={this.saveValues}
                           submitLogin={this.submitLogin}
-                          nextStep={this.nextStep}/>
+                          successStep={this.successStep}
+                          failureStep={this.failureStep}/>
     case 2:
-      return <LoginResult fieldValues={fieldValues}/>
+      return <LoginFailure
+                          previousStep={this.previousStep}/>
+    case 3:
+      return <LoginSuccess fieldValues={fieldValues}/>
   }
 },
 

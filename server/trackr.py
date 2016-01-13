@@ -143,13 +143,21 @@ def post_user(username, password, email, provider):
         return "Wrong format"
     return r._content
 
-@app.route("/api_get")
-def get_user():
-    r = requests.get("http://127.0.0.1:8000/Get", json = payload)
+@app.route("/api_get/<username>/<password>")
+def get_user(username, password):
+    print 'sending this to API'
+    payload = {'user_id': username, 'password': hash_alg(password)}
+    r = requests.get("http://127.0.0.1:8000/User", json = payload)
+    if r.status_code != 200:
+        return "IMPROPER"
+    return r._content
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
     r = requests.get("http:127.0.0.1:8000/Delete")
+    if r.status_code != 200:
+        return "IMPROPER"
+    return r._content
 
 if __name__ == "__main__":
     app.run(debug = True)

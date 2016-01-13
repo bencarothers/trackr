@@ -1,6 +1,6 @@
 import React from 'react';
 
-var LoginResult = React.createClass({
+var LoginSuccess = React.createClass({
   render: function() {
     return (
       <div>
@@ -13,4 +13,4 @@ var LoginResult = React.createClass({
   }
 });
 
-export default LoginResult;
+export default LoginSuccess;
