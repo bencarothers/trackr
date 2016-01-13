@@ -152,6 +152,15 @@ def get_user(username, password):
         return "IMPROPER"
     return r._content
 
+@app.route("/api_check/<username>/<email>")
+def check_user(username, email):
+    payload = {'user_id': username, "email" : email}
+    r = requests.get("http://127.0.0.1:8000/Check", json = payload)
+    if r.status_code != 200:
+        return "IMPROPER"
+    return r._content
+
+
 @app.route("/api_delete/<username>")
 def delete_user(username):
     r = requests.get("http:127.0.0.1:8000/Delete")

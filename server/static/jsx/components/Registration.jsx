@@ -3,6 +3,7 @@ import assign from 'object-assign';
 import AccountFields from './AccountFields';
 import Confirmation  from './Confirmation';
 import Success from './Success';
+import Failure from './Failure';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
 import CardTitle from 'material-ui/lib/card/card-title';
@@ -41,9 +42,35 @@ previousStep: function(){
   })
 },
 
+successStep: function(){
+  this.setState({
+    step: 4
+  })
+},
+
+failureStep: function(){
+  this.setState({
+    step: 3
+  })
+},
+
 submitRegistration: function(){
-  this.nextStep()
-  this.registerUser()
+  var user_id = fieldValues.username 
+  var email = fieldValues.email
+  var Url = "http://localhost:5000/api_check/" + user_id + "/" + email;
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", Url, false);
+  xmlHttp.send( null );
+  var response = xmlHttp.responseText;
+  var result = JSON.parse(response)
+  console.log(response)
+  if (result.status == "ok"){
+    this.successStep()
+    this.registerUser()
+  }
+  else{
+    this.failureStep()
+    }
 },
 
 registerUser: function(){
@@ -67,7 +94,11 @@ showStep: function(){
                            previousStep={this.previousStep}
                            submitRegistration={this.submitRegistration}/>
     case 3:
-      return <Success fieldValues={fieldValues} />                    
+      return <Failure fieldValues={fieldValues} 
+                      previousStep={this.previousStep} />   
+    case 4:
+      return <Success fieldValues={fieldValues} />
+
   }
 },
 

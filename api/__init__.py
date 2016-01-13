@@ -52,6 +52,22 @@ class getUser(restful.Resource):
             return {"status": "fail"}
 
 
+class checkUser(restful.Resource):
+    def get(self, user_id = None, user_email = None):
+        data = request.get_json()
+        user_id = data.get("user_id")
+        user_email = data.get("email")
+        taken_user = User.objects.filter(**{"user_id" : user_id}).first()
+        taken_email = User.objects.filter(**{"user_email": user_email}).first()
+        #Demogans law, because i cant be bothered to figure out the OR syntax rn
+        if (taken_user or taken_email):
+            print "ALREADY EXIST"
+            return jsonify({"status":"fail"})
+        else:
+            print 'NEW USER OK'
+            return {"status":"ok"}
+
+
 class postUser(restful.Resource):
 
     def post(self):
@@ -90,7 +106,8 @@ api = restful.Api(app)
 api.representations = DEFAULT_REPRESENTATIONS
 api.add_resource(getUser, '/User')
 api.add_resource(postUser, '/Add')
-api.add_resource(deleteUser, '/delete')
+api.add_resource(deleteUser, '/Delete')
+api.add_resource(checkUser, "/Check")
 if __name__ == "__main__":
     admin = Admin(app, 'Simple Models')
 
