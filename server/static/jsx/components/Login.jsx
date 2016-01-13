@@ -1,7 +1,7 @@
 import React from 'react';
 import assign from 'object-assign';
 import LoginFields from './LoginFields';
-import LoginSuccess from './LoginSuccess';
+import LoginResult from './LoginResult';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
 import CardTitle from 'material-ui/lib/card/card-title';
@@ -58,9 +58,10 @@ showStep: function(){
     case 1:
       return <LoginFields fieldValues={fieldValues}
                           saveValues ={this.saveValues}
-                          submitLogin={this.submitLogin} />
+                          submitLogin={this.submitLogin}
+                          nextStep={this.nextStep}/>
     case 2:
-      return <LoginSuccess fieldValues={fieldValues}/>
+      return <LoginResult fieldValues={fieldValues}/>
   }
 },
 

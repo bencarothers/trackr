@@ -4,26 +4,22 @@ var LoginFields = React.createClass({
 	render: function(){
 		return(
 			<div>
-			  <h2>Account Details</h2>
+			  <h2>Login Here</h2>
 			<ul className="form-fields">
-			  <li>
 			<label>Username</label>
 			<input type="text" ref = 'username' defaultValue = {this.props.fieldValues.username}/>
-              </li>
-              <li>
 			<label>Password</label>
 			<input type ="password" ref="password" defaultValue={this.props.fieldValues.password}/>
-              </li>
-              <li className = "form-footer">
+              <p className = "form-footer">
 			<button className = "btn -primary pull-right" onClick={this.submitLogin}>Login</button>
-			  </li>
+			  </p>
 			  </ul>
 			  <a href='/authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
 			</div>
 			)
 	},
 
-	nextStep: function(e){
+	submitLogin: function(e){
 		e.preventDefault()
 
 		var data = {
