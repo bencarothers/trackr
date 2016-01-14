@@ -36,6 +36,16 @@ class User(db.Document):
         return self.user_id
 
 class getUser(restful.Resource):
+    def get(self, user_id = None):
+        data = request.get_json()
+        user_id = data.get("user_id")
+        user = User.objects.filter(**{"user_id"} : user_id).first()
+        if user:
+            return jsonify({"status": "ok", "user":user})
+        else:
+            return jsonify({"status":"fail"})
+            
+class loginUser(restful.Resource):
 
     def get(self, user_id=None, password=None):
         data = request.get_json()
@@ -52,7 +62,7 @@ class getUser(restful.Resource):
             return {"status": "fail"}
 
 
-class checkUser(restful.Resource):
+class checkNewUser(restful.Resource):
     def get(self, user_id = None, user_email = None):
         data = request.get_json()
         user_id = data.get("user_id")
@@ -105,9 +115,10 @@ class deleteUser(restful.Resource):
 api = restful.Api(app)
 api.representations = DEFAULT_REPRESENTATIONS
 api.add_resource(getUser, '/User')
+api.add_resource(loginUser, '/LoginUser')
 api.add_resource(postUser, '/Add')
 api.add_resource(deleteUser, '/Delete')
-api.add_resource(checkUser, "/Check")
+api.add_resource(checkNewUser, "/Check")
 if __name__ == "__main__":
     admin = Admin(app, 'Simple Models')
 

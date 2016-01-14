@@ -29,7 +29,7 @@ var LoginFields = React.createClass({
 		this.props.saveValues(data)
   		var user_id = data.username 
   		var password = data.password
-  		var Url = "http://localhost:5000/api_get/" + user_id + "/" + password;
+  		var Url = "http://localhost:5000/api_login/" + user_id + "/" + password;
   		var xmlHttp = new XMLHttpRequest();
   		xmlHttp.open( "GET", Url, false);
   		xmlHttp.send( null );

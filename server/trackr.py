@@ -20,15 +20,13 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def user_loader(user_id):
-    """
-    Query RESTFUL API to get current user
-    """
     print "user id is: " + str(user_id) + "\n"
-    #Make request to server to get user
-    #user = User.objects.filter(**{"username" : user_id}).first()
-    #confirm I got a user object
-    user = 'lol'
-    return user
+    payload = {'user_id': user_id}
+    r = requests.get("http://127.0.0.1:8000/User", json = payload)
+    response = r.json()
+    if response['status'] == "ok":
+        user = response['user']
+        return user
     
 @app.route("/")
 def index():
@@ -143,11 +141,10 @@ def post_user(username, password, email, provider):
         return "Wrong format"
     return r._content
 
-@app.route("/api_get/<username>/<password>")
+@app.route("/api_login/<username>/<password>")
 def get_user(username, password):
-    print 'sending this to API'
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("http://127.0.0.1:8000/User", json = payload)
+    r = requests.get("http://127.0.0.1:8000/LoginUser", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
