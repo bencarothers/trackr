@@ -39,12 +39,12 @@ class getUser(restful.Resource):
     def get(self, user_id = None):
         data = request.get_json()
         user_id = data.get("user_id")
-        user = User.objects.filter(**{"user_id"} : user_id).first()
+        user = User.objects.filter(**{"user_id" : user_id}).first()
         if user:
             return jsonify({"status": "ok", "user":user})
         else:
             return jsonify({"status":"fail"})
-            
+
 class loginUser(restful.Resource):
 
     def get(self, user_id=None, password=None):
