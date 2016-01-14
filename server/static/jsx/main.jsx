@@ -1,9 +1,8 @@
 "use strict";
 import React from 'react';
 import ReactDOM from 'react-dom';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import Main from './components/main'; //
+import Dash from './components/Dash'; //
 
 injectTapEventPlugin();
-
-ReactDOM.render(<Main />, document.getElementById('app'));
+//ReactDOM.render(<Main />, document.getElementById('app'));
+ReactDOM.render(<Dash />, document.getElementById('app'));

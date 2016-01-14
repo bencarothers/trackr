@@ -18,7 +18,8 @@ const Lift = React.createClass({
                  height: '300px',
                  paddng: '50px'
 
-             }
+             };
+
         return(
         <Card style={cardStyle}>
           <CardMedia overlay={<CardTitle title="I suck at squatting" subtitle="Ripp save me"/>}>
