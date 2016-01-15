@@ -51,9 +51,7 @@ class loginUser(restful.Resource):
         data = request.get_json()
         password = data.get('password')
         user_id = data.get('user_id')
-        print password
         user = User.objects.filter(**{"user_id" : user_id, "password" : password}).first()
-        print user
         if user:
             print 'PROPER LOG IN'
             return jsonify({"status": "ok", "log_in": user})
@@ -69,9 +67,8 @@ class checkNewUser(restful.Resource):
         user_email = data.get("email")
         taken_user = User.objects.filter(**{"user_id" : user_id}).first()
         taken_email = User.objects.filter(**{"user_email": user_email}).first()
-        #Demorgans law, because i cant be bothered to figure out the OR syntax rn
         if (taken_user or taken_email):
-            print "ALREADY EXIST"
+            print "USER EXISTS: WON'T REGISTER"
             return jsonify({"status":"fail"})
         else:
             print 'NEW USER OK'
@@ -82,22 +79,21 @@ class postUser(restful.Resource):
 
     def post(self):
         data = request.get_json()
-        print 'get'
         if not data:
-            data = {"response": "ERROR"}
+            data = {"status": "ERROR"}
             return jsonify(data)
         else:
             id = data.get('user_id')
             email = data.get('email')
             password = data.get('password')
             provider = data.get('provider')
-
             if id:
                 User(user_id=id, password = password,user_email=email, provider = provider).save()
             else:
                 return jsonify({"response": "registration number missing"})
 
 class deleteUser(restful.Resource):
+    
     def delete(self, user_id = None):
         if user_id is None:
             return jsonify({"response" : "ERROR"})
