@@ -17,3 +17,4 @@ class DevelopmentConfig(Config):
 	'secret' : GOOGLE_LOGIN_CLIENT_SECRET
 			}
 	}
+

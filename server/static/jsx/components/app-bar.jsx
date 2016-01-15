@@ -1,1 +1,1 @@
-http://placehold.it/350x150
+//http://placehold.it/350x150

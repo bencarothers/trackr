@@ -3,11 +3,11 @@ from flask import Flask
 import requests
 from flask import current_app
 from flask import redirect, url_for, request, session, Blueprint
-#from models import User
 from authenticator import Authenticator
 from Oauthenticator import OAuthenticator
 from functools import wraps
 from flask.ext.login import login_user, logout_user, current_user, LoginManager
+from user import User
 from Oauth import OAuthSignIn
 from flask import jsonify
 from config.Config import DevelopmentConfig
@@ -17,16 +17,12 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
+app.secret_key = "barry_allen"
 
 @login_manager.user_loader
 def user_loader(user_id):
-    print "user id is: " + str(user_id) + "\n"
-    payload = {'user_id': user_id}
-    r = requests.get("http://127.0.0.1:8000/User", json = payload)
-    response = r.json()
-    if response['status'] == "ok":
-        user = response['user']
-        return user
+    user = User(user_id)
+    return user
     
 @app.route("/")
 def index():
@@ -128,7 +124,7 @@ def oauth_callback(provider):
     else:
         #This is just a login
         user = user_loader(nickname)
-        login_user(user,remember = True)
+        login_user(user)
         flask.flash('Authentication succeeded. Welcome!')
         return redirect(url_for('.secret'))
 
@@ -147,6 +143,11 @@ def get_user(username, password):
     r = requests.get("http://127.0.0.1:8000/LoginUser", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
+    r_json = r.json()
+    user = r_json['log_in']
+    user = user_loader(user['user_id'])
+    login_user(user)
+    print "hello, " + str(current_user.user_id)
     return r._content
 
 @app.route("/api_check/<username>/<email>")

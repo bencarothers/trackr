@@ -3,12 +3,11 @@ import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme';
 import Colors from 'material-ui/lib/styles/colors';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import Nav from './nav'
-import Lift from './liftcard'
+import Dash from './dash'
 import Registration from './Registration'
 import Login from './Login'
 
-const Main = React.createClass({
+const Page = React.createClass({
 
   childContextTypes: {
     muiTheme: React.PropTypes.object,
@@ -37,13 +36,11 @@ const Main = React.createClass({
   render() {
     return (
       <div>
-        <Nav/>
         <Login/>
         <Registration/>
-        <Lift/>
       </div>
     );
   },
 });
 
-export default Main;
+export default Page;

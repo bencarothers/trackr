@@ -35,35 +35,6 @@ class User(db.Document):
     def __unicode__(self):
         return self.user_id
 
-    @property 
-    def is_active(self):
-        return True
-
-    @property
-    def is_authenticated(self):
-        return True 
-
-    @property
-    def is_anonymous(self):
-        return False 
-
-    def get_id(self):
-        try:
-            return unicode(self.id)
-        except AttributeError:
-            raise NotImplementedError("No `id` attribute.")
-
-    def __eq__(self, other):
-        if isinstance(other, userMixin):
-            return self.get_id() == other.get_id()
-        return NotImplemented
-
-    def __ne__(self, other):
-        equal = self.__eq__(other)
-        if equal is NotImplemented:
-            return NotImplemented
-        return not equal
-
 class getUser(restful.Resource):
     def get(self, user_id = None):
         data = request.get_json()
@@ -85,7 +56,7 @@ class loginUser(restful.Resource):
         print user
         if user:
             print 'PROPER LOG IN'
-            return jsonify({"status": "ok", "log in": user})
+            return jsonify({"status": "ok", "log_in": user})
         else:
             print 'IMPROPER LOG IN'
             return {"status": "fail"}
@@ -98,7 +69,7 @@ class checkNewUser(restful.Resource):
         user_email = data.get("email")
         taken_user = User.objects.filter(**{"user_id" : user_id}).first()
         taken_email = User.objects.filter(**{"user_email": user_email}).first()
-        #Demogans law, because i cant be bothered to figure out the OR syntax rn
+        #Demorgans law, because i cant be bothered to figure out the OR syntax rn
         if (taken_user or taken_email):
             print "ALREADY EXIST"
             return jsonify({"status":"fail"})
@@ -117,13 +88,10 @@ class postUser(restful.Resource):
             return jsonify(data)
         else:
             id = data.get('user_id')
-            print id
             email = data.get('email')
-            print email
             password = data.get('password')
-            print password
             provider = data.get('provider')
-            print provider
+
             if id:
                 User(user_id=id, password = password,user_email=email, provider = provider).save()
             else:
