@@ -113,20 +113,23 @@ def oauth_authorize(provider):
 def oauth_callback(provider):
     oauth = OAuthSignIn.get_provider(provider)
     username, email = oauth.callback()
+    print username
+    print email
+    print '\n GOT PAST CALLBACK'
     if email is None:
-        flask.flash('Authentication failed Did not get an email!')
-        return redirect(url_for('.register'))
+        return redirect(url_for('index'))
     nickname = username
     if nickname is None or nickname == "":
         nickname = email.split('@')[0]
+        print 'tried to really log them in like a real person'
         url_for(post_user, username = nickname, password = password, email = email, provider = provider)
-        return redirect(url_for('.secret'))
+        return redirect(url_for('index'))
     else:
         #This is just a login
         user = user_loader(nickname)
         login_user(user)
-        flask.flash('Authentication succeeded. Welcome!')
-        return redirect(url_for('.secret'))
+        print 'loaded user i guess'
+        return redirect(url_for('index'))
 
 
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'})

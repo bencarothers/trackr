@@ -10,7 +10,7 @@ class DevelopmentConfig(Config):
 	DEBUG = True
 
 	GOOGLE_LOGIN_CLIENT_ID = "541027712243-n65afuob9r897r4nul26h8jm0rh9c1nc.apps.googleusercontent.com"
-	GOOGLE_LOGIN_CLIENT_SECRET = "Xi1lFHp29YGTitiqD7kKWRIn"
+	GOOGLE_LOGIN_CLIENT_SECRET = "hcOQCDRvg-pH039DCPMceLzb"
 	OAUTH_CREDENTIALS = {
 	'google' : {
 	'id' : GOOGLE_LOGIN_CLIENT_ID,
