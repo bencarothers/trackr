@@ -8,7 +8,7 @@ except ImportError:
 setup(name='trackr',
       version='0.0.1',
       long_description=open('README.md').read(),
-      authors=['Ben Carothers', 'Shane Caldwell'],
+      author=['Ben Carothers', 'Shane Caldwell'],
       author_email='benjamin.carothers13@ncf.edu',
       url='https://github.com/bencarothers/trackr',
       packages=['server', 'server.tests'],
@@ -28,6 +28,9 @@ setup(name='trackr',
             'mongoengine==0.10.5',
             'flask-mongoengine==0.7.4',
             'Flask-SuperAdmin==1.7.1',
-            # 'matplotlib==1.5.0'
+            'matplotlib==1.5.0',
+            'Flask-OAuth>=0.1.3',
+            'flask-login==0.3.2',
+            'rauth==0.7.2'
           ],
       )

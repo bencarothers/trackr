@@ -23,7 +23,7 @@ const Lift = React.createClass({
         return(
         <Card style={cardStyle}>
           <CardMedia overlay={<CardTitle title="I suck at squatting" subtitle="Ripp save me"/>}>
-            <img src="http://70sbig.com/wp-content/uploads/2012/03/halfsquat-fuck.jpg"/>
+            <img src="https://40.media.tumblr.com/fbac63eece5df314e2f9637f340d13a0/tumblr_ns4736Swj21uvh6g4o1_500.jpg"/>
           </CardMedia>
           <CardTitle title="135 Squat" subtitle="12/10/15"/>
           <CardActions>
