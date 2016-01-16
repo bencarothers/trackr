@@ -23,9 +23,13 @@ app.secret_key = "barry_allen"
 def user_loader(user_id):
     user = User(user_id)
     return user
-    
+
 @app.route("/")
 def index():
+    return flask.render_template('index.html')
+
+@app.route("/ajaxVideoUpload/")
+def uploadVideo():
     return flask.render_template('index.html')
 
 def login_required(func):
