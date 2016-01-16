@@ -10,6 +10,10 @@ task = {"do you": "work"}
 def index():
     return flask.render_template('index.html')
 
+@app.route("/ajaxVideoUpload/")
+def uploadVideo():
+    return flask.render_template('index.html')
+
 
 @app.route("/api_test")
 def create_task():
