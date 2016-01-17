@@ -9,13 +9,12 @@ import CardTitle from 'material-ui/lib/card/card-title';
 import CardMedia from 'material-ui/lib/card/card-media';
 
 
-
 var fieldValues = {
   username     : null,
   password    : null
 }
 
-var Login = React.createClass({
+var Login_Form = React.createClass({
 	getInitialState: function(){
 		return{
 			step: 1
@@ -48,7 +47,6 @@ previousStep: function(){
 
 submitLogin: function(){
   //Logic here to determine which step to go to, (SUCCESS step or FAILURE step)
-  this.nextStep()
   this.loginUser()
 },
 
@@ -60,7 +58,25 @@ loginUser: function(){
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open( "GET", Url, true );
   xmlHttp.send( null );
+  var result = xmlHttp.responseText;
+  var result = JSON.parse(response)
+  console.log(response)
+  if (result.status == 'ok'){
+    this.successStep()
+  }
+  else{
+    this.failureStep()
+  }
 },
+
+  showRegister: function(){
+    console.log("really tryna show this modal in parent")
+      this.refs.reg.show();
+    },
+
+    hideRegister: function(){
+      this.refs.reg.hide();
+    },
 
 showStep: function(){
   switch(this.state.step){
@@ -69,7 +85,9 @@ showStep: function(){
                           saveValues ={this.saveValues}
                           submitLogin={this.submitLogin}
                           successStep={this.successStep}
-                          failureStep={this.failureStep}/>
+                          failureStep={this.failureStep}
+                          showRegister={this.showRegister}
+                          hideRegister={this.hideRegister}/>
     case 2:
       return <LoginFailure
                           previousStep={this.previousStep}/>
@@ -81,10 +99,15 @@ showStep: function(){
 render(){
     var cardStyle = {
       display: 'block',
-      marginLeft: '270px',
-      width: '300px',
+      width: '500px',
       height: '300px',
-      paddng: '50px'
+      paddng: '50px',
+      padding: '1em 2em',
+      outline: 'none',
+      fontSize: 14,
+      fontWeight: '600',
+      background: '#C94E50',
+      color: '#080808'
              }
   return(
     <Card style={cardStyle}>
@@ -96,4 +119,4 @@ render(){
   }
 });
 
-export default Login;
+export default Login_Form;

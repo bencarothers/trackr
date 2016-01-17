@@ -67,3 +67,8 @@ class GoogleSignIn(OAuthSignIn):
 		me = oauth_session.get('').json()
 		return (me['name'],
 			   me['email'])
+
+class FacebookSignIn(OAuthSignIn):
+	def __init__(self):
+		super(FacebookSignIn, self).__init__('facebook')
+		facebookinfo = urllib2.urlopen('https://')

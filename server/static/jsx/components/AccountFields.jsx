@@ -1,4 +1,5 @@
 import React from 'react';
+import FlatButton from 'material-ui/lib/flat-button';
 
 var AccountFields = React.createClass({
 	render: function(){
@@ -8,15 +9,19 @@ var AccountFields = React.createClass({
 			<ul className="form-fields">
 			<label>Username</label>
 			<input type="text" ref = 'username' defaultValue = {this.props.fieldValues.username}/>
+			<br></br>
 			<label>Password</label>
 			<input type ="password" ref="password" defaultValue={this.props.fieldValues.password}/>
-			<label>Email</label>
+			<br></br>
+			<label>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 			<input type="email" ref="email" defaultValue={this.props.fieldValues.email}/>
               <p className = "form-footer">
-			<button className = "btn -primary pull-right" onClick={this.nextStep}>Save &amp; Continue</button>
+            <br></br>
+			<FlatButton onClick={this.nextStep}>Submit</FlatButton>
 			  </p>
 			  </ul>
 			  <a href='/authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
+			  <br></br>
 			</div>
 			)
 	},

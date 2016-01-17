@@ -1,5 +1,5 @@
 import React from 'react';
-import jQuery from 'jQuery';
+import jQuery from 'jquery';
 import AppBar from 'material-ui/lib/app-bar';
 import IconButton from 'material-ui/lib/icon-button';
 import FlatButton from 'material-ui/lib/flat-button';

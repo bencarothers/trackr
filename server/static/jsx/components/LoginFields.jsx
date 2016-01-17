@@ -1,6 +1,19 @@
 import React from 'react';
+import FlatButton from 'material-ui/lib/flat-button';
+import Registration from './Registration'
+import Modal from 'boron/OutlineModal'
+
 
 var LoginFields = React.createClass({
+
+	showRegister: function(){
+      this.refs.reg.show();
+    },
+
+    hideRegister: function(){
+      this.refs.reg.hide();
+    },
+
 	render: function(){
 		return(
 			<div>
@@ -8,20 +21,29 @@ var LoginFields = React.createClass({
 			<ul className="form-fields">
 			<label>Username</label>
 			<input type="text" ref = 'username' defaultValue = {this.props.fieldValues.username}/>
+			<br></br>
 			<label>Password</label>
 			<input type ="password" ref="password" defaultValue={this.props.fieldValues.password}/>
               <p className = "form-footer">
-			<button className = "btn -primary pull-right" onClick={this.submitLogin}>Login</button>
+			<FlatButton onClick={this.submitLogin}>Submit</FlatButton>
 			  </p>
+			  <br></br>
 			  </ul>
 			  <a href='/authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
+			  <br></br>
+			  <FlatButton onClick={this.showRegister}>Register</FlatButton>
+			  <Modal ref="reg">
+                <div>
+                <Registration/>
+                </div>
+              </Modal>
 			</div>
 			)
 	},
 
 	submitLogin: function(e){
+		console.log("wat")
 		e.preventDefault()
-
 		var data = {
 			username: this.refs.username.value,
 			password: this.refs.password.value,

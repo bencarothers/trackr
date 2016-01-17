@@ -5,7 +5,7 @@ import Colors from 'material-ui/lib/styles/colors';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Dash from './dash'
 import Registration from './Registration'
-import Login from './Login'
+import Login from './login'
 
 const Page = React.createClass({
 
@@ -37,7 +37,6 @@ const Page = React.createClass({
     return (
       <div>
         <Login/>
-        <Registration/>
       </div>
     );
   },

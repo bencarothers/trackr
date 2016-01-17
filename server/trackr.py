@@ -125,14 +125,12 @@ def oauth_callback(provider):
     nickname = username
     if nickname is None or nickname == "":
         nickname = email.split('@')[0]
-        print 'tried to really log them in like a real person'
-        url_for(post_user, username = nickname, password = password, email = email, provider = provider)
+        #url_for(post_user, username = nickname, password = password, email = email, provider = provider)
         return redirect(url_for('index'))
     else:
         #This is just a login
         user = user_loader(nickname)
         login_user(user)
-        print 'loaded user i guess'
         return redirect(url_for('index'))
 
 
@@ -151,10 +149,11 @@ def get_user(username, password):
     if r.status_code != 200:
         return "IMPROPER"
     r_json = r.json()
-    user = r_json['log_in']
-    user = user_loader(user['user_id'])
-    login_user(user)
-    print "hello, " + str(current_user.user_id)
+    if 'log_in' in r_json:
+        user = r_json['log_in']
+        user = user_loader(user['user_id'])
+        login_user(user)
+        print "hello, " + str(current_user.user_id)
     return r._content
 
 @app.route("/api_check/<username>/<email>")

@@ -6,10 +6,11 @@ import injectTapEventPlugin from "react-tap-event-plugin"
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Modal from 'boron/OutlineModal'
+import Login_Form from './Login_Form'
 
 const LoginAppBar = React.createClass({
 
-    addLift(){
+    showLogin(){
         this.refs.modal.show();
     },
 
@@ -43,15 +44,12 @@ const LoginAppBar = React.createClass({
                zDepth={0}
                iconElementRight={
                     <div>
-                        <FlatButton onClick={this.addLift}>Login</FlatButton>
+                        <FlatButton onClick={this.showLogin}>Login</FlatButton>
                         <div style={styles.container}>
                           <Modal ref="modal">
-                              <form action="">
-                                 Lift: <input type="text" ref="lift"></input><br></br>
-                                 Weight: <input type="text" ref="weight"></input><br></br>
-                                 Video: <input type="text" ref="video"></input><br></br><br></br>
-                              </form>
-                              <FlatButton onClick={this.handleSubmit} style={styles.button}>Add a Lift</FlatButton>
+                              <div>
+                              <Login_Form/>
+                              </div>
                           </Modal>
                         </div>
                      </div>

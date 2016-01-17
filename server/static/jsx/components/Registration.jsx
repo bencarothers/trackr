@@ -9,8 +9,6 @@ import CardText from 'material-ui/lib/card/card-text';
 import CardTitle from 'material-ui/lib/card/card-title';
 import CardMedia from 'material-ui/lib/card/card-media';
 
-
-
 var fieldValues = {
   username     : null,
   email    : null,
@@ -105,10 +103,15 @@ showStep: function(){
 render(){
     var cardStyle = {
       display: 'block',
-      marginLeft: '270px',
-      width: '300px',
+      width: '500px',
       height: '300px',
-      paddng: '50px'
+      paddng: '50px',
+      padding: '1em 2em',
+      outline: 'none',
+      fontSize: 14,
+      fontWeight: '600',
+      background: '#C94E50',
+      color: '#080808'
              }
   return(
     <Card style={cardStyle}>
