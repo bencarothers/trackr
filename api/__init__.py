@@ -8,8 +8,7 @@ from bson.json_util import dumps
 from flask_mongoengine import MongoEngine
 from flask.ext.superadmin import model
 from flask.ext.superadmin import Admin
-from itsdangerous import (TimedJSONWebSignatureSerializer
-                          as Serializer, BadSignature, SignatureExpired)
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['TESTING'] = True
@@ -18,7 +17,6 @@ app.config["SECRET_KEY"] = 'HonestEngine'
 
 db = MongoEngine()
 db.init_app(app)
-
 
 def output_json(obj, code, headers=None):
     response = make_response(dumps(obj), code)

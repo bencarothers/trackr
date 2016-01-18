@@ -2,5 +2,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Page from './components/page';
-
-ReactDOM.render(<Page/>, document.getElementById('app'));
+import AppRoutes from './routes';
+ReactDOM.render(<AppRoutes/>, document.getElementById('app'));

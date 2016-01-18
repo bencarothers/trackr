@@ -6,12 +6,14 @@ from flask import redirect, url_for, request, session, Blueprint
 from authenticator import Authenticator
 from Oauthenticator import OAuthenticator
 from functools import wraps
-from flask.ext.login import login_user, logout_user, current_user, LoginManager
+from flask.ext.login import login_user, logout_user, current_user, LoginManager, login_required
 from user import User
 from Oauth import OAuthSignIn
 from flask import jsonify
 from config.Config import DevelopmentConfig
 from hasher import hash_alg
+from itsdangerous import (TimedJSONWebSignatureSerializer
+                          as Serializer, BadSignature, SignatureExpired)
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -29,83 +31,18 @@ def index():
     return flask.render_template('index.html')
 
 @app.route("/ajaxVideoUpload/")
+@login_required
 def uploadVideo():
     return flask.render_template('index.html')
-
-def login_required(func):
-    @wraps(func)
-    def decorated_view(*args, **kwargs):
-        if current_app.login_manager._login_disabled:
-            return func(*args, **kwargs)
-        elif not current_user.is_authenticated:
-            flask.flash('Sorry, you have to login to go there!')
-            return redirect(url_for('login'))
-        return func(*args, **kwargs)
-    return decorated_view
-
-@app.route("/secret")
-@login_required
-def secret():
-    return flask.render_template('secret.html')
 
 @app.route('/test')
 def test():
     return flask.render_template('test.html')
 
-###AUTHENTICATION: DO WE WANT THIS ALL IN A SEPERATE FILE?
-@app.route('/login', methods = ['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] == '' or request.form['password'] == '':
-            error = "Please fill out the whole form"
-        else:
-            authenticator = Authenticator(
-                username = request.form['username'],
-                password = request.form['password']
-                )
-            if authenticator.validLogin():
-                user = user_loader(request.form['username'])
-                login_user(user, remember = True)
-                return redirect(url_for('secret'))
-            else:
-                error = authenticator.error
-                print 'trying to return login page ith error.'
-                return flask.render_template('login.html', error = error)
-    return flask.render_template('login.html', error = error)
-
-@app.route('/register', methods = ['GET', 'POST'])
-def register():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] == '' or request.form['password'] == '' or request.form['email'] == '':
-            error = "Please fill out the whole form"
-        else:
-            authenticator = Authenticator(
-                username = request.form['username'],
-                password = request.form['password'],
-                email = request.form['email']
-            )
-            if authenticator.validForm():
-                user = User(
-                    username = authenticator.username,
-                    password = authenticator.password,
-                    email = authenticator.email,
-                    provider = "Trackr"
-                    )
-                user.save()
-                login_user(user, remember = True)
-                flask.flash('You were just registered! Use these credentials to login!')
-                return redirect(url_for('.login'))
-            else:
-                error = authenticator.error
-    return flask.render_template('register.html', error = error)
-
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flask.flash("You were just logged out!")
     return redirect(url_for('index'))
 
 @app.route('/authorize/<provider>')

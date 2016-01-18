@@ -5,15 +5,13 @@ import {
   IndexRoute,
 } from 'react-router';
 
-const AppRoutes = (
-  <Route path="/" component={Master}>
-    <Route path="home" component={Home} />
-    </Route>
-    <Route path="dash" component={Home} />
-    </Route>
+import Page from './components/page';
+import Home from './components/home';
 
-    <IndexRoute component={Home}/>
-  </Route>
+const AppRoutes = (
+      <Route name="page" path = "/" handler={Page}>
+      <Route name="home" path ="/Home" handler={Home}/>
+      </Route>
 );
 
 export default AppRoutes;
