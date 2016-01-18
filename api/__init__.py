@@ -8,7 +8,8 @@ from bson.json_util import dumps
 from flask_mongoengine import MongoEngine
 from flask.ext.superadmin import model
 from flask.ext.superadmin import Admin
-
+from itsdangerous import (TimedJSONWebSignatureSerializer
+                          as Serializer, BadSignature, SignatureExpired)
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['TESTING'] = True
