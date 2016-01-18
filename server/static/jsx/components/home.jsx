@@ -1,70 +1,43 @@
 import React from 'react';
+import jQuery from 'jquery';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme';
 import Colors from 'material-ui/lib/styles/colors';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Dash from './dash'
-import { render }from 'react-dom';
+import ReactDOM from 'react-dom';
+
 
 var Home = React.createClass({
 
   getInitialState: function(){
     return {
-      username: ''
+      username: null
     };
-  },
-
-
-  childContextTypes: {
-    muiTheme: React.PropTypes.object,
-  },
-
-  getInitialState() {
-    return {
-      muiTheme: ThemeManager.getMuiTheme(LightRawTheme),
-    };
-  },
-
-  getChildContext() {
-    return {
-      muiTheme: this.state.muiTheme,
-    };
-  },
-
-  componentWillMount() {
-    let newMuiTheme = ThemeManager.modifyRawThemePalette(this.state.muiTheme, {
-      accent1Color: Colors.deepOrange500,
-    });
-
-    this.setState({muiTheme: newMuiTheme});
   },
 
   componentDidMount: function(){
-    $.get(this.props.source, function(result){
-      var response = JSON.parse(result)
-      var user_id = response.user.user_id;
-      if(this.isMounted()){
-        this.setState({
-          username: user_id
-        });
-      }
+    jQuery.get("http://localhost:5000/current_user/").done(function(result){
+      console.log(result)
+      var user_id = result.user;
+      this.setState({ username: user_id });
     }.bind(this));
     },
 
   render() {
+    if (this.state.username){
     return (
       <div>
       <Dash/>
-      <div id= "example"></div>
       Welcome, {this.state.username}!
       </div>
     );
-  },
+  }else{
+     return(
+    <div>Loading...</div>
+    );
+  }
+}
 });
-
-React.renderComponent(
-  <Home source="http://localhost:5000/current_user/"/>,
-  document.getElementById('example')
-);
 
 export default Home;

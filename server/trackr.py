@@ -39,8 +39,12 @@ def uploadVideo():
 @login_required
 def get_current_user():
     user = current_user
-    web_readable_current_user = jsonify(user)
-    return web_readable_current_user
+    if user:
+        print 'SENDING USER DATA VIA AJAX'
+        return jsonify({"status": "ok", "user": user.user_id})
+    else:
+        return jsonify({"status":"fail"})
+
 
 @app.route('/test')
 def test():

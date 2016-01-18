@@ -58,22 +58,13 @@ var LoginFields = React.createClass({
   		var result = JSON.parse(response)
   		if (result.status == "ok"){
   			this.props.successStep()
-  			//Could do computation here to find out how to render the new page with actual content
   			window.setTimeout(function(){
   				window.location.href = "http://localhost:5000/#/home"
   			}, 3000);
-  			var id = getUser(result)
-
   		}
   		else{
   			this.props.failureStep()
   		}
-	},
-
-	getUser: function(result){
-		var id = result.user.user_id
-		console.log(id)
-		return(id)
 	}
 })
 
