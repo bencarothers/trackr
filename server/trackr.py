@@ -35,6 +35,13 @@ def index():
 def uploadVideo():
     return flask.render_template('index.html')
 
+@app.route("/current_user/")
+@login_required
+def get_current_user:
+    user = current_user
+    web_readable_current_user = jsonify(user)
+    return web_readable_current_user
+
 @app.route('/test')
 def test():
     return flask.render_template('test.html')

@@ -42,7 +42,6 @@ var LoginFields = React.createClass({
 	},
 
 	submitLogin: function(e){
-		console.log("wat")
 		e.preventDefault()
 		var data = {
 			username: this.refs.username.value,
@@ -57,14 +56,23 @@ var LoginFields = React.createClass({
   		xmlHttp.send( null );
   		var response = xmlHttp.responseText;
   		var result = JSON.parse(response)
-
-  		console.log(response)
   		if (result.status == "ok"){
   			this.props.successStep()
+  			//Could do computation here to find out how to render the new page with actual content
+  			var id = getUser(result)
+  			window.setTimeout(function(){
+  				window.location.href = "http://localhost:5000/#/home"
+  			}, 3000);
   		}
   		else{
   			this.props.failureStep()
   		}
+	},
+
+	getUser: function(result){
+		var id = result.user.user_id
+		console.log(id)
+		return(id)
 	}
 })
 
