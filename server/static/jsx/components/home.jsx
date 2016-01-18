@@ -4,8 +4,16 @@ import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme';
 import Colors from 'material-ui/lib/styles/colors';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Dash from './dash'
+import { render }from 'react-dom';
 
-const Home = React.createClass({
+var Home = React.createClass({
+
+  getInitialState: function(){
+    return {
+      username: ''
+    };
+  },
+
 
   childContextTypes: {
     muiTheme: React.PropTypes.object,
@@ -31,15 +39,32 @@ const Home = React.createClass({
     this.setState({muiTheme: newMuiTheme});
   },
 
+  componentDidMount: function(){
+    $.get(this.props.source, function(result){
+      var response = JSON.parse(result)
+      var user_id = response.user.user_id;
+      if(this.isMounted()){
+        this.setState({
+          username: user_id
+        });
+      }
+    }.bind(this));
+    },
+
   render() {
     return (
       <div>
-        <h1>Hey, you can kinda use React!</h1>
-        <br></br>
-        <h2>May be a good time to get good</h2>
+      <Dash/>
+      <div id= "example"></div>
+      Welcome, {this.state.username}!
       </div>
     );
   },
 });
+
+React.renderComponent(
+  <Home source="http://localhost:5000/current_user/"/>,
+  document.getElementById('example')
+);
 
 export default Home;

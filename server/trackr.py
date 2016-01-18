@@ -37,7 +37,7 @@ def uploadVideo():
 
 @app.route("/current_user/")
 @login_required
-def get_current_user:
+def get_current_user():
     user = current_user
     web_readable_current_user = jsonify(user)
     return web_readable_current_user
