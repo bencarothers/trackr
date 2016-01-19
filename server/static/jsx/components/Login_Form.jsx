@@ -106,7 +106,7 @@ render(){
       outline: 'none',
       fontSize: 14,
       fontWeight: '600',
-      background: '#C94E50',
+      background: '#0099ff',
       color: '#080808'
              }
   return(

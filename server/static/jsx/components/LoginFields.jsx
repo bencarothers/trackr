@@ -26,12 +26,14 @@ var LoginFields = React.createClass({
 			<input type ="password" ref="password" defaultValue={this.props.fieldValues.password}/>
               <p className = "form-footer">
 			<FlatButton onClick={this.submitLogin}>Submit</FlatButton>
+			<br></br>
+			<FlatButton onClick={this.showRegister}>Register</FlatButton>
 			  </p>
+			  <br></br>
 			  <br></br>
 			  </ul>
 			  <a href='/authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
 			  <br></br>
-			  <FlatButton onClick={this.showRegister}>Register</FlatButton>
 			  <Modal ref="reg">
                 <div>
                 <Registration/>
