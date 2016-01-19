@@ -35,6 +35,14 @@ const MainAppBar = React.createClass({
        this.refs.modal.hide();
     },
 
+    logOut(){
+      jQuery.get("http://localhost:5000/logout_current_user/").done(function(result){
+          window.setTimeout(function(){
+          window.location.href = "http://localhost:5000/"
+        }, 1000);
+      });
+    },
+
     render() {
         const title = 'Trackr'
         return (
@@ -45,6 +53,8 @@ const MainAppBar = React.createClass({
                iconElementRight={
                     <div>
                         <FlatButton onClick={this.addLift}>Add</FlatButton>
+                        &nbsp;&nbsp;&nbsp;
+                        <FlatButton onClick={this.logOut}>Logout</FlatButton>
                           <Modal ref="modal">
                             <div>
                               <form action="">

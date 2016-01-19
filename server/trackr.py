@@ -50,11 +50,11 @@ def get_current_user():
 def test():
     return flask.render_template('test.html')
 
-@app.route('/logout')
+@app.route('/logout_current_user/')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return jsonify({'status': 'ok'})
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
