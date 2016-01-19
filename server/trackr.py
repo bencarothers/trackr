@@ -3,12 +3,10 @@ from flask import Flask
 import requests
 from flask import current_app
 from flask import redirect, url_for, request, session, Blueprint
-from authenticator import Authenticator
-from Oauthenticator import OAuthenticator
 from functools import wraps
 from flask.ext.login import login_user, logout_user, current_user, LoginManager, login_required
 from user import User
-from Oauth import OAuthSignIn
+from oauth import OAuthSignIn
 from flask import jsonify
 from config.Config import DevelopmentConfig
 from hasher import hash_alg
@@ -44,12 +42,7 @@ def get_current_user():
         return jsonify({"status": "ok", "user": user.user_id})
     else:
         return jsonify({"status":"fail"})
-
-
-@app.route('/test')
-def test():
-    return flask.render_template('test.html')
-
+        
 @app.route('/logout_current_user/')
 @login_required
 def logout():

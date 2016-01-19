@@ -26,9 +26,7 @@ const App = React.createClass({
     }
 
     return(
-      <div>
       <Child/>
-      </div>
       )
   }
 })
