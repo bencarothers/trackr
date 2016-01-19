@@ -1,8 +1,8 @@
 "use strict";
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Page from './components/page';
-import Home from './components/home';
+import Dash from './pages/Dash';
+import Home from './pages/Home';
 
 const App = React.createClass({
   getInitialState(){
@@ -22,12 +22,12 @@ const App = React.createClass({
   render(){
     let Child
     switch (this.state.route){
-      case '/home': Child = Home; break;
-      default: Child = Page; 
+      case '/dash': Child = Dash; break;
+      default: Child = Home; 
     }
     return(
       <Child/>
-      )
+    )
   }
 })
 
