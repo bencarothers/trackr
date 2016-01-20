@@ -8,7 +8,6 @@ from bson.json_util import dumps
 from flask_mongoengine import MongoEngine
 from flask.ext.superadmin import model
 from flask.ext.superadmin import Admin
-
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['TESTING'] = True
@@ -25,12 +24,19 @@ def output_json(obj, code, headers=None):
 
 DEFAULT_REPRESENTATIONS = {'application/json': output_json}
 
+class Lift(db.Document):
+    lift_type = db.StringField(max_length = 100, required = True)
+    weight = db.StringField(max_length = 100, required = True)
+    file_path = db.StringField(max_length = 40, required = True)
+    date = db.StringField(max_length = 40)
+
 class User(db.Document):
     user_id = db.StringField(max_length = 40, unique=True, required = True)
     password = db.StringField(max_length = 40, required = True)
     user_email = db.StringField(max_length = 40, unique=True, required = True)
     provider = db.StringField(max_length = 40, required = True)
-
+    lifts = db.ListField(db.ReferenceField(Lift))
+    
     def __unicode__(self):
         return self.user_id
 
@@ -91,6 +97,32 @@ class postUser(restful.Resource):
             else:
                 return jsonify({"response": "registration number missing"})
 
+class addLift(restful.Resource):
+    
+    def post(self):
+        data = request.get_json()
+        if not data:
+            data = {'status': 'ERROR'}
+            return jsonify(data)
+        else:
+            user_id = data.get('user_id')
+            weight = data.get('weight')
+            lift_type = data.get('lift_type')
+            file_path = data.get('file_path')
+            date = data.get('date')
+            if user_id:
+                user = User.objects.filter(**{'user_id': user_id }).first()
+                new_lift = Lift(
+                    lift_type = lift_type,
+                    weight = weight,
+                    file_path = file_path,
+                    date = date
+                     )
+                new_lift.save()
+                user.lifts.insert(0, new_lift)
+                user.save()
+                return jsonify({"status": "ok"})
+
 class deleteUser(restful.Resource):
     
     def delete(self, user_id = None):
@@ -110,13 +142,18 @@ api.add_resource(getUser, '/User')
 api.add_resource(loginUser, '/LoginUser')
 api.add_resource(postUser, '/Add')
 api.add_resource(deleteUser, '/Delete')
-api.add_resource(checkNewUser, "/Check")
+api.add_resource(checkNewUser, '/Check')
+api.add_resource(addLift, '/addLift')
 if __name__ == "__main__":
     admin = Admin(app, 'Simple Models')
 
     class UserModel(model.ModelAdmin):
-        list_display = ('user_id', 'password', 'user_email', 'provider')
+        list_display = ('user_id', 'password', 'user_email', 'provider', 'lifts' )
+
+    class LiftModel(model.ModelAdmin):
+        list_display = ('lift_type', 'weight', 'file_path', 'date')
 
     admin.register(User, UserModel)
+    admin.register(Lift, LiftModel)
     app.debug = True
     app.run('0.0.0.0', 8000)

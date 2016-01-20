@@ -16,6 +16,7 @@ from config.Config import DevelopmentConfig
 from flask import redirect, url_for, request, session, Blueprint, jsonify, current_app
 from flask.ext.login import login_user, logout_user, current_user, LoginManager, login_required
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+import datetime
 
 app = flask.Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -32,10 +33,18 @@ def user_loader(user_id):
 def index():
     return flask.render_template('index.html')
 
-@app.route("/ajaxVideoUpload/")
+@app.route("/ajaxVideoUpload/<lift>/<weight>/", methods = ['POST'])
 @login_required
-def uploadVideo():
-    return flask.render_template('index.html')
+def uploadVideo(lift, weight):
+    user = current_user
+    user_id = user.user_id
+    payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
+              'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
+    r = requests.post("http://127.0.0.1:8000/addLift",json = payload)
+    if r.status_code != 200:
+        return "IMPROPER"
+    else:
+        return r._content
 
 @app.route("/current_user/")
 @login_required

@@ -22,11 +22,10 @@ const MainAppBar = React.createClass({
        };
        this.props.handleResponse(formData)
        jQuery.ajax({
-           url: '/ajaxVideoUpload/',
+           url: '/ajaxVideoUpload/'+ formData.lift + '/' + formData.weight + '/',
            type: 'POST',
            data: formData,
            cache: false,
-           contentType: false,
            processData: false,
            success: function(data){
                alert('Success');
