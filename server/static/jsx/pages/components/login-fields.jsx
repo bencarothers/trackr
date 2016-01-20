@@ -1,6 +1,6 @@
 import React from 'react';
 import FlatButton from 'material-ui/lib/flat-button';
-import Registration from './Registration'
+import Registration from './registration'
 import Modal from 'boron/OutlineModal'
 
 

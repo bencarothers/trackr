@@ -6,7 +6,7 @@ import injectTapEventPlugin from "react-tap-event-plugin"
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Modal from 'boron/OutlineModal'
-import Login_Form from './Login_Form'
+import Login_Form from './login-form'
 
 const LoginAppBar = React.createClass({
 
