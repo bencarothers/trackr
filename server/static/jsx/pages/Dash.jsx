@@ -1,4 +1,5 @@
 import React from 'react';
+import jQuery from 'jquery';
 import MainAppBar from './components/app-bar'
 import LiftGallery from './components/lift-gallery'
 
