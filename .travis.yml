@@ -1,13 +1,12 @@
 language: python
 python:
-  - "2.7"
-
+- '2.7'
 install:
-    - pip install coveralls
-    - python setup.py install
-
+- pip install coveralls
+- python setup.py install
 script:
-    - python setup.py test
-
-after_success:
-      coveralls
+- python setup.py test
+after_success: coveralls
+deploy:
+  api_key: 3c441b08-7521-4b95-868d-65e5d4fe8310
+    secure: eFsMSNnhJRsVFGsl0iB1Xb2/NInQ7fn0ivF88Zj4iGZQ/mMR6mjO3Toa/z6F0ZNIhWIBhVuWuHNxYLR9k75fKpDPh9HJZqmABpPaVt0rWPTkxG2p74hKhvdYGkFG2J02GwcNaCm2yNSmzohiuq4PQfgKnlV/9akmPkop04YwHNUCztVrufJwsOsSPBvrTGNjBVlwzcVVFCOLSVdTg4+AAi5bz0frrZzsNFqAYNyeQvJRk42ZOGxuMIh4CAq8kQNwmUD781DINlsOWwcCHOXAt/T461/giJbCa9ra64IzU0Nwq5QEPxzHlODRRjPpzGe+sc6hpF3rpykdCewU0qzwLb0qCXQDHlCmBOHCB4QHxbKc+a1+jySzPcy9rrLDVNkqgRuOwc1LypwvVCiqfZ6+EhhrEHjexd03N91niTuA7ybheEtIfOk8V0TdaNDYhFcGL5IaxjPOzJU7RNrUysQwndsgZ5nUp3vTy2cX2ZYSigViDMysTn0rJyAPvMQD0RHsIQvJ8uiyCEdYwvVLO0mGexnt18bIDWAQjvkHTRktM+OMhbJYe0JYwyZho0346APiJH+NZhd91a2rQWGs2bMfIERwow9D7Y1oImgeZ5G4As38ybtZ/CQ2DHHHnsXLegGZ4up2ikUHyhCUEQJenKt/+Jy3i4ZjXkNwxVbFIHt0xlI=
