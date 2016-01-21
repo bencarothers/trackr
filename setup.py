@@ -13,9 +13,9 @@ setup(name='trackr',
       url='https://github.com/bencarothers/trackr',
       packages=['server', 'server.tests'],
       test_suite="server.tests",
-            install_requires=[
+      install_requires=[
             'coverage>=3.3',
-            'nose>=1.0',
+            'nose==1.0',
             'flask==0.10.1',
             'flask-restful==0.3.5',
             'Jinja2==2.7.3',
