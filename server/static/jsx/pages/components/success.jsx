@@ -4,10 +4,12 @@ var Success = React.createClass({
     render: function () {
         return (
             <div>
-                <h2>Successfully Registered!</h2>
-                <ul>
-                    <li>Please check your email <b> {this.props.fieldValues.email}</b> for a confirmation email!</li>
-                </ul>
+                <div className="row">
+                    <h2>Successfully Registered!</h2>
+                </div>
+                <div className="row">
+                    <p>Please check your email <b> {this.props.fieldValues.email}</b> for a confirmation email!</p>
+                </div>
             </div>
         )
     }

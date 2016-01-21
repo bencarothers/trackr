@@ -1,4 +1,5 @@
 import os
+import flask
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -8,18 +9,11 @@ from bson.json_util import dumps
 from flask_mongoengine import MongoEngine
 from flask.ext.superadmin import model
 from flask.ext.superadmin import Admin
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['TESTING'] = True
-app.config['MONGODB_SETTINGS'] = {'DB': "trackr"}
-connect(
-    'trackr',
-    username='admin',
-    password='os.environ['MONGO_PASS']',
-    host='os.environ['MONGO_URI']',
-    port=47685
-)
-
+app.config['MONGODB_SETTINGS'] = {'DB': "test"}
 app.config["SECRET_KEY"] = 'HonestEngine'
 
 db = MongoEngine()

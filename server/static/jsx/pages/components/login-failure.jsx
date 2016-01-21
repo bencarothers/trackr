@@ -5,9 +5,15 @@ var LoginFailure = React.createClass({
     render: function () {
         return (
             <div>
-                <h2>Unsuccessful Login</h2>
-                <p>Sorry, it seems something was wrong with your <b>username</b> or <b>password</b></p>
-                <FlatButton onClick={this.props.previousStep}>Try again?</FlatButton>
+                <div className="row ">
+                    <h2>Unsuccessful Login</h2>
+                </div>
+                <div className="row ">
+                    <p>Sorry, it seems something was wrong with your <b>username</b> or <b>password</b></p>
+                </div>
+                <div className="row ">
+                    <FlatButton onClick={this.props.previousStep}>Try again?</FlatButton>
+                </div>
             </div>
         )
     }

@@ -3,6 +3,7 @@ import AppBar from 'material-ui/lib/app-bar';
 import FlatButton from 'material-ui/lib/flat-button';
 import Modal from 'boron/OutlineModal'
 import Login_Form from './login-form'
+import Nav from './left-nav'
 
 const LoginAppBar = React.createClass({
 
@@ -26,10 +27,10 @@ const LoginAppBar = React.createClass({
                     iconElementRight={
                     <div>
                         <FlatButton onClick={this.showLogin}>Login</FlatButton>
-                              <Login_Form ref="modal">
-                              </Login_Form>
+                        <Login_Form ref="modal">
+                        </Login_Form>
                      </div>
-              }
+                }
                 >
                 </AppBar>
             </div>
