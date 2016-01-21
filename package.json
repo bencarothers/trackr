@@ -25,7 +25,6 @@
     "boron": "^0.2.3",
     "bower": "^1.7.2",
     "material-ui": "^0.13.0",
-    "webpack": "^1.11.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-tap-event-plugin": "^0.2.1",
@@ -33,7 +32,8 @@
     "react-tap-event-plugin": "^0.2.1"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install",
+    "build:webpack": "NODE_ENV=production webpack --progress --colors --config ./webpack.js",
+    "postinstall": "./node_modules/bower/bin/bower install && npm run build:webpack",
     "build": "webpack --config webpack.js --progress --colors"
   }
 }
