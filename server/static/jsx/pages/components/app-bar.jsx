@@ -15,61 +15,59 @@ const MainAppBar = React.createClass({
     },
 
     handleSubmit(){
-       var formData = {
-             lift: React.findDOMNode(this.refs.lift).value,
-             weight: React.findDOMNode(this.refs.weight).value,
-             video: React.findDOMNode(this.refs.video).value
-       };
-       this.props.handleResponse(formData)
-       jQuery.ajax({
-           url: '/ajaxVideoUpload/'+ formData.lift + '/' + formData.weight + '/',
-           type: 'POST',
-           data: formData,
-           cache: false,
-           processData: false,
-           success: function(data){
-               alert('Success');
-           }
-       })
-       this.refs.modal.hide();
+        var formData = {
+            lift: React.findDOMNode(this.refs.lift).value,
+            weight: React.findDOMNode(this.refs.weight).value,
+            video: React.findDOMNode(this.refs.video).value
+        };
+        this.props.handleResponse(formData)
+        jQuery.ajax({
+            url: '/ajaxVideoUpload/' + formData.lift + '/' + formData.weight + '/',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                alert('Success');
+            }
+        })
+        this.refs.modal.hide();
     },
 
     logOut(){
-      jQuery.get("http://localhost:5000/logout_current_user/").done(function(result){
-          window.setTimeout(function(){
-          window.location.href = "http://localhost:5000/"
-        }, 1000);
-      });
+        jQuery.get("http://localhost:5000/logout_current_user/").done(function (result) {
+            window.setTimeout(function () {
+                window.location.href = "http://localhost:5000/"
+            }, 1000);
+        });
     },
 
     render() {
         const title = 'Trackr'
         return (
-          <div >
-           <AppBar
-               title={title}
-               zDepth={0}
-               iconElementRight={
+            <div >
+                <AppBar
+                    title={title}
+                    zDepth={0}
+                    iconElementRight={
                     <div>
                         <FlatButton onClick={this.addLift}>Add</FlatButton>
                         &nbsp;&nbsp;&nbsp;
                         <FlatButton onClick={this.logOut}>Logout</FlatButton>
                           <Modal ref="modal">
-                            <div>
                               <form action="">
                                  Lift: <input type="text" ref="lift"></input><br></br>
                                  Weight: <input type="text" ref="weight"></input><br></br>
                                  Video:<input type="file" ref="video" accept="image/*"></input>
                               </form>
                               <FlatButton onClick={this.handleSubmit} >Add a Lift</FlatButton>
-                             </div>
                           </Modal>
                      </div>
               }
-           >
-           </AppBar>
-          </div>
-       );
+                >
+                </AppBar>
+            </div>
+        );
     },
 });
 

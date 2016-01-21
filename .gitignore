@@ -19,6 +19,7 @@
 .tags
 .tmproj
 tags
+.idea
 
 # Bower stuff
 server/static/lib

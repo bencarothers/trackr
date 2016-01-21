@@ -10,48 +10,24 @@ const Jumbo = React.createClass({
     },
 
     hideModal(){
-       this.refs.modal.hide();
+        this.refs.modal.hide();
     },
 
     render() {
-
-        var styles = {
-
-          btn: {
-                padding: '1em 2em',
-                outline: 'none',
-                fontSize: 16,
-                fontWeight: '600',
-                background: '#C94E50',
-                color: '#FFFFFF',
-                border: 'none'
-            },
-
-          container: {
-                width: '70%',
-                height: '40%',
-                position:'absolute',
-                background: 'beige',
-                margin: 'auto'
-            }
+        var jumboStyle = {
+            marginTop: '10%'
         }
 
         return (
-          <div styles={styles.container}>
-            <div >
-            <FlatButton onClick={this.showModal}>Open</FlatButton>
-               <Modal ref="modal">
-                   <form>
-                     Lift: <input type="text" name="firstname"></input><br></br>
-                     Weight: <input type="text" name="lastname"></input><br></br>
-                     Video: <input type="text" name="lastname"></input><br></br><br></br>
-                   </form>
-                 <FlatButton onClick={this.hideModal}>Add a Lift</FlatButton>
-               </Modal>
+            <div className="container">
+                <div className="jumbotron" style={jumboStyle}>
+                    <h1>Hello, world!</h1>
+                    <p> Welcome to Trackr.</p>
+                    <p><a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                </div>
             </div>
-          </div>
-       );
-    },
+        );
+    }
 });
 
 export default Jumbo;
