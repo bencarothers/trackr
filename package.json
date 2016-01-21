@@ -17,8 +17,7 @@
     "eslint-plugin-react": "^3.2.2",
     "html-webpack-plugin": "^1.6.1",
     "react-hot-loader": "^1.2.8",
-    "transfer-webpack-plugin": "^0.1.4",
-    "webpack": "^1.11.0"
+    "transfer-webpack-plugin": "^0.1.4"
   },
   "dependencies": {
     "jquery": "^2.2.0",
@@ -29,7 +28,8 @@
     "react-dom": "^0.14.0",
     "react-tap-event-plugin": "^0.2.1",
     "object-assign": "~4.0.1",
-    "react-tap-event-plugin": "^0.2.1"
+    "react-tap-event-plugin": "^0.2.1",
+    "webpack": "^1.11.0"
   },
   "scripts": {
     "build:webpack": "NODE_ENV=production webpack --progress --colors --config ./webpack.js",
