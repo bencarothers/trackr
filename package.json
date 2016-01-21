@@ -16,7 +16,9 @@
     "eslint-loader": "^1.0.0",
     "eslint-plugin-react": "^3.2.2",
     "html-webpack-plugin": "^1.6.1",
-    "react-hot-loader": "^1.2.8"
+    "react-hot-loader": "^1.2.8",
+    "transfer-webpack-plugin": "^0.1.4",
+    "webpack": "^1.11.0"
   },
   "dependencies": {
     "jquery": "^2.2.0",
@@ -31,7 +33,7 @@
     "react-tap-event-plugin": "^0.2.1"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install && ./node_modules/webpack/bin/webpack.js --config ./webpack.js",
+    "postinstall": "./node_modules/bower/bin/bower install",
     "build": "webpack --config webpack.js --progress --colors"
   }
 }
