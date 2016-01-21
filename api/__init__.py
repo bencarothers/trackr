@@ -11,7 +11,15 @@ from flask.ext.superadmin import Admin
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['TESTING'] = True
-app.config['MONGODB_SETTINGS'] = {'DB': "test"}
+app.config['MONGODB_SETTINGS'] = {'DB': "trackr"}
+connect(
+    'trackr',
+    username='admin',
+    password='os.environ['MONGO_PASS']',
+    host='os.environ['MONGO_URI']',
+    port=47685
+)
+
 app.config["SECRET_KEY"] = 'HonestEngine'
 
 db = MongoEngine()
@@ -36,7 +44,7 @@ class User(db.Document):
     user_email = db.StringField(max_length = 40, unique=True, required = True)
     provider = db.StringField(max_length = 40, required = True)
     lifts = db.ListField(db.ReferenceField(Lift))
-    
+
     def __unicode__(self):
         return self.user_id
 
@@ -98,7 +106,7 @@ class postUser(restful.Resource):
                 return jsonify({"response": "registration number missing"})
 
 class addLift(restful.Resource):
-    
+
     def post(self):
         data = request.get_json()
         if not data:
@@ -124,7 +132,7 @@ class addLift(restful.Resource):
                 return jsonify({"status": "ok"})
 
 class deleteUser(restful.Resource):
-    
+
     def delete(self, user_id = None):
         if user_id is None:
             return jsonify({"response" : "ERROR"})
