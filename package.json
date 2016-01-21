@@ -17,14 +17,14 @@
     "eslint-plugin-react": "^3.2.2",
     "html-webpack-plugin": "^1.6.1",
     "react-hot-loader": "^1.2.8",
-    "transfer-webpack-plugin": "^0.1.4",
-    "webpack": "^1.11.0"
+    "transfer-webpack-plugin": "^0.1.4"
   },
   "dependencies": {
     "jquery": "^2.2.0",
     "boron": "^0.2.3",
     "bower": "^1.7.2",
     "material-ui": "^0.13.0",
+    "webpack": "^1.11.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-tap-event-plugin": "^0.2.1",
