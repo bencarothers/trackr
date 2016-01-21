@@ -32,7 +32,7 @@
     "react-tap-event-plugin": "^0.2.1"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install",
+    "postinstall": "webpack --config webpack.js && ./node_modules/bower/bin/bower install",
     "build": "webpack --config webpack.js --progress --colors"
   }
 }
