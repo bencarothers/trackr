@@ -6,6 +6,8 @@ install:
 - python setup.py install
 script:
 - python setup.py test
+after_success:
+- coveralls
 deploy:
   provider: heroku
   api_key:
