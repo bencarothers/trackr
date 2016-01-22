@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/bencarothers/trackr.svg?branch=master)](https://travis-ci.org/bencarothers/trackr)
 [![Coverage Status](https://coveralls.io/repos/bencarothers/trackr/badge.svg?branch=master&service=github)](https://coveralls.io/github/bencarothers/trackr?branch=master)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=bartrackr)]
+[![Heroku](https://heroku-badge.herokuapp.com/?app=bartrackr)
 
 ## Development Notes
 
