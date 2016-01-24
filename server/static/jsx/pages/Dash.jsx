@@ -18,11 +18,11 @@ const Dash = React.createClass({
 
       componentDidMount: function(){
         jQuery.get("http://localhost:5000/current_user/").done(function(result){
-          console.log(result)
           var user_id = result.user;
           this.setState({ username: user_id });
         }.bind(this));
         },
+
           handleResponse(data){
               this.setState({lifts: this.state.lifts.concat([data])})
           },

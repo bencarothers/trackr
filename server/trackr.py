@@ -51,7 +51,6 @@ def uploadVideo(lift, weight):
 def get_current_user():
     user = current_user
     if user:
-        print 'SENDING USER DATA VIA AJAX'
         return jsonify({"status": "ok", "user": user.user_id})
     else:
         return jsonify({"status":"fail"})
@@ -87,7 +86,9 @@ def oauth_callback(provider):
         login_user(user)
         return redirect(url_for('index'))
 
-
+'''
+THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP 
+'''
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'})
 def post_user(username, password, email, provider):
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}

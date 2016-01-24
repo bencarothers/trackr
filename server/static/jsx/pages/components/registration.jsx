@@ -78,13 +78,18 @@ var Registration = React.createClass({
     },
 
     registerUser: function () {
-        var user_id = fieldValues.username
-        var email = fieldValues.email
-        var password = fieldValues.password
-        var Url = "http://localhost:5000/api_post/" + user_id + "/" + password + "/" + email + "/";
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", Url, true);
-        xmlHttp.send(null);
+        var Url = "http://localhost:5000/api_post/" + fieldValues.username + "/" + fieldValues.password + "/" + fieldValues.email + "/";
+        var response = null
+        jQuery.ajax({
+            async: false,
+            url: Url,
+            type: 'POST',
+            data: null,
+            dataType: 'json',
+            success: function (data){
+                response = data.status
+            }        
+        });
     },
 
     showStep: function () {

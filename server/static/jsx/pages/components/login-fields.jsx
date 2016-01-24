@@ -2,6 +2,8 @@ import React from 'react';
 import FlatButton from 'material-ui/lib/flat-button';
 import Registration from './registration'
 import Modal from 'boron/OutlineModal'
+import jQuery from 'jquery';
+
 
 
 var LoginFields = React.createClass({
@@ -65,24 +67,27 @@ var LoginFields = React.createClass({
             password: this.refs.password.value,
         }
         this.props.saveValues(data)
-        var user_id = data.username
-        var password = data.password
-        var Url = "http://localhost:5000/api_login/" + user_id + "/" + password;
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", Url, false);
-        xmlHttp.send(null);
-        var response = xmlHttp.responseText;
-        var result = JSON.parse(response)
-        if (result.status == "ok") {
+        var Url = "http://localhost:5000/api_login/" + data.username + "/" + data.password;
+        var response = ''
+        jQuery.ajax({
+            async: false,
+            url: Url,
+            type: 'POST',
+            data: null,
+            dataType: 'json',
+            success: function (data){
+                response = data.status
+            }        });
+        if (response == 'ok'){
             this.props.successStep()
-            window.setTimeout(function () {
+            window.setTimeout(function (){
                 window.location.href = "http://localhost:5000/#/dash"
-            }, 3000);
+                }, 3000);
         }
-        else {
+        else{
             this.props.failureStep()
-        }
-    }
+        }  
+    },
 })
 
 export default LoginFields;

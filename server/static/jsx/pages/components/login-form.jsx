@@ -4,7 +4,7 @@ import Modal from 'boron/OutlineModal'
 import LoginFields from './login-fields';
 import LoginSuccess from './login-success';
 import LoginFailure from './login-failure';
-
+import jQuery from 'jquery';
 
 var fieldValues = {
     username: null,
@@ -52,10 +52,10 @@ var Login_Form = React.createClass({
         var user_id = fieldValues.username
         var password = fieldValues.password
         var Url = "/api_get/" + user_id + "/" + password;
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", Url, true);
-        xmlHttp.send(null);
-        var result = xmlHttp.responseText;
+        var response = null
+        jQuery.post(Url).done(function(result){
+          console.log(result)
+        }.bind(response));
         var result = JSON.parse(response)
         console.log(response)
         if (result.status == 'ok') {

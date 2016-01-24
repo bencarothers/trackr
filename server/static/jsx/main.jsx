@@ -3,11 +3,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dash from './pages/Dash';
 import Home from './pages/Home';
+import jQuery from 'jquery'
 
 const App = React.createClass({
   getInitialState(){
-    return {
+    var response = ''
+    jQuery.ajax({
+        async: false,
+        url: "http://localhost:5000/current_user/",
+        type: 'GET',
+        data: null,
+        dataType: 'json',
+        success: function (data){
+          response = data.status
+      }});
+    console.log("The value of response is ",response)
+    if (response == 'ok'){
+         return{
+      route: '/dash'
+          }
+    }
+    else{
+        return {
       route: window.location.hash.substr(1)
+         }
     }
   },
 
