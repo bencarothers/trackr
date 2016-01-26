@@ -124,7 +124,7 @@ def check_user(username, email):
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get("http:127.0.0.1:8000/Delete")
+    r = requests.get(MONGO_URI + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content

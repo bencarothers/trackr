@@ -43,6 +43,10 @@ const MainAppBar = React.createClass({
     },
 
     render() {
+        var divStyle = {
+            padding: '2em',
+            textAlign: 'center'
+        }
         const title = 'Trackr'
         return (
             <div >
@@ -55,12 +59,25 @@ const MainAppBar = React.createClass({
                         &nbsp;&nbsp;&nbsp;
                         <FlatButton onClick={this.logOut}>Logout</FlatButton>
                           <Modal ref="modal">
+                          <div style={divStyle}>
                               <form action="">
+                                 <div className="form-group row">
+                                 <h2 className="col-md-12 text-center">Add a Lift</h2>
+                                 </div>
+                                 <div className="form-group row">
                                  Lift: <input type="text" ref="lift"></input><br></br>
+                                 </div>
+                                  <div className="form-group row">
                                  Weight: <input type="text" ref="weight"></input><br></br>
-                                 Video:<input type="file" ref="video" accept="image/*"></input>
+                                 </div>
+                                 <div className="form-group row">
+                                 Video: <input type="file" ref="video" accept="image/*"></input>
+                                 </div>
+                                 <button type='button' className="btn btn-secondary col-md-offset-3 col-md-6"
+                                 onClick={this.handleSubmit}>Add
+                                 </button>
                               </form>
-                              <FlatButton onClick={this.handleSubmit} >Add a Lift</FlatButton>
+                          </div>
                           </Modal>
                      </div>
               }

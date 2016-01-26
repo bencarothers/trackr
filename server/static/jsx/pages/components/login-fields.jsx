@@ -67,7 +67,7 @@ var LoginFields = React.createClass({
             password: this.refs.password.value,
         }
         this.props.saveValues(data)
-        var Url = "http://localhost:5000/api_login/" + data.username + "/" + data.password;
+        var Url = "/api_login/" + data.username + "/" + data.password;
         var response = ''
         jQuery.ajax({
             async: false,
