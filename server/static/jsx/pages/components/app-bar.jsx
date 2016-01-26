@@ -35,7 +35,7 @@ const MainAppBar = React.createClass({
     },
 
     logOut(){
-        jQuery.get("http://localhost:5000/logout_current_user/").done(function (result) {
+        jQuery.get("http://api4trackr.herokuapp.com/logout_current_user/").done(function (result) {
             window.setTimeout(function () {
                 window.location.href = "http://localhost:5000/"
             }, 1000);

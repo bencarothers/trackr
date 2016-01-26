@@ -10,7 +10,7 @@ const App = React.createClass({
     var response = ''
     jQuery.ajax({
         async: false,
-        url: "http://localhost:5000/current_user/",
+        url: "http://http://api4trackr.herokuapp.com//current_user/",
         type: 'GET',
         data: null,
         dataType: 'json',
