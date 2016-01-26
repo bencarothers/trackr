@@ -61,7 +61,7 @@ var Registration = React.createClass({
     submitRegistration: function () {
         var user_id = fieldValues.username
         var email = fieldValues.email
-        var Url = "http://api4trackr.herokuapp.com//api_check/" + user_id + "/" + email;
+        var Url = "/api_check/" + user_id + "/" + email;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", Url, false);
         xmlHttp.send(null);
@@ -78,7 +78,7 @@ var Registration = React.createClass({
     },
 
     registerUser: function () {
-        var Url = "http://api4trackr.herokuapp.com/api_post/" + fieldValues.username + "/" + fieldValues.password + "/" + fieldValues.email + "/";
+        var Url = "/api_post/" + fieldValues.username + "/" + fieldValues.password + "/" + fieldValues.email + "/";
         var response = null
         jQuery.ajax({
             async: false,

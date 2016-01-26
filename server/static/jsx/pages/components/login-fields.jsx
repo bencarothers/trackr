@@ -81,7 +81,7 @@ var LoginFields = React.createClass({
         if (response == 'ok'){
             this.props.successStep()
             window.setTimeout(function (){
-                window.location.href = "http://localhost:5000/#/dash"
+                window.location.href = "/#/dash"
                 }, 3000);
         }
         else{
