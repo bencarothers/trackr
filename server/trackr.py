@@ -1,3 +1,4 @@
+import os
 import flask
 import requests
 from flask import current_app
@@ -55,7 +56,7 @@ def get_current_user():
         return jsonify({"status": "ok", "user": user.user_id})
     else:
         return jsonify({"status":"fail"})
-        
+
 @app.route('/logout_current_user/')
 @login_required
 def logout():
@@ -88,7 +89,7 @@ def oauth_callback(provider):
         return redirect(url_for('index'))
 
 '''
-THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP 
+THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP
 '''
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'})
 def post_user(username, password, email, provider):
