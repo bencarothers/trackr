@@ -1,11 +1,7 @@
 import React from 'react';
 import jQuery from 'jquery';
 import AppBar from 'material-ui/lib/app-bar';
-import IconButton from 'material-ui/lib/icon-button';
 import FlatButton from 'material-ui/lib/flat-button';
-import injectTapEventPlugin from "react-tap-event-plugin"
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
 import Modal from 'boron/OutlineModal'
 
 const MainAppBar = React.createClass({
@@ -59,28 +55,32 @@ const MainAppBar = React.createClass({
                         &nbsp;&nbsp;&nbsp;
                         <FlatButton onClick={this.logOut}>Logout</FlatButton>
                           <Modal ref="modal">
-                          <div style={divStyle}>
-                              <form action="">
-                                 <div className="form-group row">
-                                 <h2 className="col-md-12 text-center">Add a Lift</h2>
-                                 </div>
-                                 <div className="form-group row">
-                                 Lift: <input type="text" ref="lift"></input><br></br>
-                                 </div>
-                                  <div className="form-group row">
-                                 Weight: <input type="text" ref="weight"></input><br></br>
-                                 </div>
-                                 <div className="form-group row">
-                                 Video: <input type="file" ref="video" accept="image/*"></input>
-                                 </div>
-                                 <button type='button' className="btn btn-secondary col-md-offset-3 col-md-6"
-                                 onClick={this.handleSubmit}>Add
-                                 </button>
-                              </form>
-                          </div>
+                              <div style={divStyle}>
+                               <form>
+                                    <div className="form-group row">
+                                        <h2 className="col-md-12 text-center">Add a Lift</h2>
+                                    </div>
+                                    <div className="form-group row">
+                                        Lift: <input type="text" ref="lift"></input><br></br>
+                                    </div>
+                                    <div className="form-group row">
+                                        Weight: <input type="text" ref="weight"></input><br></br>
+                                    </div>
+                                    <div className="form-group row">
+                                        <span className="btn btn-default btn-file">
+                                            Browse: <input type="file" ref="video" accept="image/*"></input>
+                                        </span>
+                                    </div>
+                                    <div className="form-group row">
+                                        <button type='button' className="btn btn-secondary col-md-offset-3 col-md-6"
+                                                onClick={this.handleSubmit}>Add
+                                        </button>
+                                    </div>
+                                </form>
+                              </div>
                           </Modal>
                      </div>
-              }
+                    }
                 >
                 </AppBar>
             </div>
