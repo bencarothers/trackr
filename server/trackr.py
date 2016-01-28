@@ -103,8 +103,8 @@ def post_user(username, password, email, provider):
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
     r = requests.get("https://api4tackr.herokuapp.com/LoginUser", json = payload)
-        if r.status_code != 200:
-        return "IMPROPER"
+    if r.status_code != 200:
+    	return "IMPROPER"
     r_json = r.json()
     if 'log_in' in r_json:
         user = r_json['log_in']
