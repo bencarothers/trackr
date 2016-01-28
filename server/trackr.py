@@ -1,3 +1,4 @@
+import os
 import flask
 import requests
 from flask import current_app
@@ -23,6 +24,7 @@ app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.secret_key = "barry_allen"
+MONGO_URI = os.environ.get("MONGO_URI")
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -40,7 +42,7 @@ def uploadVideo(lift, weight):
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
               'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
-    r = requests.post("http://127.0.0.1:8000/addLift",json = payload)
+    r = requests.post(MONGO_URI + "/addLift",json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     else:
@@ -54,7 +56,7 @@ def get_current_user():
         return jsonify({"status": "ok", "user": user.user_id})
     else:
         return jsonify({"status":"fail"})
-        
+
 @app.route('/logout_current_user/')
 @login_required
 def logout():
@@ -87,12 +89,12 @@ def oauth_callback(provider):
         return redirect(url_for('index'))
 
 '''
-THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP 
+THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP
 '''
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'}, methods = ['POST'])
 def post_user(username, password, email, provider):
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
-    r = requests.post("http://127.0.0.1:8000/Add", json= payload)
+    r = requests.post(MONGO_URI + "/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
     return r._content
@@ -101,7 +103,7 @@ def post_user(username, password, email, provider):
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
     r = requests.get("https://api4tackr.herokuapp.com/LoginUser", json = payload)
-    if r.status_code != 200:
+        if r.status_code != 200:
         return "IMPROPER"
     r_json = r.json()
     if 'log_in' in r_json:
@@ -114,7 +116,7 @@ def get_user(username, password):
 @app.route("/api_check/<username>/<email>")
 def check_user(username, email):
     payload = {'user_id': username, "email" : email}
-    r = requests.get("http://127.0.0.1:8000/Check", json = payload)
+    r = requests.get(MONGO_URI + "/Check", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -122,7 +124,7 @@ def check_user(username, email):
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get("http:127.0.0.1:8000/Delete")
+    r = requests.get(MONGO_URI + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
