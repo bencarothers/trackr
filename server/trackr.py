@@ -89,7 +89,7 @@ def oauth_callback(provider):
 '''
 THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP 
 '''
-@app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'})
+@app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'}, methods = ['POST'])
 def post_user(username, password, email, provider):
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
     r = requests.post("http://127.0.0.1:8000/Add", json= payload)
@@ -97,10 +97,10 @@ def post_user(username, password, email, provider):
         return "Wrong format"
     return r._content
 
-@app.route("/api_login/<username>/<password>")
+@app.route("/api_login/<username>/<password>", methods = ['POST'])
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("http://127.0.0.1:8000/LoginUser", json = payload)
+    r = requests.get("https://api4tackr.herokuapp.com/LoginUser", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     r_json = r.json()

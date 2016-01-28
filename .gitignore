@@ -58,5 +58,7 @@ pip-log.txt
 .coverage
 .tox
 
-
-
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

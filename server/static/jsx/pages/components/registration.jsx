@@ -5,6 +5,7 @@ import Confirmation  from './confirmation';
 import Success from './success';
 import Failure from './failure';
 import Modal from 'boron/OutlineModal'
+import jQuery from 'jquery'
 
 var fieldValues = {
     username: null,
@@ -79,7 +80,6 @@ var Registration = React.createClass({
 
     registerUser: function () {
         var Url = "http://localhost:5000/api_post/" + fieldValues.username + "/" + fieldValues.password + "/" + fieldValues.email + "/";
-        var response = null
         jQuery.ajax({
             async: false,
             url: Url,
@@ -87,7 +87,6 @@ var Registration = React.createClass({
             data: null,
             dataType: 'json',
             success: function (data){
-                response = data.status
             }        
         });
     },
