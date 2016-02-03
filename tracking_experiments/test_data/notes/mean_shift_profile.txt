@@ -1,0 +1,67 @@
+Total time: 17.1055 s
+File: hough_mean_shift.py
+Function: point_to_track at line 64
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    64                                               @do_profile()
+    65                                               def point_to_track(self, circles):
+    66         1          103    103.0      0.0          circles = numpy.round(circles[0,:]).astype('int')
+    67         1           12     12.0      0.0          x, y, r = circles[0].tolist()
+    68                                                   
+    69                                                   #Find the initial point to track using houghCircles
+    70         1            4      4.0      0.0          previousXValue = x
+    71         1            4      4.0      0.0          previousYValue = y
+    72         1            3      3.0      0.0          xSub = x
+    73         1            3      3.0      0.0          ySub = y
+    74                                           
+    75                                                   #a 10 x 10 bounding box around the center of the circle
+    76         1            4      4.0      0.0          r,h,c,w = y+5,10,x-5,10
+    77         1            3      3.0      0.0          track_window = (c,r,w,h)
+    78                                           
+    79                                                   #set up the ROI for tracking
+    80         1           12     12.0      0.0          roi = self.frame[r:r+h, c:c+w]
+    81         1         1576   1576.0      0.0          hsv_roi =  cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
+    82         1         1435   1435.0      0.0          mask = cv2.inRange(hsv_roi, numpy.array((0., 60.,32.)), numpy.array((180.,255.,255.)))
+    83         1          295    295.0      0.0          roi_hist = cv2.calcHist([hsv_roi],[0],mask,[180],[0,180])
+    84         1           31     31.0      0.0          cv2.normalize(roi_hist,roi_hist,0,255,cv2.NORM_MINMAX)
+    85                                           
+    86         1            8      8.0      0.0          term_crit = ( cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1 )
+    87                                           
+    88         1            3      3.0      0.0          while(1):
+    89                                           
+    90       309     11672646  37775.6     68.2              ret, self.frame = self.video.read()
+    91       309         4210     13.6      0.0              if ret == True:
+    92                                                           # alter the frame to allow for accurate meanshift
+    93       308       578993   1879.8      3.4                  hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
+    94       308        88226    286.4      0.5                  dst = cv2.calcBackProject([hsv],[0],roi_hist,[0,180],1)
+    95       308        10971     35.6      0.1                  ret, track_window = cv2.meanShift(dst, track_window, term_crit)
+    96                                           
+    97       308         1421      4.6      0.0                  x,y,w,h = track_window
+    98                                           
+    99                                                           #append for drawing and graphing
+   100       308         2677      8.7      0.0                  self.path_array.append((previousXValue, previousYValue, x, y))
+   101       308         1757      5.7      0.0                  self.xs.append(x - xSub)
+   102       308         1969      6.4      0.0                  self.ys.append(-1*(y - ySub))
+   103                                                           # draw
+   104     47894       199268      4.2      1.2                  for line in self.path_array:
+   105     47586       189598      4.0      1.1                      oldX,oldY,nextX,nextY = line
+   106     47586       429309      9.0      2.5                      cv2.line(self.frame,(oldX+h,oldY+h),(nextX+h,nextY+h),(0,255,0),3)
+   107                                           
+   108       308         1183      3.8      0.0                  previousXValue = x
+   109       308         1179      3.8      0.0                  previousYValue = y
+   110       308       169028    548.8      1.0                  cv2.imshow('path',self.frame)
+   111       308      1019531   3310.2      6.0                  k = cv2.waitKey(1) & 0xff
+   112       308         3659     11.9      0.0                  if k == 27:
+   113                                                               break
+   114                                                       else:
+   115         1            6      6.0      0.0                  break
+   116                                           
+   117         1       295737 295737.0      1.7          plt.plot(self.xs, self.ys)
+   118         1          641    641.0      0.0          plt.axis([-self.width,self.width,0,max(self.ys)+30])
+   119         1          415    415.0      0.0          plt.title('Bar Path')
+   120         1         5420   5420.0      0.0          plt.axvline(0,linestyle='solid')
+   121         1      2422111 2422111.0     14.2          plt.show()
+   122                                           
+   123         1          363    363.0      0.0          cv2.destroyAllWindows()
+   124         1         1671   1671.0      0.0          self.video.release()
