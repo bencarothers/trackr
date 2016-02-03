@@ -29,7 +29,6 @@ except ImportError:
             return nothing
         return inner
 
-#Open the video, read the first frame, and get the shape of the window
 class Trackr:
     
     def __init__(self, input_video_path):
@@ -51,17 +50,19 @@ class Trackr:
     def video_capture(self):
         form_video = cv2.VideoCapture(self.input_video_path)
         ret, frame = form_video.read()
+        print type(frame)
         height, self.width, depth = frame.shape
         return form_video, frame.copy()
 
     def find_circles(self, video):
         video = cv2.medianBlur(self.frame, 5)
         gray = cv2.cvtColor(video, cv2.COLOR_BGR2GRAY)
+        #The 2-1 Hough Transform. Considered best for tracking images of real circles.
+        #Looking into this may be an avenue for pulling out better performance.
         circles = cv2.HoughCircles(image = gray, method = cv2.cv.CV_HOUGH_GRADIENT, 
             dp = 1.2, minDist = 700, minRadius = 40)
         return circles
 
-    @do_profile()
     def point_to_track(self, circles):
         circles = numpy.round(circles[0,:]).astype('int')
         x, y, r = circles[0].tolist()
