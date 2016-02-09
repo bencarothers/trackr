@@ -94,7 +94,7 @@ THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUM
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'}, methods = ['POST'])
 def post_user(username, password, email, provider):
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
-    r = requests.post(MONGO_URI + "/Add", json= payload)
+    r = requests.post("https://api4trackr.herokuapp.com/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
     return r._content
