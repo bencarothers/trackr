@@ -42,7 +42,7 @@ def uploadVideo(lift, weight):
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
               'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
-    r = requests.post(MONGO_URI + "/addLift",json = payload)
+    r = requests.post("https://api4trackr.herokuapp.com" + "/addLift",json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     else:
@@ -102,7 +102,7 @@ def post_user(username, password, email, provider):
 @app.route("/api_login/<username>/<password>", methods = ['POST'])
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("https://api4tackr.herokuapp.com/LoginUser", json = payload)
+    r = requests.get("https://api4trackr.herokuapp.com/LoginUser", json = payload)
     if r.status_code != 200:
     	return "IMPROPER"
     r_json = r.json()
@@ -116,7 +116,7 @@ def get_user(username, password):
 @app.route("/api_check/<username>/<email>")
 def check_user(username, email):
     payload = {'user_id': username, "email" : email}
-    r = requests.get(MONGO_URI + "/Check", json = payload)
+    r = requests.get("https://api4trackr.herokuapp.com" + "/Check", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -124,7 +124,7 @@ def check_user(username, email):
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get(MONGO_URI + "/Delete")
+    r = requests.get("https://api4trackr.herokuapp.com" + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
