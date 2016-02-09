@@ -4,6 +4,7 @@ import Modal from 'boron/OutlineModal'
 import LoginFields from './login-fields';
 import LoginSuccess from './login-success';
 import LoginFailure from './login-failure';
+import Registration from './registration'
 import jQuery from 'jquery';
 
 var fieldValues = {
@@ -24,15 +25,26 @@ var Login_Form = React.createClass({
         }.bind(this)()
     },
 
+    showRegister: function(){
+        this.setState({
+            step: 2
+        })
+    },
+    hideRegister: function(){
+        this.setState({
+            step: 1
+        })
+    },
+
     successStep: function () {
         this.setState({
-            step: 3
+            step: 4
         })
     },
 
     failureStep: function () {
         this.setState({
-            step: 2
+            step: 3
         })
     },
 
@@ -85,19 +97,21 @@ var Login_Form = React.createClass({
                                     successStep={this.successStep}
                                     failureStep={this.failureStep}
                                     showRegister={this.showRegister}
-                                    hideRegister={this.hideRegister}
+                                    closeModal={this.hide}
                                     className="container"
                 />
             case 2:
-                return <LoginFailure
-                    previousStep={this.previousStep}/>
+                return <Registration ref="reg" hideRegister={this.hideRegister} closeModal={this.hide} />
             case 3:
+                return <LoginFailure previousStep={this.previousStep}/>
+            case 4:
                 return <LoginSuccess fieldValues={fieldValues}/>
         }
     },
 
     render(){
         var divStyle = {
+            background: 'lightgrey',
             padding: '2em',
             textAlign: 'center'
         }

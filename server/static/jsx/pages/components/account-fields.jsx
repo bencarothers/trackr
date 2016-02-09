@@ -17,31 +17,36 @@ var AccountFields = React.createClass({
     render: function () {
         return (
             <div>
+                <div className="form-group row pull-right">
+                    <a onClick={this.props.closeModal}><i className="fa fa-times"></i></a>
+                </div>
 
-                <div className="form-group row">
-                    <h2 className="col-md-12 text-center">Register for Trackr</h2>
+                <div className="form-group row text-center">
+                    <img id='biceps' src='../static/img/Flex.png'></img>
                 </div>
 
                 <div className="form-group row">
-                    <input className="col-md-offset-1 col-md-10" placeholder="username" type="text" ref='username'
+                    <input className="col-md-offset-2 col-md-8" placeholder="username" type="text" ref='username'
                            defaultValue={this.props.fieldValues.username}/>
                 </div>
 
                 <div className="form-group row">
-                    <input className="col-md-offset-1 col-md-10" placeholder="password" type="password" ref="password"
+                    <input className="col-md-offset-2 col-md-8" placeholder="password" type="password" ref="password"
                            defaultValue={this.props.fieldValues.password}/>
                 </div>
 
                 <div className="form-group row">
-                    <input className="col-md-offset-1 col-md-10" placeholder="email" type="email" ref="email"
+                    <input className="col-md-offset-2 col-md-8" placeholder="email" type="email" ref="email"
                            defaultValue={this.props.fieldValues.email}/>
                 </div>
 
-                <br></br>
-
                 <div className="form-group row">
-                    <button type='button' className="btn btn-primary col-md-offset-3 col-md-6" onClick={this.nextStep}>
-                        Submit
+                    <button type='button' className="btn btn-primary col-md-offset-3 col-md-3 margin-right" 
+                    onClick={this.props.submitRegistration}>Submit
+                    </button>
+
+                    <button type='button' className="btn btn-warning col-md-3" 
+                    onClick={this.props.hideRegister}>Back
                     </button>
                 </div>
 

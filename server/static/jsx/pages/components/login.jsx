@@ -8,7 +8,7 @@ const Login = React.createClass({
         return (
             <div>
                 <LoginAppBar handleResponse={this.handleResponse}></LoginAppBar>
-                <Jumbo></Jumbo>
+                <Jumbo id='skinnyJumbo'></Jumbo>
             </div>
         );
     }

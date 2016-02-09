@@ -1,7 +1,6 @@
 import React from 'react';
 import assign from 'object-assign';
 import AccountFields from './account-fields';
-import Confirmation  from './confirmation';
 import Success from './success';
 import Failure from './failure';
 import Modal from 'boron/OutlineModal'
@@ -57,6 +56,7 @@ var Registration = React.createClass({
     hide: function () {
         this.refs.reg.hide();
     },
+   
 
 
     submitRegistration: function () {
@@ -91,38 +91,34 @@ var Registration = React.createClass({
             }        
         });
     },
+    closeModal: function(){
+        this.props.hideRegister();
+        this.props.closeModal();
+    },
 
     showStep: function () {
         switch (this.state.step) {
             case 1:
                 return <AccountFields fieldValues={fieldValues}
                                       nextStep={this.nextStep}
-                                      saveValues={this.saveValues}/>
+                                      hideRegister={this.props.hideRegister}
+                                      closeModal={this.closeModal}
+                                      saveValues={this.saveValues}
+                                      submitRegistration={this.submitRegistration}/>
             case 2:
-                return <Confirmation fieldValues={fieldValues}
-                                     previousStep={this.previousStep}
-                                     submitRegistration={this.submitRegistration}/>
-            case 3:
                 return <Failure fieldValues={fieldValues}
                                 previousStep={this.previousStep}/>
-            case 4:
+            case 3:
                 return <Success fieldValues={fieldValues}/>
 
         }
     },
 
     render(){
-        var divStyle = {
-            padding: '2em',
-            textAlign: 'center'
-        }
-
         return (
-            <Modal ref='reg'>
-                <div style={divStyle}>
+                <div>
                     {this.showStep()}
                 </div>
-            </Modal>
         )
     }
 });

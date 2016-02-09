@@ -1,5 +1,4 @@
 import React from 'react';
-import Registration from './registration'
 import Modal from 'boron/OutlineModal'
 import jQuery from 'jquery';
 
@@ -7,28 +6,25 @@ import jQuery from 'jquery';
 
 var LoginFields = React.createClass({
 
-    showRegister: function () {
-        this.refs.reg.show();
-    },
-
-    hideRegister: function () {
-        this.refs.reg.hide();
-    },
-
     render: function () {
         return (
             <form>
-                <div className="form-group row">
-                    <h2 className="col-md-12 text-center">Login Here</h2>
+
+                <div className="pull-right">
+                    <a onClick={this.props.closeModal}><i className="fa fa-times"></i></a>
+                </div>
+
+                <div className="form-group row text-center">
+                    <img id='biceps' src='../static/img/Flex.png'></img>
                 </div>
 
                 <div className="form-group row">
-                    <input className="col-md-offset-1 col-md-10" placeholder="username" type="text" ref='username'
+                    <input className="col-md-offset-2 col-md-8" placeholder="username" type="text" ref='username'
                            defaultValue={this.props.fieldValues.username}/>
                 </div>
 
                 <div className="form-group row">
-                    <input className="col-md-offset-1 col-md-10" placeholder="password" type="password" ref="password"
+                    <input className="col-md-offset-2 col-md-8" placeholder="password" type="password" ref="password"
                            defaultValue={this.props.fieldValues.password}/>
                 </div>
 
@@ -37,19 +33,13 @@ var LoginFields = React.createClass({
                             onClick={this.submitLogin}>
                         Submit
                     </button>
-
-                    <button type='button' className="btn btn-secondary col-md-3"
-                            onClick={this.showRegister}>Register
+                    <button type='button' className="btn btn-warning col-md-3"
+                            onClick={this.props.showRegister}>Register
                     </button>
-
                 </div>
                 <div className="form-group row ">
                     <a className="col-md-12" href='/authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
                 </div>
-
-
-                <Registration ref="reg"/>
-
             </form>
         )
     },
