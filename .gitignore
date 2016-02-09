@@ -58,5 +58,10 @@ pip-log.txt
 .coverage
 .tox
 
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
 
-
+# Dont need all our test data on Github
+.mp4

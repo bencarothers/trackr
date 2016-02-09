@@ -5,6 +5,7 @@ import Confirmation  from './confirmation';
 import Success from './success';
 import Failure from './failure';
 import Modal from 'boron/OutlineModal'
+import jQuery from 'jquery'
 
 var fieldValues = {
     username: null,
@@ -87,7 +88,6 @@ var Registration = React.createClass({
             data: null,
             dataType: 'json',
             success: function (data){
-                response = data.status
             }        
         });
     },

@@ -17,7 +17,6 @@ const App = React.createClass({
         success: function (data){
           response = data.status
       }});
-    console.log("The value of response is ",response)
     if (response == 'ok'){
          return{
       route: '/dash'
