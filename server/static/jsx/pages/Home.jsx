@@ -5,7 +5,9 @@ const Home = React.createClass({
 
   render() {
     return (
+       <div className="home">
         <Login/>
+       </div>
     );
   },
 });

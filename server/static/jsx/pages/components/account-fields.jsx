@@ -1,7 +1,19 @@
 import React from 'react';
-import FlatButton from 'material-ui/lib/flat-button';
 
 var AccountFields = React.createClass({
+
+    nextStep: function (e) {
+        e.preventDefault()
+
+        var data = {
+            username: this.refs.username.value,
+            password: this.refs.password.value,
+            email: this.refs.email.value
+        }
+        this.props.saveValues(data)
+        this.props.nextStep()
+    },
+
     render: function () {
         return (
             <div>
@@ -39,18 +51,6 @@ var AccountFields = React.createClass({
 
             </div>
         )
-    },
-
-    nextStep: function (e) {
-        e.preventDefault()
-
-        var data = {
-            username: this.refs.username.value,
-            password: this.refs.password.value,
-            email: this.refs.email.value
-        }
-        this.props.saveValues(data)
-        this.props.nextStep()
     }
 })
 

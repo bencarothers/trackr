@@ -30,7 +30,7 @@ const Dash = React.createClass({
       render() {
         if(this.state.username){
           return (
-          <div>
+          <div className="dash">
             <MainAppBar handleResponse={this.handleResponse}/>
             <LiftGallery lifts={this.state.lifts} />
           </div>

@@ -1,9 +1,6 @@
 import React from 'react';
-import AppBar from 'material-ui/lib/app-bar';
-import FlatButton from 'material-ui/lib/flat-button';
 import Modal from 'boron/OutlineModal'
 import Login_Form from './login-form'
-import Nav from './left-nav'
 
 const LoginAppBar = React.createClass({
 
@@ -20,19 +17,21 @@ const LoginAppBar = React.createClass({
         const title = 'Trackr'
 
         return (
-            <div >
-                <AppBar
-                    title={title}
-                    zDepth={0}
-                    iconElementRight={
-                    <div>
-                        <FlatButton onClick={this.showLogin}>Login</FlatButton>
-                        <Login_Form ref="modal">
-                        </Login_Form>
-                     </div>
-                }
-                >
-                </AppBar>
+            <div>
+                <nav className="navbar navbar-default">
+                    <div className="container-fluid">
+                        <div className="navbar-header">
+                            <a className="navbar-brand brand-image" href="#">
+                                <img alt="Brand" src="./static/img/bar.png"></img>
+                            </a>
+                            <div className="navbar-brand">
+                              <p>Trackr</p>
+                            </div>
+                        </div>
+                        <button className='btn navbar-btn btn-success pull-right' onClick={this.showLogin}>Login</button>
+                    </div>
+                </nav>
+                <Login_Form className='pull-right' ref="modal"></Login_Form>
             </div>
         );
     }

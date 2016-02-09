@@ -1,5 +1,4 @@
 import React from 'react';
-import FlatButton from 'material-ui/lib/flat-button';
 import Registration from './registration'
 import Modal from 'boron/OutlineModal'
 import jQuery from 'jquery';
@@ -33,18 +32,13 @@ var LoginFields = React.createClass({
                            defaultValue={this.props.fieldValues.password}/>
                 </div>
 
-                <br></br>
-
                 <div className="form-group row">
-                    <button type='button' className="btn btn-primary col-md-offset-3 col-md-6"
+                    <button type='button' className="btn btn-primary col-md-offset-3 col-md-3 margin-right"
                             onClick={this.submitLogin}>
                         Submit
                     </button>
-                </div>
 
-                <div className="form-group row ">
-
-                    <button type='button' className="btn btn-secondary col-md-offset-3 col-md-6"
+                    <button type='button' className="btn btn-secondary col-md-3"
                             onClick={this.showRegister}>Register
                     </button>
 
