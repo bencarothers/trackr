@@ -19,10 +19,10 @@ var Registration = React.createClass({
         }
     },
 
-    saveValues: function (field_value) {
-        return function () {
-            fieldValues = assign({}, fieldValues, field_value)
-        }.bind(this)()
+    saveValues: function (data) {
+        fieldValues.username = data.username 
+        fieldValues.email = data.email
+        fieldValue.password = data.password 
     },
 
     nextStep: function () {
@@ -56,7 +56,6 @@ var Registration = React.createClass({
     hide: function () {
         this.refs.reg.hide();
     },
-   
 
 
     submitRegistration: function () {
@@ -89,7 +88,7 @@ var Registration = React.createClass({
             data: null,
             dataType: 'json',
             success: function (data){
-            }        
+            }
         });
     },
     closeModal: function(){
