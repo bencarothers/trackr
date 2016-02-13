@@ -81,6 +81,7 @@ var Registration = React.createClass({
 
     registerUser: function () {
         var Url = "/api_post/" + this.fieldValues.username + "/" + this.fieldValues.password + "/" + this.fieldValues.email + "/";
+        console.log("URL SENT TO API IS " + Url);
         var response = null
         jQuery.ajax({
             async: false,
