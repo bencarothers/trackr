@@ -68,7 +68,7 @@ var Registration = React.createClass({
         xmlHttp.send(null);
         var response = xmlHttp.responseText;
         var result = JSON.parse(response)
-        console.log(response)
+        console.log(result)
         if (result.status == "ok") {
             this.successStep()
             this.registerUser()
