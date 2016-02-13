@@ -39,13 +39,13 @@ var Registration = React.createClass({
 
     successStep: function () {
         this.setState({
-            step: 4
+            step: 3
         })
     },
 
     failureStep: function () {
         this.setState({
-            step: 3
+            step: 2
         })
     },
 
@@ -62,6 +62,7 @@ var Registration = React.createClass({
     submitRegistration: function () {
         var user_id = fieldValues.username
         var email = fieldValues.email
+        console.log("EXECUTING IN REGISTRATION")
         var Url = "/api_check/" + user_id + "/" + email;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", Url, false);
@@ -72,8 +73,7 @@ var Registration = React.createClass({
         if (result.status == "ok") {
             this.successStep()
             this.registerUser()
-        }
-        else {
+        }else {
             this.failureStep()
         }
     },
