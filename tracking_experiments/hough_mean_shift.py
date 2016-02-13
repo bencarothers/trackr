@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy
 import cv2
+import moviepy.editor as mp
 
 try:
     from line_profiler import LineProfiler
@@ -49,8 +50,10 @@ class Trackr:
 
     def video_capture(self):
         form_video = cv2.VideoCapture(self.input_video_path)
+        delta_filepath = edited_filepath(self.input_video_path)
+        video_resize(self.input_video_path, delta_filepath)
+        form_video = cv2.VideoCapture(delta_filepath)
         ret, frame = form_video.read()
-        print type(frame)
         height, self.width, depth = frame.shape
         return form_video, frame.copy()
 
@@ -109,7 +112,7 @@ class Trackr:
                 previousXValue = x
                 previousYValue = y
                 cv2.imshow('path',self.frame)
-                k = cv2.waitKey(1) & 0xff
+                k = cv2.waitKey(20) & 0xff
                 if k == 27:
                     break
             else:
@@ -124,5 +127,20 @@ class Trackr:
         cv2.destroyAllWindows()
         self.video.release()
 
+#Takes in a filepath as input, changes it to v2 and saves new file 
+def edited_filepath(filepath):
+    stripped_path = filepath.replace(".mp4", "")
+    return stripped_path + "_v2.mp4"
+
+def video_resize(clip_path, delta_clip_path):
+    clip = mp.VideoFileClip(clip_path, audio = False)
+    print clip.duration
+    print clip.fps
+    clip_resized = clip.resize(height = 500)
+    print clip_resized.duration
+    print clip.fps
+    clip_resized.write_videofile(delta_clip_path)
+
+
 if __name__ == "__main__":
-    Trackr("test_data/videos/deadlift.mp4")
+    Trackr("test_data/videos/bench.mp4")

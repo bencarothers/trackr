@@ -62,6 +62,7 @@ var LoginFields = React.createClass({
             success: function (data){
                 response = data.status
             }        });
+        console.log(response);
         if (response == 'ok'){
             this.props.successStep()
             window.setTimeout(function (){
