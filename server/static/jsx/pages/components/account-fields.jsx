@@ -42,7 +42,7 @@ var AccountFields = React.createClass({
 
                 <div className="form-group row">
                     <button type='button' className="btn btn-primary col-md-offset-3 col-md-3 margin-right" 
-                    onClick={this.props.submitRegistration}>Submit
+                    onClick={this.nextStep}>Submit
                     </button>
 
                     <button type='button' className="btn btn-warning col-md-3" 

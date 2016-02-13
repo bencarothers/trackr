@@ -6,17 +6,18 @@ import Failure from './failure';
 import Modal from 'boron/OutlineModal'
 import jQuery from 'jquery'
 
-var fieldValues = {
-    username: null,
-    email: null,
-    password: null
-}
 
 var Registration = React.createClass({
     getInitialState: function () {
         return {
             step: 1
         }
+    },
+
+    fieldValues = {
+        username: null,
+        email: null,
+        password: null
     },
 
     saveValues: function (data) {
