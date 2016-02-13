@@ -63,6 +63,7 @@ var Registration = React.createClass({
         var user_id = fieldValues.username
         var email = fieldValues.email
         var failureReason = "Value of user_id is " + user_id;
+        console.log(failureReason)
         var Url = "/api_check/" + user_id + "/" + email;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", Url, false);
