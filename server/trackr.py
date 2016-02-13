@@ -110,7 +110,7 @@ def get_user(username, password):
     r_json = r.json()
     if 'log_in' in r_json:
         user = r_json['log_in']
-        user = user_loader(user['user_id'])
+        user = user_loader(user)
         login_user(user)
         print "hello, " + str(current_user.user_id)
     return r._content
