@@ -21,7 +21,7 @@ from flask.ext.cors import CORS
 import datetime
 
 app = flask.Flask(__name__)
-CORS(app)
+CORS(app, origins = "*api4trackr.herokuapp.com*")
 app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
