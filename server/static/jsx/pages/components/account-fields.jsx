@@ -11,7 +11,7 @@ var AccountFields = React.createClass({
             email: this.refs.email.value
         }
         this.props.saveValues(data)
-        this.props.nextStep()
+        this.props.submitRegistration()
     },
 
     render: function () {
