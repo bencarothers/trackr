@@ -28,6 +28,10 @@ const MainAppBar = React.createClass({
         this.refs.modal.hide();
     },
 
+    intro(){
+      introJs().start();
+    },
+
     logOut(){
         jQuery.get("/logout_current_user/").done(function (result) {
             window.setTimeout(function () {
@@ -47,16 +51,18 @@ const MainAppBar = React.createClass({
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
                         <div className="navbar-header">
-                            <a className="navbar-brand brand-image" href="#">
+                            <a className="navbar-brand brand-image" href="#" data-step="3" data-intro="We'll handle the rest.">
                                 <img alt="Brand" src="./static/img/bar.png"></img>
                             </a>
                             <div className="navbar-brand">
                                 <p>Trackr</p>
                             </div>
                         </div>
-                        <btn className="btn btn-success navbar-btn pull-right margin-right" onClick={this.addLift}>Add</btn>
+                        <btn className="btn btn-success navbar-btn pull-right margin-right" onClick={this.addLift}data-step="1" data-intro="Click here to add a lift!">Add</btn>
                         <btn className="btn btn-warning navbar-btn pull-right margin-right" onClick={this.logOut}>Logout</btn>
-                          <Modal ref="modal">
+                        <btn className="btn btn-info navbar-btn pull-right margin-right" onClick={this.intro}>Help?</btn>
+
+                        <Modal ref="modal">
                               <div style={divStyle}>
                                   <form>
                                       <div className="form-group row">
