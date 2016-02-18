@@ -30,6 +30,7 @@ var Login_Form = React.createClass({
             step: 2
         })
     },
+    
     hideRegister: function(){
         this.setState({
             step: 1
@@ -117,7 +118,7 @@ var Login_Form = React.createClass({
         }
 
         return (
-            <Modal ref='modal'>
+            <Modal ref='modal' onHide = {this.hideRegister}>
                 <div style={divStyle}>
                     {this.showStep()}
                 </div>

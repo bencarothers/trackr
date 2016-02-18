@@ -26,12 +26,6 @@ var Registration = React.createClass({
         this.fieldValues.password = data.password
     },
 
-    nextStep: function () {
-        this.setState({
-            step: this.state.step + 1
-        })
-    },
-
     previousStep: function () {
         this.setState({
             step: this.state.step - 1
@@ -42,6 +36,7 @@ var Registration = React.createClass({
         this.setState({
             step: 3
         })
+        this.registerUser()
     },
 
     failureStep: function () {
@@ -51,11 +46,11 @@ var Registration = React.createClass({
     },
 
     show: function () {
-        this.refs.reg.show();
+        this.refs.show();
     },
 
     hide: function () {
-        this.refs.reg.hide();
+        this.refs.hide();
     },
 
 
@@ -73,7 +68,6 @@ var Registration = React.createClass({
         console.log(result)
         if (result.status == "ok") {
             this.successStep()
-            this.registerUser()
         }else {
             this.failureStep()
         }
@@ -93,6 +87,7 @@ var Registration = React.createClass({
             }
         });
     },
+
     closeModal: function(){
         this.props.hideRegister();
         this.props.closeModal();
@@ -102,7 +97,6 @@ var Registration = React.createClass({
         switch (this.state.step) {
             case 1:
                 return <AccountFields fieldValues={this.fieldValues}
-                                      nextStep={this.nextStep}
                                       hideRegister={this.props.hideRegister}
                                       closeModal={this.closeModal}
                                       saveValues={this.saveValues}
