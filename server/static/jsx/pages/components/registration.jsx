@@ -1,34 +1,29 @@
 import React from 'react';
 import assign from 'object-assign';
 import AccountFields from './account-fields';
-import Confirmation  from './confirmation';
 import Success from './success';
 import Failure from './failure';
 import Modal from 'boron/OutlineModal'
+import jQuery from 'jquery'
 
-var fieldValues = {
-    username: null,
-    email: null,
-    password: null
-}
 
 var Registration = React.createClass({
     getInitialState: function () {
         return {
-            step: 1
+            step: 1,
         }
     },
 
-    saveValues: function (field_value) {
-        return function () {
-            fieldValues = assign({}, fieldValues, field_value)
-        }.bind(this)()
+    fieldValues: {
+      username: null,
+      email: null,
+      password: null
     },
 
-    nextStep: function () {
-        this.setState({
-            step: this.state.step + 1
-        })
+    saveValues: function (data) {
+        this.fieldValues.username = data.username 
+        this.fieldValues.email = data.email
+        this.fieldValues.password = data.password
     },
 
     previousStep: function () {
@@ -39,85 +34,87 @@ var Registration = React.createClass({
 
     successStep: function () {
         this.setState({
-            step: 4
+            step: 3
         })
+        this.registerUser()
     },
 
     failureStep: function () {
         this.setState({
-            step: 3
+            step: 2
         })
     },
 
     show: function () {
-        this.refs.reg.show();
+        this.refs.show();
     },
 
     hide: function () {
-        this.refs.reg.hide();
+        this.refs.hide();
     },
 
 
     submitRegistration: function () {
-        var user_id = fieldValues.username
-        var email = fieldValues.email
-        var Url = "http://localhost:5000/api_check/" + user_id + "/" + email;
+        var user_id = this.fieldValues.username
+        var email = this.fieldValues.email
+        var failureReason = "Value of user_id is " + user_id;
+        console.log(failureReason)
+        var Url = "/api_check/" + user_id + "/" + email;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", Url, false);
         xmlHttp.send(null);
         var response = xmlHttp.responseText;
         var result = JSON.parse(response)
-        console.log(response)
+        console.log(result)
         if (result.status == "ok") {
             this.successStep()
-            this.registerUser()
-        }
-        else {
+        }else {
             this.failureStep()
         }
     },
 
     registerUser: function () {
-        var user_id = fieldValues.username
-        var email = fieldValues.email
-        var password = fieldValues.password
-        var Url = "http://localhost:5000/api_post/" + user_id + "/" + password + "/" + email + "/";
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", Url, true);
-        xmlHttp.send(null);
+        var Url = "/api_post/" + this.fieldValues.username + "/" + this.fieldValues.password + "/" + this.fieldValues.email + "/";
+        console.log("URL SENT TO API IS " + Url);
+        var response = null
+        jQuery.ajax({
+            async: false,
+            url: Url,
+            type: 'POST',
+            data: null,
+            dataType: 'json',
+            success: function (data){
+            }
+        });
+    },
+
+    closeModal: function(){
+        this.props.hideRegister();
+        this.props.closeModal();
     },
 
     showStep: function () {
         switch (this.state.step) {
             case 1:
-                return <AccountFields fieldValues={fieldValues}
-                                      nextStep={this.nextStep}
-                                      saveValues={this.saveValues}/>
+                return <AccountFields fieldValues={this.fieldValues}
+                                      hideRegister={this.props.hideRegister}
+                                      closeModal={this.closeModal}
+                                      saveValues={this.saveValues}
+                                      submitRegistration={this.submitRegistration}/>
             case 2:
-                return <Confirmation fieldValues={fieldValues}
-                                     previousStep={this.previousStep}
-                                     submitRegistration={this.submitRegistration}/>
-            case 3:
-                return <Failure fieldValues={fieldValues}
+                return <Failure fieldValues={this.fieldValues}
                                 previousStep={this.previousStep}/>
-            case 4:
-                return <Success fieldValues={fieldValues}/>
+            case 3:
+                return <Success fieldValues={this.fieldValues}/>
 
         }
     },
 
     render(){
-        var divStyle = {
-            padding: '2em',
-            textAlign: 'center'
-        }
-
         return (
-            <Modal ref='reg'>
-                <div style={divStyle}>
+                <div>
                     {this.showStep()}
                 </div>
-            </Modal>
         )
     }
 });

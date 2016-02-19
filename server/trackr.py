@@ -1,3 +1,4 @@
+import os
 import flask
 import requests
 from flask import current_app
@@ -16,13 +17,16 @@ from config.Config import DevelopmentConfig
 from flask import redirect, url_for, request, session, Blueprint, jsonify, current_app
 from flask.ext.login import login_user, logout_user, current_user, LoginManager, login_required
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from flask.ext.cors import CORS
 import datetime
 
 app = flask.Flask(__name__)
+CORS(app, origins = "*api4trackr.herokuapp.com*")
 app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.secret_key = "barry_allen"
+MONGO_URI = os.environ.get("MONGO_URI")
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -40,7 +44,7 @@ def uploadVideo(lift, weight):
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
               'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
-    r = requests.post("http://127.0.0.1:8000/addLift",json = payload)
+    r = requests.post("https://api4trackr.herokuapp.com" + "/addLift",json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     else:
@@ -51,11 +55,10 @@ def uploadVideo(lift, weight):
 def get_current_user():
     user = current_user
     if user:
-        print 'SENDING USER DATA VIA AJAX'
         return jsonify({"status": "ok", "user": user.user_id})
     else:
         return jsonify({"status":"fail"})
-        
+
 @app.route('/logout_current_user/')
 @login_required
 def logout():
@@ -87,25 +90,28 @@ def oauth_callback(provider):
         login_user(user)
         return redirect(url_for('index'))
 
-
-@app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'})
+'''
+THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP
+'''
+@app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'}, methods = ['POST'])
 def post_user(username, password, email, provider):
+    print username
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
-    r = requests.post("http://127.0.0.1:8000/Add", json= payload)
+    r = requests.post("https://api4trackr.herokuapp.com/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
     return r._content
 
-@app.route("/api_login/<username>/<password>")
+@app.route("/api_login/<username>/<password>", methods = ['POST'])
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("http://127.0.0.1:8000/LoginUser", json = payload)
+    r = requests.get("https://api4trackr.herokuapp.com/LoginUser", json = payload)
     if r.status_code != 200:
-        return "IMPROPER"
+    	return "IMPROPER"
     r_json = r.json()
     if 'log_in' in r_json:
         user = r_json['log_in']
-        user = user_loader(user['user_id'])
+        user = user_loader(user)
         login_user(user)
         print "hello, " + str(current_user.user_id)
     return r._content
@@ -113,7 +119,7 @@ def get_user(username, password):
 @app.route("/api_check/<username>/<email>")
 def check_user(username, email):
     payload = {'user_id': username, "email" : email}
-    r = requests.get("http://127.0.0.1:8000/Check", json = payload)
+    r = requests.get("https://api4trackr.herokuapp.com" + "/Check", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -121,7 +127,7 @@ def check_user(username, email):
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get("http:127.0.0.1:8000/Delete")
+    r = requests.get("https://api4trackr.herokuapp.com" + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content

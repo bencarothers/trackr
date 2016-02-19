@@ -1,59 +1,45 @@
 import React from 'react';
-import FlatButton from 'material-ui/lib/flat-button';
-import Registration from './registration'
 import Modal from 'boron/OutlineModal'
+import jQuery from 'jquery';
+
 
 
 var LoginFields = React.createClass({
 
-    showRegister: function () {
-        this.refs.reg.show();
-    },
-
-    hideRegister: function () {
-        this.refs.reg.hide();
-    },
-
     render: function () {
         return (
             <form>
-                <div className="form-group row">
-                    <h2 className="col-md-12 text-center">Login Here</h2>
+
+                <div className="pull-right">
+                    <a onClick={this.props.closeModal}><i className="fa fa-times"></i></a>
+                </div>
+
+                <div className="form-group row text-center">
+                    <img id='biceps' src='../static/img/Flex.png'></img>
                 </div>
 
                 <div className="form-group row">
-                    <input className="col-md-offset-1 col-md-10" placeholder="username" type="text" ref='username'
+                    <input className="col-md-offset-2 col-md-8" placeholder="username" type="text" ref='username'
                            defaultValue={this.props.fieldValues.username}/>
                 </div>
 
                 <div className="form-group row">
-                    <input className="col-md-offset-1 col-md-10" placeholder="password" type="password" ref="password"
+                    <input className="col-md-offset-2 col-md-8" placeholder="password" type="password" ref="password"
                            defaultValue={this.props.fieldValues.password}/>
                 </div>
 
-                <br></br>
-
                 <div className="form-group row">
-                    <button type='button' className="btn btn-primary col-md-offset-3 col-md-6"
+                    <button type='button' className="btn btn-primary col-md-offset-3 col-md-3 margin-right"
                             onClick={this.submitLogin}>
                         Submit
                     </button>
-                </div>
-
-                <div className="form-group row ">
-
-                    <button type='button' className="btn btn-secondary col-md-offset-3 col-md-6"
-                            onClick={this.showRegister}>Register
+                    <button type='button' className="btn btn-warning col-md-3"
+                            onClick={this.props.showRegister}>Register
                     </button>
-
                 </div>
                 <div className="form-group row ">
                     <a className="col-md-12" href='/authorize/google'><img src="../static/img/sign-in-with-google.png"/></a>
                 </div>
-
-
-                <Registration ref="reg"/>
-
             </form>
         )
     },
@@ -65,24 +51,28 @@ var LoginFields = React.createClass({
             password: this.refs.password.value,
         }
         this.props.saveValues(data)
-        var user_id = data.username
-        var password = data.password
-        var Url = "http://localhost:5000/api_login/" + user_id + "/" + password;
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", Url, false);
-        xmlHttp.send(null);
-        var response = xmlHttp.responseText;
-        var result = JSON.parse(response)
-        if (result.status == "ok") {
+        var Url = "/api_login/" + data.username + "/" + data.password;
+        var response = ''
+        jQuery.ajax({
+            async: false,
+            url: Url,
+            type: 'POST',
+            data: null,
+            dataType: 'json',
+            success: function (data){
+                response = data.status
+            }        });
+        console.log(response);
+        if (response == 'ok'){
             this.props.successStep()
-            window.setTimeout(function () {
-                window.location.href = "http://localhost:5000/#/dash"
-            }, 3000);
+            window.setTimeout(function (){
+                window.location.href = "/#/dash"
+                }, 3000);
         }
-        else {
+        else{
             this.props.failureStep()
-        }
-    }
+        }  
+    },
 })
 
 export default LoginFields;

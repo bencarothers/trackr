@@ -46,7 +46,7 @@ const LiftGallery = React.createClass({
 
             return (
 
-                <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+                <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}} data-step="2" data-intro="This is where they'll show up">
                     <GridList
                         cellHeight={400}
                         style={gridListStyle}

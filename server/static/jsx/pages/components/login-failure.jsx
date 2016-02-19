@@ -1,5 +1,4 @@
 import React from 'react';
-import FlatButton from 'material-ui/lib/flat-button';
 
 var LoginFailure = React.createClass({
     render: function () {
@@ -12,7 +11,7 @@ var LoginFailure = React.createClass({
                     <p>Sorry, it seems something was wrong with your <b>username</b> or <b>password</b></p>
                 </div>
                 <div className="row ">
-                    <FlatButton onClick={this.props.previousStep}>Try again?</FlatButton>
+                    <button className="btn btn-danger" onClick={this.props.previousStep}>Try again?</button>
                 </div>
             </div>
         )

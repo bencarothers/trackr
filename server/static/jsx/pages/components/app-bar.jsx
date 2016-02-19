@@ -1,11 +1,5 @@
 import React from 'react';
 import jQuery from 'jquery';
-import AppBar from 'material-ui/lib/app-bar';
-import IconButton from 'material-ui/lib/icon-button';
-import FlatButton from 'material-ui/lib/flat-button';
-import injectTapEventPlugin from "react-tap-event-plugin"
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
 import Modal from 'boron/OutlineModal'
 
 const MainAppBar = React.createClass({
@@ -34,38 +28,67 @@ const MainAppBar = React.createClass({
         this.refs.modal.hide();
     },
 
+    intro(){
+      introJs().start();
+    },
+
     logOut(){
-        jQuery.get("http://localhost:5000/logout_current_user/").done(function (result) {
+        jQuery.get("/logout_current_user/").done(function (result) {
             window.setTimeout(function () {
-                window.location.href = "http://localhost:5000/"
+                window.location.href = "/"
             }, 1000);
         });
     },
 
     render() {
+        var divStyle = {
+            padding: '2em',
+            textAlign: 'center'
+        }
         const title = 'Trackr'
         return (
             <div >
-                <AppBar
-                    title={title}
-                    zDepth={0}
-                    iconElementRight={
-                    <div>
-                        <FlatButton onClick={this.addLift}>Add</FlatButton>
-                        &nbsp;&nbsp;&nbsp;
-                        <FlatButton onClick={this.logOut}>Logout</FlatButton>
-                          <Modal ref="modal">
-                              <form action="">
-                                 Lift: <input type="text" ref="lift"></input><br></br>
-                                 Weight: <input type="text" ref="weight"></input><br></br>
-                                 Video:<input type="file" ref="video" accept="image/*"></input>
-                              </form>
-                              <FlatButton onClick={this.handleSubmit} >Add a Lift</FlatButton>
+                <nav className="navbar navbar-default">
+                    <div className="container-fluid">
+                        <div className="navbar-header">
+                            <a className="navbar-brand brand-image" href="#" data-step="3" data-intro="We'll handle the rest.">
+                                <img alt="Brand" src="./static/img/bar.png"></img>
+                            </a>
+                            <div className="navbar-brand">
+                                <p>Trackr</p>
+                            </div>
+                        </div>
+                        <btn className="btn btn-success navbar-btn pull-right margin-right" onClick={this.addLift}data-step="1" data-intro="Click here to add a lift!">Add</btn>
+                        <btn className="btn btn-warning navbar-btn pull-right margin-right" onClick={this.logOut}>Logout</btn>
+                        <btn className="btn btn-info navbar-btn pull-right margin-right" onClick={this.intro}>Help?</btn>
+
+                        <Modal ref="modal">
+                              <div style={divStyle}>
+                                  <form>
+                                      <div className="form-group row">
+                                          <h2 className="col-md-12 text-center">Add a Lift</h2>
+                                      </div>
+                                      <div className="form-group row">
+                                          Lift: <input type="text" ref="lift"></input><br></br>
+                                      </div>
+                                      <div className="form-group row">
+                                          Weight: <input type="text" ref="weight"></input><br></br>
+                                      </div>
+                                      <div className="form-group row">
+                                        <span className="btn btn-default btn-file">
+                                            Browse: <input type="file" ref="video" accept="image/*"></input>
+                                        </span>
+                                      </div>
+                                      <div className="form-group row">
+                                          <button type='button' className="btn btn-secondary col-md-offset-3 col-md-6"
+                                                  onClick={this.handleSubmit}>Add
+                                          </button>
+                                      </div>
+                                  </form>
+                              </div>
                           </Modal>
                      </div>
-              }
-                >
-                </AppBar>
+                </nav>
             </div>
         );
     },
