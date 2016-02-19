@@ -35,7 +35,7 @@
 * Bootstrap
     - Stylistic and box model standardization 
 * Flask
-    - Nice lil extensible WSGI server
+    - Nice little extensible WSGI server
 
 
 ![Tracked Path](https://github.com/bencarothers/Trackr/blob/master/tracking_experiments/test_data/images/deadlift.png)
