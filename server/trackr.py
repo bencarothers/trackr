@@ -124,6 +124,14 @@ def check_user(username, email):
         return "IMPROPER"
     return r._content
 
+@app.route("/api_get_lift/<username>")
+def grab_lifts(username):
+    payload = {'user_id': username}
+    r = requests.get("https://api4trackr.herokuapp.com" + "/getLifts", json = payload)
+    if r.status_code != 200:
+        return "IMPROPER"
+    return r._content
+
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
