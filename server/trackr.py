@@ -41,7 +41,7 @@ def index():
 @login_required
 def uploadVideo(lift, weight):
     file = request.files['file']
-    #file.save("./vidsdhdsfjahf.mp4")
+    #file.save("./thissavesthefile.mp4")
     user = current_user
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
