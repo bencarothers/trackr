@@ -19,6 +19,12 @@ from flask.ext.login import login_user, logout_user, current_user, LoginManager,
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from flask.ext.cors import CORS
 import datetime
+import urllib
+import time
+import base64
+import hmac
+from hashlib import sha1
+import json
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
@@ -37,20 +43,43 @@ def user_loader(user_id):
 def index():
     return flask.render_template('index.html')
 
-@app.route("/ajaxVideoUpload/<lift>/<weight>/", methods = ['POST'])
+@app.route("/ajaxVideoUpload/<lift>/<weight>/", methods = ['POST', 'GET'])
 @login_required
 def uploadVideo(lift, weight):
-    file = request.files['file']
-    #file.save("./thissavesthefile.mp4")
     user = current_user
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
               'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
-    r = requests.post("https://api4trackr.herokuapp.com" + "/addLift",json = payload)
+    r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
+    file = request.files['file']
+    sign_s3(file)
     if r.status_code != 200:
         return "IMPROPER"
     else:
         return r._content
+
+def sign_s3(lift_file):
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+    S3_BUCKET = os.environ.get('S3_BUCKET')
+    object_name = urllib.quote_plus("lift_file")
+    mime_type = request.args.get('.png')
+
+    expires = int(time.time()+60*60*24)
+    amz_headers = "x-amz-acl:public-read"
+
+    string_to_sign = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
+    
+    signature = base64.encodestring(hmac.new(AWS_SECRET_KEY.encode(), string_to_sign.encode('utf8'), sha1).digest())
+    signature = urllib.quote_plus(signature.strip())
+
+    url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
+
+    content = json.dumps({
+        'signed_request': '%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s' % (url, AWS_ACCESS_KEY_ID, expires, signature),
+        'url': url,
+    })
+    return content
 
 @app.route("/current_user/")
 @login_required
@@ -141,31 +170,6 @@ def delete_user(username):
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
-
-@app.route('/sign_s3/')
-def sign_s3():
-    AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
-    AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
-    S3_BUCKET = os.environ.get('S3_BUCKET')
-
-    object_name = urllib.quote_plus(request.args.get('file_name'))
-    mime_type = request.args.get('file_type')
-
-    expires = int(time.time()+60*60*24)
-    amz_headers = "x-amz-acl:public-read"
-
-    string_to_sign = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
-
-    signature = base64.encodestring(hmac.new(AWS_SECRET_KEY.encode(), string_to_sign.encode('utf8'), sha1).digest())
-    signature = urllib.quote_plus(signature.strip())
-
-    url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
-
-    content = json.dumps({
-        'signed_request': '%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
-        'url': url,
-    })
-    return content
 
 if __name__ == "__main__":
     app.run(debug = True)
