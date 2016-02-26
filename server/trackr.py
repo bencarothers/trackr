@@ -18,16 +18,22 @@ from flask import redirect, url_for, request, session, Blueprint, jsonify, curre
 from flask.ext.login import login_user, logout_user, current_user, LoginManager, login_required
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from flask.ext.cors import CORS
-import datetime
-import urllib
-import time
-import base64
-import hmac
+import datetime, urllib, time, base64, time, hmac, json
 from hashlib import sha1
-import json
+from flask.ext.store import Store
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
+app.config['STORE_DOMAIN'] = 'http://127.0.0.1:5000'
+app.config['STORE_PATH'] = 'test/tracked/'
+app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
+app.config['STORE_S3_REGION'] = 'us-east-1'
+app.config['STORE_S3_BUCKET'] = 'bartrackr-upload'
+app.config['STORE_S3_ACCESS_KEY'] = os.environ.get("AWS_ACCESS_KEY_ID")
+app.config['STORE_S3_SECRET_KEY'] = os.environ.get("AWS_SECRET_KEY")
+
+store = Store(app)
+
 app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -52,34 +58,16 @@ def uploadVideo(lift, weight):
               'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
     r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
     file = request.files['file']
-    sign_s3(file)
+    upload_tracked(file)
     if r.status_code != 200:
         return "IMPROPER"
     else:
         return r._content
 
-def sign_s3(lift_file):
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
-    S3_BUCKET = os.environ.get('S3_BUCKET')
-    object_name = urllib.quote_plus("lift_file")
-    mime_type = request.args.get('.png')
-
-    expires = int(time.time()+60*60*24)
-    amz_headers = "x-amz-acl:public-read"
-
-    string_to_sign = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
-    
-    signature = base64.encodestring(hmac.new(AWS_SECRET_KEY.encode(), string_to_sign.encode('utf8'), sha1).digest())
-    signature = urllib.quote_plus(signature.strip())
-
-    url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
-
-    content = json.dumps({
-        'signed_request': '%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s' % (url, AWS_ACCESS_KEY_ID, expires, signature),
-        'url': url,
-    })
-    return content
+def upload_tracked(file):
+    provider = store.Provider(file)
+    provider.save()
+    return provider.absolute_url
 
 @app.route("/current_user/")
 @login_required

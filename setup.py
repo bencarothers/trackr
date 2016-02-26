@@ -34,6 +34,8 @@ setup(name='trackr',
             'flask-login==0.3.2',
             'rauth==0.7.2',
             'moviepy==0.2.2.11',
-            'flask-cors==2.1.2'
+            'flask-cors==2.1.2',
+            'Flask-Store==0.0.4.2',
+            'boto==2.39.0'
           ],
       )
