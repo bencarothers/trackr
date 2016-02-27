@@ -1,22 +1,12 @@
 language: python
 python:
 - '2.7'
-before_install:
-  - travis_retry git clone --depth 1 https://github.com/Itseez/opencv.git $DEPS_DIR/opencv
-  - mkdir $OPENCV_BUILD_DIR && cd $OPENCV_BUILD_DIR
-  - |
-      if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then 
-        cmake -DBUILD_TIFF=ON -DBUILD_opencv_java=OFF -DWITH_CUDA=OFF -DENABLE_AVX=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_IPP=ON -DWITH_TBB=ON -DWITH_EIGEN=ON -DWITH_V4L=ON -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") -DPYTHON_EXECUTABLE=$(which python) -DPYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") -DPYTHON_PACKAGES_PATH=$(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") ..
-      else
-        cmake -DBUILD_TIFF=ON -DBUILD_opencv_java=OFF -DWITH_CUDA=OFF -DENABLE_AVX=ON -DWITH_OPENGL=ON -DWITH_OPENCL=ON -DWITH_IPP=ON -DWITH_TBB=ON -DWITH_EIGEN=ON -DWITH_V4L=ON -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=$(python3 -c "import sys; print(sys.prefix)") -DPYTHON_EXECUTABLE=$(which python3) -DPYTHON_INCLUDE_DIR=$(python3 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") -DPYTHON_PACKAGES_PATH=$(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") ..
-      fi
-  - make -j4
-  - sudo make install
-  - echo "/usr/local/lib" | sudo tee -a /etc/ld.so.conf.d/opencv.conf
-  - sudo ldconfig
-  - echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig" | sudo tee -a /etc/bash.bashrc
-  - echo "export PKG_CONFIG_PATH" | sudo tee -a /etc/bash.bashrc
-  - export PYTHONPATH=$OPENCV_BUILD_DIR/lib/python3.3/site-packages:$PYTHONPATH 
+virtualenv:
+  system_site_packages: true
+before install:
+- SITE_PKG_DIR=$VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/site-packages
+- rm -f $VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/no-global-site-packages.txt
+- apt-get install python-opencv 
 install:
 - pip install coveralls
 - python setup.py install
@@ -32,9 +22,6 @@ env:
   - secure: ZybwspjVoHYJrXTOED+4YUGnak47Z+P5+0qNezBjgMFzKMK2svxsnQlswlSPsrp3rQd664ybxCsZiwOIIAvYgwu7qS9Q1kcQsbU5G6PbypG2jeRqB0VDLemJY0quzh+sIu4DPzoV/gCiQWWc0y5z6usl2kutG9yfjBqgQ8AlgDlCBnZBy6WyxuaM7euIJksqE6WrMj9qw6O5+iY7sScVIIfW4lVtKfiNhdIjdkpsMyrH5LTWCFZR8lMrlfNoP7A0ExusqBLgK1J3Kh6KosJkBasExjmnBlSXe7xx9Gx7JEetDIsciEhM12PDUBszR5dGE3pOHFw1lhrG/3h4yktSO1Lmjngw2a76yKYKz0UVuPrI7dBn8S0eelp3Nm4Zz8P1LXPXcZs6gie2f55gDYrDrWRx3KRtAa4KfNf6lg9KenI8xr2m2qOFX2V2eG7LMoUtdOho61BQ0rK0DjTvbGJSj8mTA3nNiohKWLWJ8WIWC3moez2g+5Kfyjzpm/yjUA953sFM4VTO6OZN/jc9WDkSqQsiA3+Sgj28lSsMgOzSKkc8XKihY06j/hBNXnEw5DhdDlmOP1GXP68f8GxgnGvwgnelvW3lmAJL0cvvsp+OfBoeBnqQyPYsRcdlhbcrZh91R8hT2D/JuZAAO1rJVUNsRnP7H8P722twx4efE/QGs28=
   - secure: SCCpPpIgOWZsXsPmdjMM7vuFmIGsBwVvdoLli1hZyeMD1gNPRJHtczozf3mkbvvPZnIzdCnl1yzZ0IrLMD4Gz3EBIbtQ4kMG0NcK/O7zkoXmUyh5MOhrRkh43J4mArgCMBeBtampJr2teVeEye2H8iyPOgGNktRmJ38pzACer716bTgUR7hI3Iu+eV/mL7wwO1GDcPr4Okf9PlO8MT14ffebgxDCA2eJFgvTrH4iBLAg73o82myd7SIU0Ui1m8TnYIGs11TrUe+QYsCk8gi7xSxF5YIRDHGMuuRHOnek4dcpBh4TR8j2YgRBxBxKHElEwCbNDbGPloEF6tykKunOulZfQDg7dA5mNzVz0XgZ1HdIuh/runnoKBbXqgwVVDiM4ercIZhkUTgpfA/8aGn+L9YI7QgzLyQAivWeUGek7mxkEoII3iTGCJSDWOLDmRUa6XWjXUsE6SNbqKGTRyGSTYzqC7IHPHCx14sCr1ywG2XJ14o+WSNFhZLAxg4WJDP04mArhvc3V1PCVBTO50lZVqepHNbUQORX5lCZYcyDnFuE6XIAxUIM5TL2JMO/XYPApHMF8HLMQ0to+Iw7T1g+sYRSscrpbC2/z9MF8E9BVi+9lT0FTseha00q2me5B9GiSRQdSLsANeTfo0d53hQfxcws0U5+t6zdCWwPFbnWIbg=
   - secure: tf22t80dqWe56dU7Vg8Gm/4pLHypDLmlVdkYgiRpQLkvdyVFFDJ1woQ41jxzPehC0dCP6YWTGRyzxOQE+mQ/sVeBFKVFLp4ySTYeshre0FLMULAjpJadzh5LcFk9UOWgNyDz3zglp5cRYxUEpvKSk626aMNcFZ0hH/aOcPB5xSXWw4KtL9yyF1lOZwpXE+MsL6kFRpKRWLPkYNdoe+cX6J+Vx6EDq7xvajFXdMUnL7KdbSBZvN+hSMhIA6kqIto0E+tNSsXxBUmfYpnt4Topgux8a5NWoPHJSliW4xDpg+NX3+ZMndaTJu2sNtlsgcV+EqIGMT1ronewWw5Up4ToetPIATtB9JHWH0CBAmF1xpJsbuh07Kf+otWroDrOhC6zjamsixlJO1qIh9bVpcUWUFN1qJLc4AjnMV76XeBRtdObKbBhFAVGAZAAHTkJADdWT3TrvSQg9K3feNgDEKyxoWSrMcYLRVmqLHV9qs6YTM9iOhcd+KPt9uFxrCQsC9fK7cKra//lKBN/e6Y7XYKyT2Byua20n5/Q7VqZSa+3Ax+6HhI+lOMc3y+V65qRWNOertXwCjGaNdofcN980HlUNlNv1w8hLzqzhaJIubRHiZz0pPDQjcubXvi7uiFUCl8mnrTgt9WzgMf6n8EWr7coRSPd9CfUuVqd21qhcCd9Z9A=
-  #Dependencies
-  - DEPS_DIR="`readlink -f $TRAVIS_BUILD_DIR/..`"
-  - OPENCV_BUILD_DIR=$DEPS_DIR/opencv/build
 deploy:
   provider: heroku
   api_key:
