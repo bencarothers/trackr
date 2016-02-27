@@ -21,6 +21,7 @@ from flask.ext.cors import CORS
 import datetime, urllib, time, base64, time, hmac, json
 from hashlib import sha1
 from flask.ext.store import Store
+from hough_track import Trackr
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
@@ -58,15 +59,17 @@ def uploadVideo(lift, weight):
               'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
     r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
     file = request.files['file']
-    upload_tracked(file)
+    upload_raw_video(file, user_id, lift, weight)
     if r.status_code != 200:
         return "IMPROPER"
     else:
         return r._content
 
-def upload_tracked(file):
+def upload_raw_video(file, user_id, lift, weight):
+    app.config['STORE_PATH'] = user_id + "/" + str(lift) + '/' + str(weight) + '/'
     provider = store.Provider(file)
     provider.save()
+    print "SAVED COMPLETE"
     return provider.absolute_url
 
 @app.route("/current_user/")
