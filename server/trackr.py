@@ -18,10 +18,25 @@ from flask import redirect, url_for, request, session, Blueprint, jsonify, curre
 from flask.ext.login import login_user, logout_user, current_user, LoginManager, login_required
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from flask.ext.cors import CORS
-import datetime
+import datetime, urllib, time, base64, time, hmac, json
+from hashlib import sha1
+from flask.ext.store import Store
+from hough_track import Trackr
+import boto
+from boto.s3.key import Key
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
+app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
+app.config['STORE_PATH'] = ''
+app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
+app.config['STORE_S3_REGION'] = 'us-east-1'
+app.config['STORE_S3_BUCKET'] = 'bartrackr-upload'
+app.config['STORE_S3_ACCESS_KEY'] = os.environ.get("AWS_ACCESS_KEY_ID")
+app.config['STORE_S3_SECRET_KEY'] = os.environ.get("AWS_SECRET_KEY")
+
+store = Store(app)
+
 app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -40,17 +55,40 @@ def index():
 @app.route("/ajaxVideoUpload/<lift>/<weight>/<date>/", methods = ['POST'])
 @login_required
 def uploadVideo(lift, weight):
-    file = request.files['file']
-    file.save("./thissavesthefile.mp4")
     user = current_user
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
               'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
-    r = requests.post("https://api4trackr.herokuapp.com" + "/addLift",json = payload)
+    r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
+    file = request.files['file']
+    upload_raw_video(file, user_id, lift, weight)
     if r.status_code != 200:
         return "IMPROPER"
     else:
         return r._content
+
+def upload_raw_video(file, user_id, lift, weight):
+    provider = store.Provider(file, location = str(user_id))
+    provider.filename = str(lift) + "." + str(weight) + ".mp4"
+    provider.save()
+    print "SAVED COMPLETE"
+    print provider.absolute_url
+    return provider.absolute_url
+'''
+Should connect to link below.
+'''
+@app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
+@login_required
+def download_video(lift, weight):
+    conn = boto.connect_s3(app.config['STORE_S3_ACCESS_KEY'], app.config['STORE_S3_SECRET_KEY'])
+    bucket = conn.get_bucket(app.config['STORE_S3_BUCKET'])
+    bucket_list = bucket.list()
+    keystring = current_user.user_id + "/" + str(lift) + "." + str(weight) + ".mp4"
+    for l in bucket_list:
+        if l.key == keystring:
+            l.get_contents_to_filename(LOCAL_PATH+keyString)
+
+
 
 @app.route("/current_user/")
 @login_required
@@ -84,16 +122,14 @@ def oauth_callback(provider):
     nickname = username
     if nickname is None or nickname == "":
         nickname = email.split('@')[0]
-        #url_for(post_user, username = nickname, password = password, email = email, provider = provider)
         return redirect(url_for('index'))
     else:
-        #This is just a login
         user = user_loader(nickname)
         login_user(user)
         return redirect(url_for('index'))
 
 '''
-THE FOLLOWING ROUTES HAVE TO BE EDITED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP
+THE FOLLOWING ROUTES HAVE TO BE CHANGED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP
 '''
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'}, methods = ['POST'])
 def post_user(username, password, email, provider):
@@ -142,30 +178,6 @@ def delete_user(username):
         return "IMPROPER"
     return r._content
 
-@app.route('/sign_s3/')
-def sign_s3():
-    AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
-    AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
-    S3_BUCKET = os.environ.get('S3_BUCKET')
-
-    object_name = urllib.quote_plus(request.args.get('file_name'))
-    mime_type = request.args.get('file_type')
-
-    expires = int(time.time()+60*60*24)
-    amz_headers = "x-amz-acl:public-read"
-
-    string_to_sign = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
-
-    signature = base64.encodestring(hmac.new(AWS_SECRET_KEY.encode(), string_to_sign.encode('utf8'), sha1).digest())
-    signature = urllib.quote_plus(signature.strip())
-
-    url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
-
-    content = json.dumps({
-        'signed_request': '%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
-        'url': url,
-    })
-    return content
-
 if __name__ == "__main__":
+    download_video()
     app.run(debug = True)

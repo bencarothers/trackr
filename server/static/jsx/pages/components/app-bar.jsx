@@ -14,7 +14,7 @@ const MainAppBar = React.createClass({
         this.props.handleResponse(fd)
         console.log()
         jQuery.ajax({
-            url: '/ajaxVideoUpload/' + this.refs.lift + '/' + this.refs.weight + '/' + moment().format('MMMDoYY') + '/' ,
+            url: '/ajaxVideoUpload/' + this.refs.lift.value + '/' + this.refs.weight.value + '/' + moment().format('MMMDoYY') + '/' ,
             data: fd,
             processData: false,
             contentType: false,

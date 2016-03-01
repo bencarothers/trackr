@@ -25,7 +25,6 @@ setup(name='trackr',
             'itsdangerous==0.24',
             'requests==2.9.1',
             'wsgiref==0.1.2',
-            'cv2==1.0',
             'mongoengine==0.10.5',
             'flask-mongoengine==0.7.4',
             'Flask-SuperAdmin==1.7.1',
@@ -34,6 +33,8 @@ setup(name='trackr',
             'flask-login==0.3.2',
             'rauth==0.7.2',
             'moviepy==0.2.2.11',
-            'flask-cors==2.1.2'
+            'flask-cors==2.1.2',
+            'Flask-Store==0.0.4.2',
+            'boto==2.39.0'
           ],
       )
