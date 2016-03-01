@@ -26,7 +26,7 @@ from hough_track import Trackr
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
 app.config['STORE_DOMAIN'] = 'http://127.0.0.1:5000'
-app.config['STORE_PATH'] = 'test/tracked/'
+app.config['STORE_PATH'] = 'test/'
 app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
 app.config['STORE_S3_REGION'] = 'us-east-1'
 app.config['STORE_S3_BUCKET'] = 'bartrackr-upload'
@@ -66,10 +66,11 @@ def uploadVideo(lift, weight):
         return r._content
 
 def upload_raw_video(file, user_id, lift, weight):
-    app.config['STORE_PATH'] = user_id + "/" + str(lift) + '/' + str(weight) + '/'
-    provider = store.Provider(file)
+    provider = store.Provider(file, location = str(user_id))
+    provider.filename = str(lift) + "." + str(weight) + ".mp4"
     provider.save()
     print "SAVED COMPLETE"
+    print provider.absolute_url
     return provider.absolute_url
 
 @app.route("/current_user/")
