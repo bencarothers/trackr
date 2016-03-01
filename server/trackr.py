@@ -22,11 +22,13 @@ import datetime, urllib, time, base64, time, hmac, json
 from hashlib import sha1
 from flask.ext.store import Store
 from hough_track import Trackr
+import boto
+from boto.s3.key import Key
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
 app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
-app.config['STORE_PATH'] = 'test/'
+app.config['STORE_PATH'] = ''
 app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
 app.config['STORE_S3_REGION'] = 'us-east-1'
 app.config['STORE_S3_BUCKET'] = 'bartrackr-upload'
@@ -72,13 +74,21 @@ def upload_raw_video(file, user_id, lift, weight):
     print "SAVED COMPLETE"
     print provider.absolute_url
     return provider.absolute_url
-
+'''
+Should connect to link below.
+'''
 @app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
 @login_required
 def download_video(lift, weight):
-    r = requests.get("https://s3.amazonaws.com/bartrackr-upload/test/" + current_user.user_id + "/"
-        + lift + "." + weight + '.mp4')
-    
+    conn = boto.connect_s3(app.config['STORE_S3_ACCESS_KEY'], app.config['STORE_S3_SECRET_KEY'])
+    bucket = conn.get_bucket(app.config['STORE_S3_BUCKET'])
+    bucket_list = bucket.list()
+    keystring = current_user.user_id + "/" + str(lift) + "." + str(weight) + ".mp4"
+    for l in bucket_list:
+        if l.key == keystring:
+            l.get_contents_to_filename(LOCAL_PATH+keyString)
+
+
 
 @app.route("/current_user/")
 @login_required
@@ -169,4 +179,5 @@ def delete_user(username):
     return r._content
 
 if __name__ == "__main__":
+    download_video()
     app.run(debug = True)
