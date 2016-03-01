@@ -12,8 +12,9 @@ const MainAppBar = React.createClass({
         var fd = new FormData()
         fd.append( 'file', this.refs.file.files[0] );
         this.props.handleResponse(fd)
+        console.log()
         jQuery.ajax({
-            url: '/ajaxVideoUpload/' + this.refs.lift + '/' + this.refs.weight + '/',
+            url: '/ajaxVideoUpload/' + this.refs.lift + '/' + this.refs.weight + '/' + moment().format('MMMDoYY') + '/' ,
             data: fd,
             processData: false,
             contentType: false,
