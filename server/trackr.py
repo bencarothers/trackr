@@ -25,7 +25,7 @@ from hough_track import Trackr
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
-app.config['STORE_DOMAIN'] = 'http://127.0.0.1:5000'
+app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
 app.config['STORE_PATH'] = 'test/'
 app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
 app.config['STORE_S3_REGION'] = 'us-east-1'
@@ -73,6 +73,13 @@ def upload_raw_video(file, user_id, lift, weight):
     print provider.absolute_url
     return provider.absolute_url
 
+@app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
+@login_required
+def download_video(lift, weight):
+    r = requests.get("https://s3.amazonaws.com/bartrackr-upload/test/" + current_user.user_id + "/"
+        + lift + "." + weight + '.mp4')
+    
+
 @app.route("/current_user/")
 @login_required
 def get_current_user():
@@ -105,10 +112,8 @@ def oauth_callback(provider):
     nickname = username
     if nickname is None or nickname == "":
         nickname = email.split('@')[0]
-        #url_for(post_user, username = nickname, password = password, email = email, provider = provider)
         return redirect(url_for('index'))
     else:
-        #This is just a login
         user = user_loader(nickname)
         login_user(user)
         return redirect(url_for('index'))
