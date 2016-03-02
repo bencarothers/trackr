@@ -1,12 +1,13 @@
 language: python
 python:
 - '2.7'
+before_install:
+ - sudo apt-get update
+ - sudo apt-get install python-opencv
+ - sudo dpkg -L python-opencv
 install:
 - pip install coveralls
 - python setup.py install
-- sudo apt-get install -Y python-opencv 
-- sudo apt-get update -Y
-- sudo dpkg -L python-opencv -Y
 
 script:
 - python setup.py test
