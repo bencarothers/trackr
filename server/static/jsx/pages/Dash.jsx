@@ -16,6 +16,7 @@ const Dash = React.createClass({
         };
       },
 
+
       componentDidMount: function(){
         jQuery.get("/current_user/").done(function(result){
           var user_id = result.user;
@@ -27,7 +28,12 @@ const Dash = React.createClass({
               this.setState({lifts: this.state.lifts.concat([data])})
           },
 
+
       render() {
+        var loadStyle = {
+          width: '100%'
+        };
+
         if(this.state.username){
           return (
           <div className="dash">
@@ -38,7 +44,14 @@ const Dash = React.createClass({
         }
         else{
              return(
-                <div>Loading...</div>
+                 <div className="container">
+                     <div className="row">
+                         <h3>Loading data... Please wait.</h3>
+                         <div className="progress progress-striped active page-progress-bar">
+                             <div className="progress-bar" style={loadStyle}></div>
+                         </div>
+                     </div>
+                 </div>
              );
            }
       }
