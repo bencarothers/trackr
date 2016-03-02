@@ -4,10 +4,9 @@ python:
 install:
 - pip install coveralls
 - python setup.py install
-- sudo apt-get install -y python-opencv 
-- sudo apt-get update -y
-- sudo apt-get upgrade -y
-- sudo dpkg -L python-opencv
+- sudo apt-get install -Y python-opencv 
+- sudo apt-get update -Y
+- sudo dpkg -L python-opencv -Y
 
 script:
 - python setup.py test
