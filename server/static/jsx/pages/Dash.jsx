@@ -8,14 +8,15 @@ const Dash = React.createClass({
     getInitialState: function() {
         return {
               lifts:[{
-                  img: 'https://placeholdit.imgix.net/~text?txtsize=61&txt=650%C3%97643&w=350&h=330',
-                  title: '2',
-                  author: '2',
+                  img: 'path to access display img',
+                  lift: '',
+                  weight: '',
+                  link: 'path to use as the call to aws to view the tracked img' 
                   }],
               username: null,
         };
       },
-
+//TODO: In current user query, now send back more than username info.
       componentDidMount: function(){
         jQuery.get("/current_user/").done(function(result){
           var user_id = result.user;

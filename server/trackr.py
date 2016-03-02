@@ -58,7 +58,7 @@ def uploadVideo(lift, weight, date):
     user = current_user
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
-              'file_path': 'test', 'date': date}
+              'video_file_path': 'test', 'img_file_path' : 'test', 'date': date}
     r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
     file = request.files['file']
     trackr = Trackr_Vid(file)
@@ -88,7 +88,6 @@ def download_video(lift, weight):
     for l in bucket_list:
         if l.key == keystring:
             l.get_contents_to_filename(LOCAL_PATH+keyString)
-
 
 @app.route("/current_user/")
 @login_required
@@ -166,6 +165,7 @@ def check_user(username, email):
 def grab_lifts(username):
     payload = {'user_id': username}
     r = requests.get("https://api4trackr.herokuapp.com" + "/getLifts", json = payload)
+    ##TO-DO## THIS IS WHERE YOU'LL NEED TO FILL IN THE TMP DIRECTORY
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
