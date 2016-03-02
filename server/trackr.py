@@ -21,7 +21,7 @@ from flask.ext.cors import CORS
 import datetime, urllib, time, base64, time, hmac, json
 from hashlib import sha1
 from flask.ext.store import Store
-from hough_track import Trackr
+from hough_track import Trackr_Vid
 import boto
 from boto.s3.key import Key
 
@@ -54,24 +54,25 @@ def index():
 
 @app.route("/ajaxVideoUpload/<lift>/<weight>/<date>/", methods = ['POST'])
 @login_required
-def uploadVideo(lift, weight):
+def uploadVideo(lift, weight, date):
     user = current_user
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
-              'file_path': 'test', 'date': datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")}
+              'video_file_path': 'test', 'img_file_path' : 'test', 'date': date}
     r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
     file = request.files['file']
-    upload_raw_video(file, user_id, lift, weight)
+    trackr = Trackr_Vid(file)
+    upload_raw_video(trackr.video, user_id, lift, weight, date)
     if r.status_code != 200:
         return "IMPROPER"
     else:
         return r._content
 
-def upload_raw_video(file, user_id, lift, weight):
+def upload_raw_video(file, user_id, lift, weight, date):
+    ###Can we upload the tracked video instead?
     provider = store.Provider(file, location = str(user_id))
-    provider.filename = str(lift) + "." + str(weight) + ".mp4"
+    provider.filename = str(date) + "." + str(lift) + "." + str(weight) + ".mp4"
     provider.save()
-    print "SAVED COMPLETE"
     print provider.absolute_url
     return provider.absolute_url
 '''
@@ -87,8 +88,6 @@ def download_video(lift, weight):
     for l in bucket_list:
         if l.key == keystring:
             l.get_contents_to_filename(LOCAL_PATH+keyString)
-
-
 
 @app.route("/current_user/")
 @login_required
@@ -166,6 +165,7 @@ def check_user(username, email):
 def grab_lifts(username):
     payload = {'user_id': username}
     r = requests.get("https://api4trackr.herokuapp.com" + "/getLifts", json = payload)
+    ##TO-DO## THIS IS WHERE YOU'LL NEED TO FILL IN THE TMP DIRECTORY
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -179,5 +179,4 @@ def delete_user(username):
     return r._content
 
 if __name__ == "__main__":
-    download_video()
     app.run(debug = True)

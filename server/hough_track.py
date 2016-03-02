@@ -1,40 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy
 import cv2
-import moviepy.editor as mp
-
-try:
-    from line_profiler import LineProfiler
-
-    def do_profile(follow=[]):
-        def inner(func):
-            def profiled_func(*args, **kwargs):
-                try:
-                    profiler = LineProfiler()
-                    profiler.add_function(func)
-                    for f in follow:
-                        profiler.add_function(f)
-                    profiler.enable_by_count()
-                    return func(*args, **kwargs)
-                finally:
-                    profiler.print_stats()
-            return profiled_func
-        return inner
-
-except ImportError:
-    def do_profile(follow=[]):
-        "Helpful if you accidentally leave in production!"
-        def inner(func):
-            def nothing(*args, **kwargs):
-                return func(*args, **kwargs)
-            return nothing
-        return inner
-
-class Trackr:
+#Open the video, read the first frame, and get the shape of the window
+class Trackr_Vid:
     
-    def __init__(self, input_video_path):
+    def __init__(self, input_video):
     # Globals to hold all the points for graphing as well as drawing the path
-        self.input_video_path = input_video_path
+        self.input_video_path = input_video
         self.video = None
         self.frame = None
         self.width = None
@@ -50,9 +22,6 @@ class Trackr:
 
     def video_capture(self):
         form_video = cv2.VideoCapture(self.input_video_path)
-        delta_filepath = edited_filepath(self.input_video_path)
-        video_resize(self.input_video_path, delta_filepath)
-        form_video = cv2.VideoCapture(delta_filepath)
         ret, frame = form_video.read()
         height, self.width, depth = frame.shape
         return form_video, frame.copy()
@@ -60,8 +29,6 @@ class Trackr:
     def find_circles(self, video):
         video = cv2.medianBlur(self.frame, 5)
         gray = cv2.cvtColor(video, cv2.COLOR_BGR2GRAY)
-        #The 2-1 Hough Transform. Considered best for tracking images of real circles.
-        #Looking into this may be an avenue for pulling out better performance.
         circles = cv2.HoughCircles(image = gray, method = cv2.cv.CV_HOUGH_GRADIENT, 
             dp = 1.2, minDist = 700, minRadius = 40)
         return circles
@@ -70,7 +37,8 @@ class Trackr:
         circles = numpy.round(circles[0,:]).astype('int')
         x, y, r = circles[0].tolist()
         
-        #Find the initial point to track using houghCircles
+
+#Find the initial point to track using houghCircles
         previousXValue = x
         previousYValue = y
         xSub = x
@@ -112,34 +80,17 @@ class Trackr:
                 previousXValue = x
                 previousYValue = y
                 cv2.imshow('path',self.frame)
-                k = cv2.waitKey(20) & 0xff
+                k = cv2.waitKey(60) & 0xff
                 if k == 27:
                     break
             else:
                 break
 
-        plt.plot(self.xs, self.ys)
-        plt.axis([-self.width,self.width,0,max(self.ys)+30])
-        plt.title('Bar Path')
-        plt.axvline(0,linestyle='solid')
-        plt.show()
+#        plt.plot(self.xs, self.ys)
+#        plt.axis([-self.width,self.width,0,max(self.ys)+30])
+#        plt.title('Bar Path')
+#        plt.axvline(0,linestyle='solid')
+#        plt.show()
+
         cv2.destroyAllWindows()
-#       self.video.save()
-
-#Takes in a filepath as input, changes it to v2 and saves new file 
-def edited_filepath(filepath):
-    stripped_path = filepath.replace(".mp4", "")
-    return stripped_path + "_v2.mp4"
-
-def video_resize(clip_path, delta_clip_path):
-    clip = mp.VideoFileClip(clip_path, audio = False)
-    print clip.duration
-    print clip.fps
-    clip_resized = clip.resize(height = 500)
-    print clip_resized.duration
-    print clip.fps
-    clip_resized.write_videofile(delta_clip_path)
-
-
-if __name__ == "__main__":
-    Trackr("../tracking_experiments/test_data/videos/bench.mp4")
+        self.video.release()

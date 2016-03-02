@@ -1,15 +1,10 @@
 language: python
 python:
 - '2.7'
-virtualenv:
-  system_site_packages: true
-before install:
-- SITE_PKG_DIR=$VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/site-packages
-- rm -f $VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/no-global-site-packages.txt
-- apt-get install python-opencv 
 install:
 - pip install coveralls
 - python setup.py install
+- sudo apt-get install -y python-opencv 
 script:
 - python setup.py test
 after_success:
