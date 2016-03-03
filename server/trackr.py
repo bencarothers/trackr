@@ -170,7 +170,6 @@ def grab_lifts(username):
         return "IMPROPER"
     return r._content
 
-
 @app.route("/api_delete/<username>")
 def delete_user(username):
     r = requests.get("https://api4trackr.herokuapp.com" + "/Delete")
