@@ -6,7 +6,7 @@ install:
 - python setup.py install
 - git clone https://github.com/Itseez/opencv.git
 - cd opencv
-- git checkout 3.0
+- git checkout 3.0.0
 - mkdir build
 - cd build
 - cmake -DCMAKE_INSTALL_PREFIX=/usr ..
