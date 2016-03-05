@@ -21,8 +21,8 @@ from flask.ext.cors import CORS
 import datetime, urllib, time, base64, time, hmac, json
 from hashlib import sha1
 from flask.ext.store import Store
-from hough_track import Trackr_Vid
 import boto
+import cv
 from boto.s3.key import Key
 
 app = flask.Flask(__name__)
