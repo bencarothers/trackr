@@ -33,6 +33,7 @@ except ImportError:
     print(installed_packages_list)
 from hough_track import Trackr_Vid
 
+print cv2.__version__
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
 app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
