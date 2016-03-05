@@ -22,8 +22,20 @@ import datetime, urllib, time, base64, time, hmac, json
 from hashlib import sha1
 from flask.ext.store import Store
 import boto
-import cv
 from boto.s3.key import Key
+try:
+    import cv2
+except ImportError:
+    import pip
+    installed_packages = pip.get_installed_distributions()
+    installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
+                                           for i in installed_packages])
+    print(installed_packages_list)
+try:
+    import cv
+except ImportError:
+    print 'no cv'
+
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
