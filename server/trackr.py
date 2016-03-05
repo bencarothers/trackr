@@ -26,15 +26,12 @@ from boto.s3.key import Key
 try:
     import cv2
 except ImportError:
-    raise ImportError('nocv2')
+    print 'no cv2'
 try:
     import cv
 except ImportError:
-    raise ImportError('nocv')
-
+    print 'no cv'
 from hough_track import Trackr_Vid
-
-print cv2.__version__
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
