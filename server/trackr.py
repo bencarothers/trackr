@@ -31,11 +31,6 @@ except ImportError:
     installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
                                            for i in installed_packages])
     print(installed_packages_list)
-try:
-    import cv
-except ImportError:
-    print 'no cv'
-
 
 app = flask.Flask(__name__)
 CORS(app, origins = "*api4trackr.herokuapp.com*")
