@@ -1,13 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy
-try:
-    import cv2
-except ImportError:
-    import pip
-    installed_packages = pip.get_installed_distributions()
-    installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
-                                           for i in installed_packages])
-    print(installed_packages_list)                                                                                             for i in installed_packages])
 #Open the video, read the first frame, and get the shape of the window
 
 class Trackr_Vid:
