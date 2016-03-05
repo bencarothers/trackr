@@ -23,7 +23,15 @@ from hashlib import sha1
 from flask.ext.store import Store
 import boto
 from boto.s3.key import Key
-import cv2
+try:
+    import cv2
+except ImportError:
+    raise ImportError('nocv2')
+try:
+    import cv
+except ImportError:
+    raise ImportError('nocv')
+
 from hough_track import Trackr_Vid
 
 print cv2.__version__
