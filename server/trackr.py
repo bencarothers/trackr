@@ -22,6 +22,7 @@ import datetime, urllib, time, base64, time, hmac, json
 from hashlib import sha1
 from flask.ext.store import Store
 import boto
+from hough_track import Trackr_Vid
 from boto.s3.key import Key
 try:
     import cv2
