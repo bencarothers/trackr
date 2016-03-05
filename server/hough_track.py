@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy
-import cv2
+import cv
 #Open the video, read the first frame, and get the shape of the window
 class Trackr_Vid:
-    
+
     def __init__(self, input_video):
     # Globals to hold all the points for graphing as well as drawing the path
         self.input_video_path = input_video
@@ -29,14 +29,14 @@ class Trackr_Vid:
     def find_circles(self, video):
         video = cv2.medianBlur(self.frame, 5)
         gray = cv2.cvtColor(video, cv2.COLOR_BGR2GRAY)
-        circles = cv2.HoughCircles(image = gray, method = cv2.cv.CV_HOUGH_GRADIENT, 
+        circles = cv2.HoughCircles(image = gray, method = cv2.cv.CV_HOUGH_GRADIENT,
             dp = 1.2, minDist = 700, minRadius = 40)
         return circles
 
     def point_to_track(self, circles):
         circles = numpy.round(circles[0,:]).astype('int')
         x, y, r = circles[0].tolist()
-        
+
 
 #Find the initial point to track using houghCircles
         previousXValue = x
