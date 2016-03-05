@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy
-import cv
+import cv2
 #Open the video, read the first frame, and get the shape of the window
 class Trackr_Vid:
 
