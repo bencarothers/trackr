@@ -27,7 +27,10 @@ try:
     import cv2
 except ImportError:
     print 'no cv2'
-import cv
+try:
+    import cv
+except ImportError:
+    print 'no cv'
 from hough_track import Trackr_Vid
 
 app = flask.Flask(__name__)
