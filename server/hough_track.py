@@ -1,9 +1,15 @@
 import matplotlib.pyplot as plt
 import numpy
-import cv2
+try:
+    import cv2
+except ImportError:
+    import pip
+    installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
+                                           for i in installed_packages])
+    print(installed_packages_list)
 #Open the video, read the first frame, and get the shape of the window
-class Trackr_Vid:
 
+class Trackr_Vid:
     def __init__(self, input_video):
     # Globals to hold all the points for graphing as well as drawing the path
         self.input_video_path = input_video
