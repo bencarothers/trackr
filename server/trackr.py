@@ -23,14 +23,7 @@ from hashlib import sha1
 from flask.ext.store import Store
 import boto
 from boto.s3.key import Key
-try:
-    import cv2
-except ImportError:
-    print 'no cv2'
-try:
-    import cv
-except ImportError:
-    print 'no cv'
+import cv2
 from hough_track import Trackr_Vid
 
 app = flask.Flask(__name__)
