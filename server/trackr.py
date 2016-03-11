@@ -27,7 +27,7 @@ import cv2
 from hough_track import Trackr_Vid
 
 app = flask.Flask(__name__)
-CORS(app, origins = "*api4trackr.herokuapp.com*")
+CORS(app, origins = "*api.ncf.space*")
 app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
 app.config['STORE_PATH'] = ''
 app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
