@@ -27,7 +27,7 @@ import cv2
 from hough_track import Trackr_Vid
 
 app = flask.Flask(__name__)
-CORS(app, origins = "*api.ncf.space*")
+CORS(app, origins = ["*api.ncf.space*", "*api4trackr.herokuapp.com*"])
 app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
 app.config['STORE_PATH'] = ''
 app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
@@ -60,22 +60,25 @@ def uploadVideo(lift, weight, date):
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
               'video_file_path': 'test', 'img_file_path' : 'test', 'date': date}
-    r = requests.post("http://api.ncf.space" + "/addLift",json = payload)
+    r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
     file = request.files['file']
-    trackr = Trackr_Vid(file)
-    upload_raw_video(trackr.video, user_id, lift, weight, date)
+    save_raw_video(file, user_id, lift, weight, date)
     if r.status_code != 200:
         return "IMPROPER"
     else:
         return r._content
 
-def upload_raw_video(file, user_id, lift, weight, date):
-    ###Can we upload the tracked video instead?
-    provider = store.Provider(file, location = str(user_id))
-    provider.filename = str(date) + "." + str(lift) + "." + str(weight) + ".mp4"
-    provider.save()
-    print provider.absolute_url
-    return provider.absolute_url
+def save_raw_video(file, user_id, lift, weight, date):
+    filename = str(date) + "." + str(lift) + "." + str(weight) + ".mp4"
+    cwd = os.getcwd()
+    path_for_video = (cwd + "/user_content/gif/" + user_id)
+    path_for_gif = (cwd + "/user_content/video/" + user_id)
+    if not os.path.exists(path_for_video):
+        os.makedirs(path_for_gif)
+        os.makedirs(path_for_video)
+    file.save(path_for_video + "/" + filename)
+    
+    return filename
 
 @app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
 @login_required
@@ -130,7 +133,7 @@ def oauth_callback(provider):
 def post_user(username, password, email, provider):
     print username
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
-    r = requests.post("https://api.ncf.space" + "/Add", json= payload)
+    r = requests.post("http://api4trackr.herokuapp.com" + "/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
     return r._content
@@ -138,7 +141,7 @@ def post_user(username, password, email, provider):
 @app.route("/api_login/<username>/<password>", methods = ['POST'])
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("https://api.ncf.space" + "/LoginUser", json = payload)
+    r = requests.get("http://api4trackr.herokuapp.com" + "/LoginUser", json = payload)
     if r.status_code != 200:
     	return "IMPROPER"
     r_json = r.json()
@@ -152,7 +155,7 @@ def get_user(username, password):
 @app.route("/api_check/<username>/<email>")
 def check_user(username, email):
     payload = {'user_id': username, "email" : email}
-    r = requests.get("https://api.ncf.space" + "/Check", json = payload)
+    r = requests.get("http://api4trackr.herokuapp.com" + "/Check", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -160,14 +163,14 @@ def check_user(username, email):
 @app.route("/api_get_lift/<username>")
 def grab_lifts(username):
     payload = {'user_id': username}
-    r = requests.get("https://api.ncf.space" + "/getLifts", json = payload)
+    r = requests.get("http://api4trackr.herokuapp.com" + "/getLifts", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get("https://api.ncf.space" + "/Delete")
+    r = requests.get("http://api4trackr.herokuapp.com" + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content

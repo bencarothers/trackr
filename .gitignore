@@ -64,4 +64,6 @@ pip-log.txt
 !.elasticbeanstalk/*.global.yml
 
 # Dont need all our test data on Github
-.mp4
+*.mp4
+
+user_content/*

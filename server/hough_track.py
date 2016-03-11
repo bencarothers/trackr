@@ -79,18 +79,12 @@ class Trackr_Vid:
 
                 previousXValue = x
                 previousYValue = y
-                cv2.imshow('path',self.frame)
+                cv2.imwrite(self.input_video_path, self.frame)
                 k = cv2.waitKey(60) & 0xff
                 if k == 27:
                     break
             else:
                 break
-
-#        plt.plot(self.xs, self.ys)
-#        plt.axis([-self.width,self.width,0,max(self.ys)+30])
-#        plt.title('Bar Path')
-#        plt.axvline(0,linestyle='solid')
-#        plt.show()
-
         cv2.destroyAllWindows()
         self.video.release()
+        print 'Trackr Done!'
