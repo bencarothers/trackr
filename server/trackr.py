@@ -25,6 +25,7 @@ import boto
 from boto.s3.key import Key
 import cv2
 from hough_track import Trackr_Vid
+from mk_gif import make_gif
 
 app = flask.Flask(__name__)
 CORS(app, origins = ["*api.ncf.space*", "*api4trackr.herokuapp.com*"])
@@ -62,23 +63,24 @@ def uploadVideo(lift, weight, date):
               'video_file_path': 'test', 'img_file_path' : 'test', 'date': date}
     r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
     file = request.files['file']
-    save_raw_video(file, user_id, lift, weight, date)
+    save_raw_files(file, user_id, lift, weight, date)
     if r.status_code != 200:
         return "IMPROPER"
     else:
         return r._content
 
-def save_raw_video(file, user_id, lift, weight, date):
-    filename = str(date) + "." + str(lift) + "." + str(weight) + ".mp4"
+def save_raw_files(file, user_id, lift, weight, date):
+    vid_filename = str(date) + "." + str(lift) + "." + str(weight) + ".mp4"
+    gif_filename = str(date) + "." + str(lift) + "." + str(weight) + ".gif"
     cwd = os.getcwd()
-    path_for_video = (cwd + "/user_content/gif/" + user_id)
-    path_for_gif = (cwd + "/user_content/video/" + user_id)
+    path_for_video = (cwd + "/user_content/video/" + user_id)
+    path_for_gif = (cwd + "/user_content/gif/" + user_id)
     if not os.path.exists(path_for_video):
         os.makedirs(path_for_gif)
         os.makedirs(path_for_video)
-    file.save(path_for_video + "/" + filename)
-    
-    return filename
+    file.save(path_for_video + "/" + vid_filename)
+    make_gif(path_for_video + "/" + vid_filename, path_for_gif + "/" + gif_filename)
+    return vid_filename
 
 @app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
 @login_required

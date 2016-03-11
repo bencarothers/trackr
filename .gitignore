@@ -66,4 +66,4 @@ pip-log.txt
 # Dont need all our test data on Github
 *.mp4
 
-user_content/*
+server/user_content/*
