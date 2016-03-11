@@ -116,17 +116,19 @@ def oauth_callback(provider):
     username, email = oauth.callback()
     print username
     print email
-    print '\n GOT PAST CALLBACK'
-    if email is None:
-        return redirect(url_for('index'))
     nickname = username
     if nickname is None or nickname == "":
         nickname = email.split('@')[0]
-        return redirect(url_for('index'))
-    else:
+    checked = check_user(nickname, email)
+    is_ok = checked.find('ok')
+    if is_ok:
         user = user_loader(nickname)
         login_user(user)
-        return redirect(url_for('index'))
+    else:
+        posted = post_user(username, str(provider), email, str(provider))
+        user = user(nickname)
+        login_user(user)
+    return flask.render_template('index.html')
 
 '''
 THE FOLLOWING ROUTES HAVE TO BE CHANGED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP

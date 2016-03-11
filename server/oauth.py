@@ -68,7 +68,7 @@ class GoogleSignIn(OAuthSignIn):
 		return (me['name'],
 			   me['email'])
 
-class FacebookSignIn(OAuthSignIn):
-	def __init__(self):
-		super(FacebookSignIn, self).__init__('facebook')
-		facebookinfo = urllib2.urlopen('https://')
+#class FacebookSignIn(OAuthSignIn):
+#	def __init__(self):
+#		super(FacebookSignIn, self).__init__('facebook')
+#		facebookinfo = urllib2.urlopen('https://')
