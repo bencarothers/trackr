@@ -60,7 +60,7 @@ def uploadVideo(lift, weight, date):
     user_id = user.user_id
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
               'video_file_path': 'test', 'img_file_path' : 'test', 'date': date}
-    r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
+    r = requests.post("http://api.ncf.space" + "/addLift",json = payload)
     file = request.files['file']
     trackr = Trackr_Vid(file)
     upload_raw_video(trackr.video, user_id, lift, weight, date)
@@ -76,9 +76,7 @@ def upload_raw_video(file, user_id, lift, weight, date):
     provider.save()
     print provider.absolute_url
     return provider.absolute_url
-'''
-Should connect to link below.
-'''
+
 @app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
 @login_required
 def download_video(lift, weight):
@@ -114,8 +112,6 @@ def oauth_authorize(provider):
 def oauth_callback(provider):
     oauth = OAuthSignIn.get_provider(provider)
     username, email = oauth.callback()
-    print username
-    print email
     nickname = username
     if nickname is None or nickname == "":
         nickname = email.split('@')[0]
@@ -130,14 +126,11 @@ def oauth_callback(provider):
         login_user(user)
     return flask.render_template('index.html')
 
-'''
-THE FOLLOWING ROUTES HAVE TO BE CHANGED TO BE SENT AJAX REQUESTS INSTEAD OF ARGUMENTS BEING SENT OVER HTTP
-'''
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'}, methods = ['POST'])
 def post_user(username, password, email, provider):
     print username
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
-    r = requests.post("https://api4trackr.herokuapp.com/Add", json= payload)
+    r = requests.post("https://api.ncf.space" + "/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
     return r._content
@@ -145,7 +138,7 @@ def post_user(username, password, email, provider):
 @app.route("/api_login/<username>/<password>", methods = ['POST'])
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("https://api4trackr.herokuapp.com/LoginUser", json = payload)
+    r = requests.get("https://api.ncf.space" + "/LoginUser", json = payload)
     if r.status_code != 200:
     	return "IMPROPER"
     r_json = r.json()
@@ -159,7 +152,7 @@ def get_user(username, password):
 @app.route("/api_check/<username>/<email>")
 def check_user(username, email):
     payload = {'user_id': username, "email" : email}
-    r = requests.get("https://api4trackr.herokuapp.com" + "/Check", json = payload)
+    r = requests.get("https://api.ncf.space" + "/Check", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -167,15 +160,14 @@ def check_user(username, email):
 @app.route("/api_get_lift/<username>")
 def grab_lifts(username):
     payload = {'user_id': username}
-    r = requests.get("https://api4trackr.herokuapp.com" + "/getLifts", json = payload)
-    ##TO-DO## THIS IS WHERE YOU'LL NEED TO FILL IN THE TMP DIRECTORY
+    r = requests.get("https://api.ncf.space" + "/getLifts", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get("https://api4trackr.herokuapp.com" + "/Delete")
+    r = requests.get("https://api.ncf.space" + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
