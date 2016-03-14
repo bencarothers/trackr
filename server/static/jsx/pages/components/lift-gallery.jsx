@@ -8,13 +8,7 @@ const LiftGallery = React.createClass({
 
         render (){
 
-            var tilesData = [
-                {
-                    img: 'https://placeholdit.imgix.net/~text?txtsize=61&txt=650%C3%97643&w=350&h=340',
-                    title: 'lift 1',
-                    author: 'BkrmadtyaKarki',
-                },
-            ];
+            var tilesData = []
 
             var arrayLength = this.props.lifts.length;
 
@@ -36,12 +30,12 @@ const LiftGallery = React.createClass({
             };
 
             var tileElements = tilesData.map(tile => <GridTile
-                    key={tile.img}
+                    key={tile.gif_file_path}
                     style={tileStyle}
-                    title={tile.title}
-                    subtitle={<span>by <b>{tile.author}</b></span>}
+                    title={tile.lift_type}
+                    subtitle={<span>by <b>{tile.weight}</b></span>}
                     actionIcon={<IconButton></IconButton>}
-                ><img src={tile.img}/></GridTile>
+                ><img src={tile.gif_file_path}/></GridTile>
             );
 
             return (

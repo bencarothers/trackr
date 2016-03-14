@@ -99,7 +99,7 @@ def download_video(lift, weight):
 def get_current_user():
     user = current_user
     if user:
-        return jsonify({"status": "ok", "user": user.user_id})
+        return jsonify({"status": "ok", "user": user.user_id, "lifts" : user.lifts})
     else:
         return jsonify({"status":"fail"})
 

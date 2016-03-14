@@ -3,11 +3,10 @@ import json
 class User(object):
     def __init__(self, user_id):
         self.user_id = user_id
-        self.lifts = None
         payload = {'user_id' : user_id}
         r = requests.get("http://localhost:8080" + "/getLifts",json = payload)
         response = json.loads(r.text)
-        print response['lifts'][0]['weight']
+        self.lifts = response['lifts']
 
     @property 
     def is_active(self):

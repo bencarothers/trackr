@@ -7,12 +7,7 @@ const Dash = React.createClass({
 
     getInitialState: function() {
         return {
-              lifts:[{
-                  img: 'path to access display img',
-                  lift: '',
-                  weight: '',
-                  link: 'path to use as the call to aws to view the tracked img' 
-                  }],
+              lifts:[],
               username: null,
         };
       },
@@ -20,7 +15,15 @@ const Dash = React.createClass({
       componentDidMount: function(){
         jQuery.get("/current_user/").done(function(result){
           var user_id = result.user;
+          var lifts = result.lifts;
           this.setState({ username: user_id });
+          var data = []
+          for (var x = 0; x < lifts.length-1; x++){
+            data.push(lifts[x])
+          }
+          console.log(data)
+          console.log("where the error tho")
+          this.setState({lifts: data});
         }.bind(this));
         },
 
