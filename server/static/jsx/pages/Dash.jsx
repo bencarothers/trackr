@@ -18,11 +18,10 @@ const Dash = React.createClass({
           var lifts = result.lifts;
           this.setState({ username: user_id });
           var data = []
-          for (var x = 0; x < lifts.length-1; x++){
+          for (var x = 0; x < lifts.length; x++){
             data.push(lifts[x])
           }
           console.log(data)
-          console.log("where the error tho")
           this.setState({lifts: data});
         }.bind(this));
         },

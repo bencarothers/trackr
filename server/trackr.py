@@ -74,14 +74,21 @@ def save_raw_files(file, user_id, lift, weight, date):
     vid_filename = str(date) + "." + str(lift) + "." + str(weight) + ".mp4"
     gif_filename = str(date) + "." + str(lift) + "." + str(weight) + ".gif"
     cwd = os.getcwd()
-    path_for_video = (cwd + "/user_content/video/" + user_id)
-    path_for_gif = (cwd + "/user_content/gif/" + user_id)
+    path_for_video = (cwd + "/static/user_content/video/" + user_id)
+    path_for_gif = (cwd + "/static/user_content/gif/" + user_id)
     if not os.path.exists(path_for_video):
         os.makedirs(path_for_gif)
         os.makedirs(path_for_video)
     file.save(path_for_video + "/" + vid_filename)
     make_gif(path_for_video + "/" + vid_filename, path_for_gif + "/" + gif_filename)
-    return (path_for_video, path_for_gif)
+    path_for_video = make_server_usable_filename(path_for_video)
+    path_for_gif = make_server_usable_filename(path_for_gif)
+    return (path_for_video + "/" + vid_filename, path_for_gif + "/" + gif_filename)
+
+def make_server_usable_filename(filename):
+    start_index = filename.find("/static/")
+    print filename[start_index:]
+    return filename[start_index:]
 
 @app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
 @login_required

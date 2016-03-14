@@ -33,7 +33,7 @@ const LiftGallery = React.createClass({
                     key={tile.gif_file_path}
                     style={tileStyle}
                     title={tile.lift_type}
-                    subtitle={<span>by <b>{tile.weight}</b></span>}
+                    subtitle={<span><b>{tile.weight} lbs</b></span>}
                     actionIcon={<IconButton></IconButton>}
                 ><img src={tile.gif_file_path}/></GridTile>
             );
