@@ -28,7 +28,7 @@ from hough_track import Trackr_Vid
 from mk_gif import make_gif
 
 app = flask.Flask(__name__)
-CORS(app, origins = ["*api.ncf.space*", "*api4trackr.herokuapp.com*"])
+CORS(app, origins = ["*api.ncf.space*", "*localhost:8080*", "*localhost*"])
 app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
 app.config['STORE_PATH'] = ''
 app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
@@ -59,11 +59,12 @@ def index():
 def uploadVideo(lift, weight, date):
     user = current_user
     user_id = user.user_id
-    payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
-              'video_file_path': 'test', 'img_file_path' : 'test', 'date': date}
-    r = requests.post("http://api4trackr.herokuapp.com" + "/addLift",json = payload)
+    print user_id
     file = request.files['file']
-    save_raw_files(file, user_id, lift, weight, date)
+    vid_path, gif_path = save_raw_files(file, user_id, lift, weight, date)
+    payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
+           'video_file_path': vid_path, 'gif_file_path' : gif_path, 'date': date}
+    r = requests.post("http://localhost:8080" + "/addLift",json = payload)    
     if r.status_code != 200:
         return "IMPROPER"
     else:
@@ -80,7 +81,7 @@ def save_raw_files(file, user_id, lift, weight, date):
         os.makedirs(path_for_video)
     file.save(path_for_video + "/" + vid_filename)
     make_gif(path_for_video + "/" + vid_filename, path_for_gif + "/" + gif_filename)
-    return vid_filename
+    return (path_for_video, path_for_gif)
 
 @app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
 @login_required
@@ -135,7 +136,7 @@ def oauth_callback(provider):
 def post_user(username, password, email, provider):
     print username
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
-    r = requests.post("http://api4trackr.herokuapp.com" + "/Add", json= payload)
+    r = requests.post("http://localhost:8080" + "/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
     return r._content
@@ -143,7 +144,7 @@ def post_user(username, password, email, provider):
 @app.route("/api_login/<username>/<password>", methods = ['POST'])
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("http://api4trackr.herokuapp.com" + "/LoginUser", json = payload)
+    r = requests.get("http://localhost:8080" + "/LoginUser", json = payload)
     if r.status_code != 200:
     	return "IMPROPER"
     r_json = r.json()
@@ -157,7 +158,7 @@ def get_user(username, password):
 @app.route("/api_check/<username>/<email>")
 def check_user(username, email):
     payload = {'user_id': username, "email" : email}
-    r = requests.get("http://api4trackr.herokuapp.com" + "/Check", json = payload)
+    r = requests.get("http://localhost:8080" + "/Check", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -165,14 +166,14 @@ def check_user(username, email):
 @app.route("/api_get_lift/<username>")
 def grab_lifts(username):
     payload = {'user_id': username}
-    r = requests.get("http://api4trackr.herokuapp.com" + "/getLifts", json = payload)
+    r = requests.get("http://localhost:8080" + "/getLifts", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get("http://api4trackr.herokuapp.com" + "/Delete")
+    r = requests.get("http://localhost:8080" + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
