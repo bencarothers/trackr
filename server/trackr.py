@@ -29,16 +29,6 @@ from mk_gif import make_gif
 
 app = flask.Flask(__name__)
 CORS(app, origins = ["*api.ncf.space*", "*localhost:8080*", "*localhost*"])
-app.config['STORE_DOMAIN'] = 'https://s3.amazonaws.com'
-app.config['STORE_PATH'] = ''
-app.config['STORE_PROVIDER'] = 'flask_store.providers.s3.S3Provider'
-app.config['STORE_S3_REGION'] = 'us-east-1'
-app.config['STORE_S3_BUCKET'] = 'bartrackr-upload'
-app.config['STORE_S3_ACCESS_KEY'] = os.environ.get("AWS_ACCESS_KEY_ID")
-app.config['STORE_S3_SECRET_KEY'] = os.environ.get("AWS_SECRET_KEY")
-
-store = Store(app)
-
 app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -89,17 +79,6 @@ def make_server_usable_filename(filename):
     start_index = filename.find("/static/")
     print filename[start_index:]
     return filename[start_index:]
-
-@app.route("/download/<lift>/<weight>/", methods = ['POST', 'GET'])
-@login_required
-def download_video(lift, weight):
-    conn = boto.connect_s3(app.config['STORE_S3_ACCESS_KEY'], app.config['STORE_S3_SECRET_KEY'])
-    bucket = conn.get_bucket(app.config['STORE_S3_BUCKET'])
-    bucket_list = bucket.list()
-    keystring = current_user.user_id + "/" + str(lift) + "." + str(weight) + ".mp4"
-    for l in bucket_list:
-        if l.key == keystring:
-            l.get_contents_to_filename(LOCAL_PATH+keyString)
 
 @app.route("/current_user/")
 @login_required
