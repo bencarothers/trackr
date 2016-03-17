@@ -4,9 +4,9 @@
   "description": "",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "trackr.ncf.space"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "babel-core": "^5.8.21",
     "babel-eslint": "^4.0.5",
