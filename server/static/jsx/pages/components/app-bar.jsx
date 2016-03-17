@@ -20,7 +20,7 @@ const MainAppBar = React.createClass({
             contentType: false,
             type: 'POST',
             success: function (data) {
-                alert('Success');
+                location.reload();
             }
         })
         this.refs.modal.hide();

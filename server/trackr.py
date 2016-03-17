@@ -28,7 +28,7 @@ from hough_track import Trackr_Vid
 from mk_gif import make_gif
 
 app = flask.Flask(__name__)
-CORS(app, origins = ["*api.ncf.space*", "*localhost:8080*", "*localhost*"])
+CORS(app, origins = ["*api.ncf.space*", "*api.ncf.space*", "*localhost*"])
 app.config.from_object(DevelopmentConfig)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -49,12 +49,11 @@ def index():
 def uploadVideo(lift, weight, date):
     user = current_user
     user_id = user.user_id
-    print user_id
     file = request.files['file']
     vid_path, gif_path = save_raw_files(file, user_id, lift, weight, date)
     payload = {'user_id': user_id, 'lift_type': lift, 'weight': weight,
            'video_file_path': vid_path, 'gif_file_path' : gif_path, 'date': date}
-    r = requests.post("http://localhost:8080" + "/addLift",json = payload)    
+    r = requests.post("http://api.ncf.space" + "/addLift",json = payload)    
     if r.status_code != 200:
         return "IMPROPER"
     else:
@@ -63,9 +62,8 @@ def uploadVideo(lift, weight, date):
 def save_raw_files(file, user_id, lift, weight, date):
     vid_filename = str(date) + "." + str(lift) + "." + str(weight) + ".mp4"
     gif_filename = str(date) + "." + str(lift) + "." + str(weight) + ".gif"
-    cwd = os.getcwd()
-    path_for_video = (cwd + "/static/user_content/video/" + user_id)
-    path_for_gif = (cwd + "/static/user_content/gif/" + user_id)
+    path_for_video = "/var/www/trackr/server/static/user_content/video/" + user_id
+    path_for_gif =   "/var/www/trackr/server/static/user_content/gif/" + user_id
     if not os.path.exists(path_for_video):
         os.makedirs(path_for_gif)
         os.makedirs(path_for_video)
@@ -77,7 +75,6 @@ def save_raw_files(file, user_id, lift, weight, date):
 
 def make_server_usable_filename(filename):
     start_index = filename.find("/static/")
-    print filename[start_index:]
     return filename[start_index:]
 
 @app.route("/current_user/")
@@ -120,9 +117,8 @@ def oauth_callback(provider):
 
 @app.route('/api_post/<username>/<password>/<email>/', defaults = {'provider' : 'Trackr'}, methods = ['POST'])
 def post_user(username, password, email, provider):
-    print username
     payload = {'user_id': username, 'password': hash_alg(password), 'email': email, 'provider': provider}
-    r = requests.post("http://localhost:8080" + "/Add", json= payload)
+    r = requests.post("http://api.ncf.space" + "/Add", json= payload)
     if r.status_code != 200:
         return "Wrong format"
     return r._content
@@ -130,7 +126,7 @@ def post_user(username, password, email, provider):
 @app.route("/api_login/<username>/<password>", methods = ['POST'])
 def get_user(username, password):
     payload = {'user_id': username, 'password': hash_alg(password)}
-    r = requests.get("http://localhost:8080" + "/LoginUser", json = payload)
+    r = requests.get("http://api.ncf.space" + "/LoginUser", json = payload)
     if r.status_code != 200:
     	return "IMPROPER"
     r_json = r.json()
@@ -138,13 +134,12 @@ def get_user(username, password):
         user = r_json['log_in']
         user = user_loader(user)
         login_user(user)
-        print "hello, " + str(current_user.user_id)
     return r._content
 
 @app.route("/api_check/<username>/<email>")
 def check_user(username, email):
     payload = {'user_id': username, "email" : email}
-    r = requests.get("http://localhost:8080" + "/Check", json = payload)
+    r = requests.get("http://api.ncf.space" + "/Check", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
@@ -152,17 +147,18 @@ def check_user(username, email):
 @app.route("/api_get_lift/<username>")
 def grab_lifts(username):
     payload = {'user_id': username}
-    r = requests.get("http://localhost:8080" + "/getLifts", json = payload)
+    r = requests.get("http://api.ncf.space" + "/getLifts", json = payload)
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
 
 @app.route("/api_delete/<username>")
 def delete_user(username):
-    r = requests.get("http://localhost:8080" + "/Delete")
+    r = requests.get("http://api.ncf.space" + "/Delete")
     if r.status_code != 200:
         return "IMPROPER"
     return r._content
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.debug = True
+    app.run()

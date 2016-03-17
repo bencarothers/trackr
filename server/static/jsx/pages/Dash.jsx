@@ -15,7 +15,9 @@ const Dash = React.createClass({
       componentDidMount: function(){
         jQuery.get("/current_user/").done(function(result){
           var user_id = result.user;
+          console.log(user_id);
           var lifts = result.lifts;
+          console.log(lifts);
           this.setState({ username: user_id });
           var data = []
           for (var x = 0; x < lifts.length; x++){

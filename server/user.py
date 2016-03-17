@@ -4,7 +4,7 @@ class User(object):
     def __init__(self, user_id):
         self.user_id = user_id
         payload = {'user_id' : user_id}
-        r = requests.get("http://localhost:8080" + "/getLifts",json = payload)
+        r = requests.get("http://api.ncf.space" + "/getLifts",json = payload)
         response = json.loads(r.text)
         self.lifts = response['lifts']
 
