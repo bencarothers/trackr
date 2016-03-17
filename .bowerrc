@@ -1,3 +1,6 @@
 {
+    "color": true,
+    "analytics": false,
+    "timeout": 120000,
     "directory": "server/static/lib"
 }
