@@ -1,6 +1,5 @@
 from flask import url_for, redirect, request, current_app
 from rauth import OAuth2Service
-
 import json, urllib2
 
 class OAuthSignIn(object):
@@ -30,6 +29,7 @@ class OAuthSignIn(object):
 				provider = provider_class()
 				self.providers[provider.provider_name] = provider
 		return self.providers[provider_name]
+
 
 class GoogleSignIn(OAuthSignIn):
 	def __init__(self):

@@ -1,4 +1,5 @@
 "use strict";
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Dash from './pages/Dash';
@@ -9,41 +10,45 @@ const App = React.createClass({
   getInitialState(){
     var response = ''
     jQuery.ajax({
-        async: false,
-        url: "/current_user/",
-        type: 'GET',
-        data: null,
-        dataType: 'json',
-        success: function (data){
-          response = data.status
-      }});
-    if (response == 'ok'){
-         return{
-      route: '/dash'
-          }
+      async: false,
+      url: "/current_user/",
+      type: 'GET',
+      data: null,
+      dataType: 'json',
+      success: function (data) {
+        response = data.status
+      }
+    });
+    if (response == 'ok') {
+      return {
+        route: '/dash'
+      }
     }
-    else{
-        return {
-      route: window.location.hash.substr(1)
-         }
+    else {
+      return {
+        route: window.location.hash.substr(1)
+      }
     }
   },
 
   componentDidMount(){
     window.addEventListener('hashchange', () => {
       this.setState({
-        route : window.location.hash.substr(1)
+        route: window.location.hash.substr(1)
       })
     })
   },
 
   render(){
     let Child
-    switch (this.state.route){
-      case '/dash': Child = Dash; break;
-      default: Child = Home; 
+    switch (this.state.route) {
+      case '/dash':
+        Child = Dash;
+        break;
+      default:
+        Child = Home;
     }
-    return(
+    return (
       <Child/>
     )
   }
