@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy
 import cv2
-#Open the video, read the first frame, and get the shape of the window
 
+#Open the video, read the first frame, and get the shape of the window
 class Trackr_Vid:
     def __init__(self, input_video):
     # Globals to hold all the points for graphing as well as drawing the path
@@ -37,8 +37,7 @@ class Trackr_Vid:
         circles = numpy.round(circles[0,:]).astype('int')
         x, y, r = circles[0].tolist()
 
-
-#Find the initial point to track using houghCircles
+        #Find the initial point to track using houghCircles
         previousXValue = x
         previousYValue = y
         xSub = x
@@ -87,4 +86,3 @@ class Trackr_Vid:
                 break
         cv2.destroyAllWindows()
         self.video.release()
-        print 'Trackr Done!'

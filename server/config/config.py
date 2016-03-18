@@ -17,11 +17,11 @@ class DevelopmentConfig(Config):
 
 	OAUTH_CREDENTIALS = {
 	'google' : {
-	'id' : GOOGLE_LOGIN_CLIENT_ID,
-	'secret' : GOOGLE_LOGIN_CLIENT_SECRET
-			},
+	  'id' : GOOGLE_LOGIN_CLIENT_ID,
+	  'secret' : GOOGLE_LOGIN_CLIENT_SECRET
+	},
 	'facebook' :{
-	'id': FACEBOOK_LOGIN_CLIENT_SECRET,
-	'secret': FACEBOOK_LOGIN_CLIENT_SECRET
-	        }
+	  'id': FACEBOOK_LOGIN_CLIENT_SECRET,
+	  'secret': FACEBOOK_LOGIN_CLIENT_SECRET
+	}
 }
